@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Fond Carré Arrondi App Icon -->
+  <rect width="64" height="64" rx="16" fill="#0B1320" />
+  
+  <!-- Silhouette Lettre D & Feuille CV -->
+  <path 
+    d="M18 12 H36 L46 22 V36 C46 46 38 52 18 52 V12 Z" 
+    fill="#FFFFFF"
+  />
+  
+  <!-- Lignes du CV découpées -->
+  <path 
+    d="M24 20 H32 V23 H24 Z M24 27 H38 V30 H24 Z M24 34 H36 V37 H24 Z" 
+    fill="#0B1320"
+  />
+  
+  <!-- Coin Plié du CV -->
+  <path 
+    d="M36 12 V22 H46 Z" 
+    fill="#CBD5E1"
+  />
+  
+  <!-- Lettre 'v' Checkmark ATS Corail -->
+  <path 
+    d="M22 36 L30 50 L52 16 L47 13 L29 42 L24 33 Z" 
+    fill="#FF6154"
+  />
+</svg>

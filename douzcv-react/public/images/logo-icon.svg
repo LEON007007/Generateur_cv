@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" role="img" aria-label="douzCv Monogramme Dv">
+  <!-- Lettre D formant la feuille de CV avec coin plié en Blanc Pur -->
+  <path 
+    d="M26 18 H54 L68 32 V54 C68 68 56 82 26 82 V18 Z" 
+    fill="#FFFFFF"
+  />
+  
+  <!-- Découpe interne du CV (effet document) -->
+  <path 
+    d="M36 28 H50 V34 H36 Z M36 40 H58 V44 H36 Z M36 48 H54 V52 H36 Z" 
+    fill="#0B1320"
+  />
+  
+  <!-- Pli du coin supérieur droit -->
+  <path 
+    d="M54 18 V32 H68 Z" 
+    fill="#CBD5E1"
+  />
+  
+  <!-- Lettre 'v' sous forme de Checkmark ATS en Corail Vif -->
+  <path 
+    d="M32 54 L46 78 L80 24 L72 20 L44 64 L36 50 Z" 
+    fill="#FF6154"
+  />
+</svg>

@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>douzCv • Le Générateur de CV d'Élite Propulsé par l'IA</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate icon" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+  <!-- Top Real-time Progress Bar -->
+  <div id="progress-bar-container">
+    <div id="progress-bar"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       SECTION 1: HERO SCROLLTRACK & SCROLLYTELLING (236 FRAMES)
+  ═══════════════════════════════════════════════════════════════════════ -->
+  <div id="hero-track">
+    <div id="hero-sticky">
+      <!-- 236-Frame Background Scrollytelling -->
+      <img id="anim-img" src="/images/ezgif-frame-001.jpg" alt="douzCv Animation Scrollytelling">
+      <div class="hero-vignette"></div>
+
+      <!-- ANIMATION 1: Organic Hero Blob -->
+      <div class="hero-blob" aria-hidden="true"></div>
+
+      <!-- Floating Modern Glass Navbar -->
+      <header class="navbar">
+        <a href="#hero-track" class="logo" title="douzCv Accueil">
+          <span class="logo-text">douz<span class="logo-accent">Cv</span></span>
+        </a>
+        <nav class="nav-links">
+          <a href="#hero-track" class="active">ACCUEIL</a>
+          <a href="#bento-features">INNOVATIONS</a>
+          <a href="#templates-section">12 MODÈLES</a>
+          <a href="#ats-scanner">SIMULATEUR ATS</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+        <a href="/connexion" class="btn-pill-header">
+          <!-- ANIMATION 3: Morphing Icon Badge in CTA -->
+          <span class="icon-badge" aria-hidden="true">
+            <!-- Icon 1: Document -->
+            <svg class="morph-icon active" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+            </svg>
+            <!-- Icon 2: AI Sparkle -->
+            <svg class="morph-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+            </svg>
+            <!-- Icon 3: Check -->
+            <svg class="morph-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            <!-- Icon 4: Arrow -->
+            <svg class="morph-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
+          </span>
+          <span class="btn-text">CRÉER MON CV</span>
+        </a>
+      </header>
+
+      <!-- Hero Asymmetric Content Grid -->
+      <div class="hero-content">
+        <div class="hero-grid">
+          <!-- Left Column -->
+          <div class="hero-left">
+            <div class="hero-tag-pill">
+              <span class="tag-dot"></span>
+              <span>GÉNÉRATEUR ATS & IA DE PROCHAINE GÉNÉRATION</span>
+            </div>
+
+            <!-- ANIMATION 2: Word-by-Word Title Reveal with Blur & Stagger -->
+            <h1 class="hero-title" data-reveal-words>
+              Le CV d'Élite Conçu Pour Décrocher l'Entretien.
+            </h1>
+
+            <div class="hero-spacer" aria-hidden="true"></div>
+
+            <div class="hero-actions">
+              <a href="/modeles" class="btn-hero-primary">
+                <span>DÉCOUVRIR LES 12 MODÈLES</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14" />
+                  <path d="m12 5 7 7-7 7" />
+                </svg>
+              </a>
+              <a href="#ats-scanner" class="btn-hero-secondary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <polygon points="10 8 16 12 10 16 10 8" />
+                </svg>
+                <span>Tester le Score ATS</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Right Column: Glassmorphism Bento Card -->
+          <div class="hero-right">
+            <div class="hero-glass-card">
+              <div class="card-glow-edge"></div>
+              <div class="card-top-row">
+                <div class="live-status-pill">
+                  <span class="pulse-emerald"></span>
+                  <span>MOTEUR IA EN LIGNE</span>
+                </div>
+                <span class="metric-highlight">98.8% ATS COMPATIBLE</span>
+              </div>
+              <div class="card-quote">
+                "Un recruteur consacre moins de 6 secondes à votre CV. Chaque millimètre et chaque mot doivent être
+                calculés."
+              </div>
+              <div class="card-stats-grid">
+                <div class="c-stat">
+                  <span class="c-stat-num">3.8x</span>
+                  <span class="c-stat-lbl">Taux d'entretien</span>
+                </div>
+                <div class="c-stat">
+                  <span class="c-stat-num">0s</span>
+                  <span class="c-stat-lbl">Temps de configuration</span>
+                </div>
+                <div class="c-stat">
+                  <span class="c-stat-num">100%</span>
+                  <span class="c-stat-lbl">Données privées</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Scroll-Connected Quick Metrics -->
+        <div class="hero-metrics-bar">
+          <div class="metric-item">
+            <span class="m-index">01</span>
+            <div class="m-text">
+              <strong>STRUCTURE ATS 100%</strong>
+              <span>Indexable par tous les robots RH</span>
+            </div>
+          </div>
+          <div class="metric-item">
+            <span class="m-index">02</span>
+            <div class="m-text">
+              <strong>12 DESIGNS STRATÉGIQUES</strong>
+              <span>Créatifs, Tech, Exécutifs, Bilingues</span>
+            </div>
+          </div>
+          <div class="metric-item">
+            <span class="m-index">03</span>
+            <div class="m-text">
+              <strong>RÉDACTION IA GEMINI</strong>
+              <span>Formulation STAR & verbes d'impact</span>
+            </div>
+          </div>
+          <div class="metric-item">
+            <span class="m-index">04</span>
+            <div class="m-text">
+              <strong>PAGINATION A4 RIGIDE</strong>
+              <span>Zéro coupure intempestive au PDF</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       SECTION 2: STANDARDS MARQUEE TICKER (Seamless Infinite Loop)
+  ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="curved-wrapper">
+    <div class="standards-bar">
+      <div class="standards-badge" data-reveal="left">
+        <span class="pulse-coral"></span>
+        <span>VALIDÉ POUR LES STANDARDS DE RECRUTEMENT</span>
+      </div>
+      <div class="standards-marquee" data-reveal="right">
+        <div class="standards-track">
+          <div class="st-item"><span class="dot coral"></span> GRANDS GROUPES CAC 40</div>
+          <div class="st-item"><span class="dot green"></span> CABINETS DE CONSEIL & STRATÉGIE</div>
+          <div class="st-item"><span class="dot blue"></span> SCALE-UPS & LICORNES TECH</div>
+          <div class="st-item"><span class="dot amber"></span> BANQUES D'AFFAIRES & M&A</div>
+          <div class="st-item"><span class="dot purple"></span> AUDIT & CABINETS BIG 4</div>
+          <div class="st-item"><span class="dot green"></span> CARRIÈRES INTERNATIONALES & EXPATS</div>
+          <div class="st-item"><span class="dot coral"></span> SECTEURS LUXE & INGÉNIERIE</div>
+          <!-- Duplicates for seamless loop -->
+          <div class="st-item"><span class="dot coral"></span> GRANDS GROUPES CAC 40</div>
+          <div class="st-item"><span class="dot green"></span> CABINETS DE CONSEIL & STRATÉGIE</div>
+          <div class="st-item"><span class="dot blue"></span> SCALE-UPS & LICORNES TECH</div>
+          <div class="st-item"><span class="dot amber"></span> BANQUES D'AFFAIRES & M&A</div>
+          <div class="st-item"><span class="dot purple"></span> AUDIT & CABINETS BIG 4</div>
+          <div class="st-item"><span class="dot green"></span> CARRIÈRES INTERNATIONALES & EXPATS</div>
+          <div class="st-item"><span class="dot coral"></span> SECTEURS LUXE & INGÉNIERIE</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═════════════════════════════════════════════════════════════════════
+         SECTION 3: BENTO GRID 2.0 DES INNOVATIONS CLÉS
+    ═════════════════════════════════════════════ -->
+    <section id="bento-features" class="section-box">
+      <div class="section-header-center" data-reveal="up">
+        <span class="eyebrow-tag">Architecture & Technologie</span>
+        <h2 class="section-title">POURQUOI <span class="brand-name-douzcv">DOUZ<span class="brand-accent-coral">CV</span></span> SURPASSE <span class="brand-name-word">WORD</span> &amp; <span class="brand-name-canva">CANVA</span></h2>
+        <p class="section-lead">
+          Conçu par des ingénieurs et directeurs artistiques pour vous donner un avantage décisif face aux algorithmes
+          et aux recruteurs.
+        </p>
+      </div>
+
+      <div class="bento-grid">
+        <!-- Bento 1: AI Gemini (Large Card) -->
+        <div class="bento-card bento-wide" data-reveal="left">
+          <div class="bento-card-header">
+            <div class="bento-icon-box coral">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+              </svg>
+            </div>
+            <span class="bento-badge">IA GEMINI INTÉGRÉE</span>
+          </div>
+          <h3 class="bento-title">Assistant de Rédaction Stratégique</h3>
+          <p class="bento-desc">
+            Ne partez jamais d'une page blanche. Générez des résumés percutants, transformez vos tâches en réalisations
+            chiffrées selon la méthode STAR et injectez les mots-clés les plus recherchés.
+          </p>
+          <div class="bento-code-preview">
+            <div class="code-line"><span class="c-key">prompt:</span> "Optimiser expérience Développeur Fullstack"</div>
+            <div class="code-line highlight"><span class="c-out">→ "+35% de performance applicative et refonte de
+                l'architecture micro-services pour 120k utilisateurs actifs."</span></div>
+          </div>
+        </div>
+
+        <!-- Bento 2: ATS Safe (Tall Card) -->
+        <div class="bento-card bento-tall" data-reveal="right">
+          <div class="bento-card-header">
+            <div class="bento-icon-box green">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+            </div>
+            <span class="bento-badge green-badge">CONFORMITÉ 98%+</span>
+          </div>
+          <h3 class="bento-title">Structure Algorithmique Pure</h3>
+          <p class="bento-desc">
+            Zéro tableau invisible bloquant, zéro graphisme parasite. Votre CV est parfaitement lisible et indexable par
+            Workday, Taleo, et Greenhouse.
+          </p>
+          <div class="bento-mini-meter">
+            <div class="meter-label"><span>Indexation Robots ATS</span><strong>100%</strong></div>
+            <div class="meter-bar">
+              <div class="meter-fill" style="width: 100%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bento 3: Pixel-Perfect A4 -->
+        <div class="bento-card" data-reveal="left" data-delay="150">
+          <div class="bento-card-header">
+            <div class="bento-icon-box blue">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" x2="12" y1="15" y2="3" />
+              </svg>
+            </div>
+            <span class="bento-badge">EXPORT VECTORIEL</span>
+          </div>
+          <h3 class="bento-title">Pagination A4 Chirurgicale</h3>
+          <p class="bento-desc">
+            Visualisez en temps réel le rendu exact d'impression. Fini les titres orphelins ou les pages supplémentaires
+            imprévues.
+          </p>
+        </div>
+
+        <!-- Bento 4: 100% Local & Private -->
+        <div class="bento-card" data-reveal="right" data-delay="150">
+          <div class="bento-card-header">
+            <div class="bento-icon-box amber">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+            </div>
+            <span class="bento-badge amber-badge">100% LOCAL</span>
+          </div>
+          <h3 class="bento-title">Confidentialité Totale</h3>
+          <p class="bento-desc">
+            Vos données personnelles sont stockées exclusivement dans votre navigateur (IndexedDB). Aucune donnée
+            revendue, zéro compte obligatoire.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════════════════
+         SECTION 4: ANIMATION 4 - TEMPLATES SHOWCASE WITH STAGGER REVEAL
+    ═════════════════════════════════════════════ -->
+    <section id="templates-section" class="section-box">
+      <div class="section-header-center" data-reveal="up">
+        <span class="eyebrow-tag">La Collection Stratégique</span>
+        <h2 class="section-title">12 MODÈLES CONÇUS PAR DES EXPERTS</h2>
+        <p class="section-lead">
+          Chaque modèle a été calibré pour un secteur spécifique afin de maximiser l'impact visuel et la lisibilité
+          immédiate.
+        </p>
+      </div>
+
+      <!-- ANIMATION 4: Container observed with stagger reveal on .template-card -->
+      <div class="templates-grid-stagger" id="templates-stagger-container">
+        <!-- Template Card 1 -->
+        <a href="/modeles" class="template-card" data-reveal="left" data-delay="100">
+          <div class="card-img-wrapper">
+            <img src="/templates/cv_creative.jpg" alt="Modèle Créatif Studio">
+            <div class="card-overlay-btn"><span>UTILISER CE MODÈLE →</span></div>
+          </div>
+          <div class="card-meta">
+            <span class="category-pill pink">DESIGN & STUDIO</span>
+            <h4 class="card-name">Le Créatif Studio</h4>
+            <p class="card-desc">Idéal pour directeurs artistiques, designers UI/UX et métiers de l'image.</p>
+          </div>
+        </a>
+
+        <!-- Template Card 2 -->
+        <a href="/modeles" class="template-card" data-reveal="up" data-delay="200">
+          <div class="card-img-wrapper">
+            <img src="/templates/cv_techlead.jpg" alt="Modèle Tech Lead CTO">
+            <div class="card-overlay-btn"><span>UTILISER CE MODÈLE →</span></div>
+          </div>
+          <div class="card-meta">
+            <span class="category-pill blue">TECH & DEV</span>
+            <h4 class="card-name">Le Tech Lead / CTO</h4>
+            <p class="card-desc">Hiérarchie optimisée pour la stack technique, projets GitHub et réalisations clés.</p>
+          </div>
+        </a>
+
+        <!-- Template Card 3 -->
+        <a href="/modeles" class="template-card" data-reveal="right" data-delay="300">
+          <div class="card-img-wrapper">
+            <img src="/templates/cv_international.jpg" alt="Modèle International Global">
+            <div class="card-overlay-btn"><span>UTILISER CE MODÈLE →</span></div>
+          </div>
+          <div class="card-meta">
+            <span class="category-pill green">EXPAT & BILINGUE</span>
+            <h4 class="card-name">L'International Global</h4>
+            <p class="card-desc">Format standardisé mondialement pour candidatures bilingues, UE et USA.</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="templates-cta-row" data-reveal="up">
+        <a href="/modeles" class="btn-hero-primary">
+          <span>VOIR LES 12 MODÈLES DISPONIBLES</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════════════════
+         TRANSITION DÉGRADÉE VERS LA SECTION ATS SCROLLYTELLING
+    ═════════════════════════════════════════════ -->
+    <div class="ats-gradient-transition" aria-hidden="true"></div>
+
+    <!-- ═════════════════════════════════════════════════════════════════════
+         SECTION 5: SCROLLYTELLING ATS (240 FRAMES) & SIMULATEUR INTERACTIF
+    ═════════════════════════════════════════════ -->
+    <div id="ats-track" class="ats-scroll-track">
+      <div id="ats-sticky" class="ats-sticky-viewport">
+        <!-- 240-Frame Background Scrollytelling (images2) -->
+        <img id="ats-anim-img" src="/images2/ezgif-frame-001.jpg" alt="douzCv Animation Score ATS Scrollytelling">
+        
+        <!-- Vignettes & Gradient Overlays for Peak Contrast and Readability -->
+        <div class="ats-vignette-top"></div>
+        <div class="ats-vignette-center"></div>
+        <div class="ats-vignette-bottom"></div>
+
+        <!-- ATS Floating Indicator Pill -->
+        <div class="ats-scroll-pill">
+          <span class="ats-pulse-dot"></span>
+          <span>EXPÉRIENCE ATS SCROLLYTELLING • DÉFILEZ POUR DÉCOUVRIR</span>
+        </div>
+
+        <section id="ats-scanner" class="ats-sticky-content">
+          <div class="ats-wrapper-grid">
+            <div class="ats-text-col" data-reveal="left">
+              <span class="eyebrow-tag">Audit en Direct</span>
+              <h2 class="section-title text-white">TESTEZ LA PUISSANCE DU SCORE ATS</h2>
+              <p class="section-lead text-light">
+                Plus de 75% des CVs envoyés sur Internet sont rejetés par les filtres automatiques sans jamais être
+                consultés. Comparez le comportement d'un CV standard avec douzCv :
+              </p>
+              <div class="ats-checklist">
+                <div class="chk-item">
+                  <span class="chk-icon">✓</span>
+                  <div><strong>Conformité Sémantique :</strong> Rubriques standardisées que chaque algorithme sait analyser.
+                  </div>
+                </div>
+                <div class="chk-item">
+                  <span class="chk-icon">✓</span>
+                  <div><strong>Mots-Clés Ciblés :</strong> L'IA enrichit naturellement votre description de poste.</div>
+                </div>
+                <div class="chk-item">
+                  <span class="chk-icon">✓</span>
+                  <div><strong>Zéro Erreur de Formatage :</strong> Pas de tableaux imbriqués qui trompent le scanner.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ats-card-container" data-reveal="right">
+              <div class="ats-card-header">
+                <div class="header-dots">
+                  <span class="dot-r"></span>
+                  <span class="dot-y"></span>
+                  <span class="dot-g"></span>
+                </div>
+                <span class="header-title">AUDIT ALGORITHMIQUE • douzCv Engine</span>
+              </div>
+
+              <div class="ats-card-body">
+                <!-- State 1: Selector -->
+                <div id="ats-state-selector" class="ats-view active">
+                  <p class="ats-view-title">Choisissez un format pour lancer l'audit simulé :</p>
+                  <div class="ats-btn-group">
+                    <button class="ats-choice-btn btn-classic" id="btn-scan-classic" type="button">
+                      <div class="choice-icon">📄</div>
+                      <div class="choice-text">
+                        <strong>CV Classique (Word / Canva)</strong>
+                        <span>Format standard non optimisé pour les robots</span>
+                      </div>
+                    </button>
+                    <button class="ats-choice-btn btn-douzcv" id="btn-scan-douzcv" type="button">
+                      <div class="choice-icon">✨</div>
+                      <div class="choice-text">
+                        <strong>CV D'Élite douzCv</strong>
+                        <span>Format vectoriel certifié 98%+ de conformité</span>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- State 2: Scanning -->
+                <div id="ats-state-scanning" class="ats-view">
+                  <div class="laser-scanner">
+                    <div class="laser-bar"></div>
+                    <div class="scanner-status-icon">🔍</div>
+                  </div>
+                  <div class="scan-progress-area">
+                    <div class="scan-step-label" id="scan-status">Lecture du document...</div>
+                    <div class="scan-bar">
+                      <div class="scan-bar-fill" id="scan-progress-fill"></div>
+                    </div>
+                  </div>
+                  <div class="scan-terminal" id="scan-console"></div>
+                </div>
+
+                <!-- State 3: Results -->
+                <div id="ats-state-results" class="ats-view">
+                  <div class="score-display-row">
+                    <div class="score-donut" id="score-circle-element">
+                      <span class="score-num" id="score-val">0%</span>
+                      <span class="score-label">SCORE ATS</span>
+                    </div>
+                    <div class="score-info">
+                      <span class="score-status-badge" id="score-badge">ANALYSE TERMINÉE</span>
+                      <p class="score-detail-text" id="score-desc">Calcul de la compatibilité...</p>
+                    </div>
+                  </div>
+
+                  <div class="score-criteria-list">
+                    <div class="crit-row">
+                      <div class="crit-head"><span>Lisibilité Algorithmique</span><strong id="audit-pct-1">0%</strong></div>
+                      <div class="crit-bar">
+                        <div class="crit-fill" id="audit-fill-1" style="width: 0%;"></div>
+                      </div>
+                    </div>
+                    <div class="crit-row">
+                      <div class="crit-head"><span>Mots-clés & Compétences Clés</span><strong id="audit-pct-2">0%</strong>
+                      </div>
+                    </div>
+                    <div class="crit-row">
+                      <div class="crit-head"><span>Réalisations & Méthode STAR</span><strong id="audit-pct-3">0%</strong>
+                      </div>
+                      <div class="crit-bar">
+                        <div class="crit-fill" id="audit-fill-3" style="width: 0%;"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="reset-action-row">
+                    <button class="btn-text-reset" id="btn-reset-scan" type="button">← Tester l'autre format</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ═════════════════════════════════════════════════════════════════════
+         SECTION 6: FOIRE AUX QUESTIONS (FAQ Accordéon)
+    ═════════════════════════════════════════════ -->
+    <section id="faq" class="section-box">
+      <div class="section-header-center" data-reveal="up">
+        <span class="eyebrow-tag">Transparence & Fonctionnement</span>
+        <h2 class="section-title">QUESTIONS FRÉQUEMMENT POSÉES</h2>
+      </div>
+
+      <div class="faq-accordion">
+        <div class="faq-card" data-reveal="left" data-delay="100">
+          <button class="faq-toggle" type="button">
+            <span>Est-ce que douzCv est réellement 100% gratuit et sans inscription ?</span>
+            <span class="faq-plus">+</span>
+          </button>
+          <div class="faq-collapse">
+            <p>Oui, absolument. Vous pouvez sélectionner votre modèle de CV, enrichir vos expériences avec l'IA et
+              télécharger votre PDF vectoriel A4 sans créer de compte ni renseigner de carte bancaire.</p>
+          </div>
+        </div>
+
+        <div class="faq-card" data-reveal="right" data-delay="200">
+          <button class="faq-toggle" type="button">
+            <span>Comment l'assistant IA Gemini m'aide-t-il dans la rédaction ?</span>
+            <span class="faq-plus">+</span>
+          </button>
+          <div class="faq-collapse">
+            <p>L'IA analyse votre intitulé de poste et suggère des résumés professionnels percutants, reformule vos
+              expériences selon la méthode STAR (Situation, Tâche, Action, Résultat) et intègre les compétences
+              techniques les plus prisées des recruteurs.</p>
+          </div>
+        </div>
+
+        <div class="faq-card" data-reveal="left" data-delay="300">
+          <button class="faq-toggle" type="button">
+            <span>Mes données sont-elles protégées et conservées ?</span>
+            <span class="faq-plus">+</span>
+          </button>
+          <div class="faq-collapse">
+            <p>Toutes vos données restent sur votre ordinateur via la base de données embarquée (IndexedDB de votre
+              navigateur). Aucune information personnelle n'est envoyée ou conservée sur des serveurs distants.</p>
+          </div>
+        </div>
+
+        <div class="faq-card" data-reveal="right" data-delay="400">
+          <button class="faq-toggle" type="button">
+            <span>Pourquoi les modèles douzCv sont-ils certifiés compatibles ATS ?</span>
+            <span class="faq-plus">+</span>
+          </button>
+          <div class="faq-collapse">
+            <p>Nos modèles respectent une hiérarchie sémantique pure sans colonnes superposées non standard ni
+              graphismes invisibles qui induisent en erreur les algorithmes de tri (Workday, Taleo, Greenhouse,
+              SmartRecruiters).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════════════════
+         SECTION 7: BANNIÈRE CTA IMMERSIVE
+    ═════════════════════════════════════════════ -->
+    <section class="section-box">
+      <div class="cta-banner-epic" data-reveal="up">
+        <span class="eyebrow-tag light">Prêt pour votre prochain palier de carrière ?</span>
+        <h2 class="cta-epic-title">FORGEZ VOTRE CV D'ÉLITE DÈS AUJOURD'HUI</h2>
+        <p class="cta-epic-desc">
+          Rejoignez les candidats qui se démarquent dès le premier coup d'œil grâce à un design chirurgical et des mots
+          à fort impact.
+        </p>
+        <a href="/connexion" class="btn-hero-primary cta-btn">
+          <span>COMMENCER MON CV GRATUITEMENT</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════════════════
+         SECTION 8: GRAND FOOTER PREMIUM ULTRA-DESIGN
+    ═════════════════════════════════════════════ -->
+    <footer class="footer-ultra">
+      <!-- Trust Strip -->
+      <div class="footer-trust-strip" data-reveal="up">
+        <div class="trust-badge-item">
+          <div class="trust-icon-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <div>
+            <strong>100% Confidentialité Locale</strong>
+            <span>Données stockées uniquement sur votre navigateur</span>
+          </div>
+        </div>
+        <div class="trust-badge-item">
+          <div class="trust-icon-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+            </svg>
+          </div>
+          <div>
+            <strong>IA Gemini 2.5 Flash</strong>
+            <span>Optimisation sémantique et méthode STAR</span>
+          </div>
+        </div>
+        <div class="trust-badge-item">
+          <div class="trust-icon-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+            </svg>
+          </div>
+          <div>
+            <strong>Norme ATS & Vectoriel A4</strong>
+            <span>Zéro décalage à l'impression et au tri robot</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-grid">
+        <!-- Col 1: Brand -->
+        <div class="footer-brand-col" data-reveal="left">
+          <div class="footer-logo">
+            <span class="logo-text">douz<span class="logo-accent">Cv</span></span>
+          </div>
+          <p class="footer-desc">
+            La plateforme d'ingénierie de candidatures et de CVs d'élite conçue pour dominer les algorithmes ATS et séduire les recruteurs en moins de 6 secondes.
+          </p>
+        </div>
+
+        <!-- Col 2: Navigation & Outils -->
+        <div class="footer-nav-col" data-reveal="up" data-delay="100">
+          <h5>OUTILS & MODULES</h5>
+          <div class="footer-links-scroll">
+            <a href="/modeles">12 Modèles Stratégiques</a>
+            <a href="/editeur">Éditeur Intelligent</a>
+            <a href="#ats-scanner">Simulateur de Score ATS</a>
+            <a href="/modeles">Assistant Rédactionnel IA</a>
+            <a href="/exporter">Export Vectoriel PDF A4</a>
+          </div>
+        </div>
+
+        <!-- Col 3: Modèles par secteur -->
+        <div class="footer-nav-col" data-reveal="up" data-delay="200">
+          <h5>SECTEURS CLÉS</h5>
+          <div class="footer-links-scroll">
+            <a href="/modeles">Tech Lead & Développeur</a>
+            <a href="/modeles">Exécutif & Direction</a>
+            <a href="/modeles">Créatif & Studio UI/UX</a>
+            <a href="/modeles">Finance & Stratégie</a>
+            <a href="/modeles">Carrières Internationales</a>
+          </div>
+        </div>
+
+        <!-- Col 4: Contact & Action -->
+        <div class="footer-nav-col footer-contact-col" data-reveal="right" data-delay="300">
+          <h5>ASSISTANCE & SUPPORT</h5>
+          <p class="contact-hint">Une question ou besoin d'aide pour votre candidature ?</p>
+          
+          <a href="https://wa.me/237676577352" target="_blank" rel="noopener noreferrer" class="contact-pill whatsapp">
+            <span class="online-indicator"></span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+            </svg>
+            <span>WhatsApp Direct • 24/7</span>
+          </a>
+
+          <a href="tel:+237655549149" class="contact-pill">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+            </svg>
+            <span>+237 655 54 91 49</span>
+          </a>
+
+          <a href="/connexion" class="btn-footer-cta">
+            <span>Créer mon CV gratuit</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-copyright">
+          <span>© 2026 <strong>douzCv</strong> • L'Ingénierie de CV d'Élite par l'IA.</span>
+        </div>
+        <div class="footer-links">
+          <a href="#hero-track">Accueil</a>
+          <a href="#ats-scanner">Score ATS</a>
+          <a href="/modeles">Modèles</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <a href="#hero-track" class="btn-back-top" title="Retour en haut de page">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="m18 15-6-6-6 6" />
+          </svg>
+          <span>Haut</span>
+        </a>
+      </div>
+    </footer>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+
+</html>
