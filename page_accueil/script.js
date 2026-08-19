@@ -4,109 +4,170 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ── 1. HERO SCROLLYTELLING 236 FRAMES & PROGRESSIVE LOADER ─────────────────
+  // ── 1. HERO SCROLLYTELLING 236 FRAMES (ULTRA-FAST PRELOADER & CACHE) ─────────
   const TOTAL_FRAMES = 236;
   const imgEl = document.getElementById('anim-img');
   const progressBar = document.getElementById('progress-bar');
   const heroTrack = document.getElementById('hero-track');
 
+  // Pre-computed frame paths cache for zero string allocation during scroll
+  const heroPaths = new Array(TOTAL_FRAMES + 1);
+  for (let i = 1; i <= TOTAL_FRAMES; i++) {
+    heroPaths[i] = `/images/ezgif-frame-${String(i).padStart(3, '0')}.jpg`;
+  }
+
   function getFramePath(index) {
-    const padded = String(index).padStart(3, '0');
-    return `/images/ezgif-frame-${padded}.jpg`;
+    return heroPaths[index] || heroPaths[1];
   }
 
-  // Progressive Frame Preloader (Non-blocking)
-  const loadedFrames = new Set();
+  // Fast In-Memory Image Cache and Bitmap Array
+  const heroLoadedMap = new Uint8Array(TOTAL_FRAMES + 1);
+  const heroImages = new Array(TOTAL_FRAMES + 1);
 
-  function preloadFrame(index) {
-    if (loadedFrames.has(index)) return;
-    const img = new Image();
-    img.src = getFramePath(index);
-    img.onload = () => loadedFrames.add(index);
+  function preloadHeroFrame(index) {
+    if (heroLoadedMap[index]) return Promise.resolve();
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = heroPaths[index];
+      img.onload = () => {
+        heroLoadedMap[index] = 1;
+        heroImages[index] = img;
+        resolve();
+      };
+      img.onerror = resolve;
+    });
   }
 
-  // Preload initial viewport frames immediately
-  const INITIAL_BATCH = 15;
-  for (let i = 1; i <= INITIAL_BATCH; i++) {
-    preloadFrame(i);
-  }
-
-  // Progressively fetch remaining frames in background idle chunks
-  let nextFrame = INITIAL_BATCH + 1;
-  function preloadBatch() {
-    if (nextFrame > TOTAL_FRAMES) return;
-    const batchSize = 12;
-    const end = Math.min(nextFrame + batchSize - 1, TOTAL_FRAMES);
-    for (let i = nextFrame; i <= end; i++) {
-      preloadFrame(i);
+  // Instant Closest-Frame Fallback (Prevents any blank screen/lag during quick scroll)
+  function getBestAvailableHeroPath(idx) {
+    if (heroLoadedMap[idx]) return heroPaths[idx];
+    for (let offset = 1; offset < 30; offset++) {
+      if (idx - offset >= 1 && heroLoadedMap[idx - offset]) return heroPaths[idx - offset];
+      if (idx + offset <= TOTAL_FRAMES && heroLoadedMap[idx + offset]) return heroPaths[idx + offset];
     }
-    nextFrame = end + 1;
-    if (nextFrame <= TOTAL_FRAMES) {
-      if (window.requestIdleCallback) {
-        window.requestIdleCallback(() => setTimeout(preloadBatch, 100));
-      } else {
-        setTimeout(preloadBatch, 150);
-      }
+    return heroPaths[1];
+  }
+
+  // Concurrency Pipeline: Rapid Preload Pool
+  async function runHeroPreloader() {
+    // 1. Critical Initial Batch (Frames 1-25)
+    for (let i = 1; i <= 25; i++) {
+      preloadHeroFrame(i);
+    }
+    await Promise.all([preloadHeroFrame(1), preloadHeroFrame(2), preloadHeroFrame(3), preloadHeroFrame(4), preloadHeroFrame(5)]);
+
+    // 2. High-Speed Stepped Keyframes (Every 2nd frame across all 236 frames)
+    const keyframes = [];
+    for (let i = 1; i <= TOTAL_FRAMES; i += 2) {
+      if (!heroLoadedMap[i]) keyframes.push(i);
+    }
+
+    const CONCURRENCY = 8;
+    for (let i = 0; i < keyframes.length; i += CONCURRENCY) {
+      const chunk = keyframes.slice(i, i + CONCURRENCY);
+      await Promise.all(chunk.map(preloadHeroFrame));
+    }
+
+    // 3. Fill in remaining intermediate frames
+    const remaining = [];
+    for (let i = 2; i <= TOTAL_FRAMES; i += 2) {
+      if (!heroLoadedMap[i]) remaining.push(i);
+    }
+    for (let i = 0; i < remaining.length; i += CONCURRENCY) {
+      const chunk = remaining.slice(i, i + CONCURRENCY);
+      await Promise.all(chunk.map(preloadHeroFrame));
     }
   }
 
-  // ── 1.B ATS SCROLLYTELLING 240 FRAMES (images2) ──────────────────────────
+  // Start preloader immediately
+  runHeroPreloader();
+
+
+  // ── 1.B ATS SCROLLYTELLING 240 FRAMES (DEFERRED ON-DEMAND PRELOADER) ────────
   const ATS_TOTAL_FRAMES = 240;
   const atsImgEl = document.getElementById('ats-anim-img');
   const atsTrack = document.getElementById('ats-track');
 
-  function getAtsFramePath(index) {
-    const padded = String(index).padStart(3, '0');
-    return `/images2/ezgif-frame-${padded}.jpg`;
+  const atsPaths = new Array(ATS_TOTAL_FRAMES + 1);
+  for (let i = 1; i <= ATS_TOTAL_FRAMES; i++) {
+    atsPaths[i] = `/images2/ezgif-frame-${String(i).padStart(3, '0')}.jpg`;
   }
 
-  const loadedAtsFrames = new Set();
+  function getAtsFramePath(index) {
+    return atsPaths[index] || atsPaths[1];
+  }
+
+  const atsLoadedMap = new Uint8Array(ATS_TOTAL_FRAMES + 1);
+  const atsImages = new Array(ATS_TOTAL_FRAMES + 1);
 
   function preloadAtsFrame(index) {
-    if (loadedAtsFrames.has(index)) return;
-    const img = new Image();
-    img.src = getAtsFramePath(index);
-    img.onload = () => loadedAtsFrames.add(index);
+    if (atsLoadedMap[index]) return Promise.resolve();
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = atsPaths[index];
+      img.onload = () => {
+        atsLoadedMap[index] = 1;
+        atsImages[index] = img;
+        resolve();
+      };
+      img.onerror = resolve;
+    });
   }
 
-  // Preload initial batch for ATS
-  const ATS_INITIAL_BATCH = 20;
-  for (let i = 1; i <= ATS_INITIAL_BATCH; i++) {
-    preloadAtsFrame(i);
+  function getBestAvailableAtsPath(idx) {
+    if (atsLoadedMap[idx]) return atsPaths[idx];
+    for (let offset = 1; offset < 30; offset++) {
+      if (idx - offset >= 1 && atsLoadedMap[idx - offset]) return atsPaths[idx - offset];
+      if (idx + offset <= ATS_TOTAL_FRAMES && atsLoadedMap[idx + offset]) return atsPaths[idx + offset];
+    }
+    return atsPaths[1];
   }
 
-  let nextAtsFrame = ATS_INITIAL_BATCH + 1;
-  function preloadAtsBatch() {
-    if (nextAtsFrame > ATS_TOTAL_FRAMES) return;
-    const batchSize = 15;
-    const end = Math.min(nextAtsFrame + batchSize - 1, ATS_TOTAL_FRAMES);
-    for (let i = nextAtsFrame; i <= end; i++) {
+  let atsPreloaderStarted = false;
+  async function runAtsPreloader() {
+    if (atsPreloaderStarted) return;
+    atsPreloaderStarted = true;
+
+    // Load initial 15 frames of ATS
+    for (let i = 1; i <= 15; i++) {
       preloadAtsFrame(i);
     }
-    nextAtsFrame = end + 1;
-    if (nextAtsFrame <= ATS_TOTAL_FRAMES) {
-      if (window.requestIdleCallback) {
-        window.requestIdleCallback(() => setTimeout(preloadAtsBatch, 80));
-      } else {
-        setTimeout(preloadAtsBatch, 120);
-      }
+
+    // Keyframes every 2nd frame
+    const atsKeyframes = [];
+    for (let i = 1; i <= ATS_TOTAL_FRAMES; i += 2) {
+      if (!atsLoadedMap[i]) atsKeyframes.push(i);
+    }
+    const CONCURRENCY = 8;
+    for (let i = 0; i < atsKeyframes.length; i += CONCURRENCY) {
+      const chunk = atsKeyframes.slice(i, i + CONCURRENCY);
+      await Promise.all(chunk.map(preloadAtsFrame));
+    }
+
+    // Remaining intermediate frames
+    const remaining = [];
+    for (let i = 2; i <= ATS_TOTAL_FRAMES; i += 2) {
+      if (!atsLoadedMap[i]) remaining.push(i);
+    }
+    for (let i = 0; i < remaining.length; i += CONCURRENCY) {
+      const chunk = remaining.slice(i, i + CONCURRENCY);
+      await Promise.all(chunk.map(preloadAtsFrame));
     }
   }
 
-  window.addEventListener('load', () => {
-    if (window.requestIdleCallback) {
-      window.requestIdleCallback(() => {
-        preloadBatch();
-        preloadAtsBatch();
-      });
-    } else {
-      setTimeout(() => {
-        preloadBatch();
-        preloadAtsBatch();
-      }, 300);
-    }
-  });
+  // Defer ATS loading until user scrolls towards ATS section (saves bandwidth)
+  if (atsTrack) {
+    const atsObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        runAtsPreloader();
+        atsObserver.disconnect();
+      }
+    }, { rootMargin: '600px 0px' });
+    atsObserver.observe(atsTrack);
+  }
 
+
+  // ── 1.C HIGH-PERFORMANCE 60/120 FPS LERP SCROLL ENGINE ─────────────────────
   let currentFrame = 1;
   let targetFrame = 1;
   let lastHeroIdx = -1;
@@ -124,8 +185,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (scrollable > 0) {
         const scrolled = -trackRect.top;
         const p = Math.max(0, Math.min(1, scrolled / scrollable));
-
-        // Frame progression (finish around 80% and hold)
         const frameProgress = Math.max(0, Math.min(1, p / 0.80));
         targetFrame = 1 + frameProgress * (TOTAL_FRAMES - 1);
       }
@@ -140,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // 3. ATS track calculation (240 frames)
+    // 3. ATS track calculation
     if (atsTrack) {
       const atsRect = atsTrack.getBoundingClientRect();
       const atsScrollable = atsTrack.offsetHeight - window.innerHeight;
@@ -163,12 +222,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Hero Lerp
     const diff = targetFrame - currentFrame;
     if (Math.abs(diff) > 0.001) {
-      currentFrame += diff * 0.28;
+      currentFrame += diff * 0.32;
       const idx = Math.max(1, Math.min(TOTAL_FRAMES, Math.round(currentFrame)));
       if (idx !== lastHeroIdx) {
         lastHeroIdx = idx;
         if (imgEl) {
-          imgEl.src = getFramePath(idx);
+          imgEl.src = getBestAvailableHeroPath(idx);
         }
       }
     }
@@ -176,12 +235,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. ATS Lerp
     const atsDiff = targetAtsFrame - currentAtsFrame;
     if (Math.abs(atsDiff) > 0.001) {
-      currentAtsFrame += atsDiff * 0.28;
+      currentAtsFrame += atsDiff * 0.32;
       const idxAts = Math.max(1, Math.min(ATS_TOTAL_FRAMES, Math.round(currentAtsFrame)));
       if (idxAts !== lastAtsIdx) {
         lastAtsIdx = idxAts;
         if (atsImgEl) {
-          atsImgEl.src = getAtsFramePath(idxAts);
+          atsImgEl.src = getBestAvailableAtsPath(idxAts);
         }
       }
     }

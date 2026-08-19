@@ -1,0 +1,276 @@
+<!DOCTYPE html><html class="light" lang="fr"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Modèles de CV - douzCv</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "outline-variant": "#c3c7cc",
+                        "inverse-on-surface": "#f2f1ed",
+                        "inverse-primary": "#b3c9df",
+                        "on-tertiary-container": "#b38f6f",
+                        "surface-container": "#efeeea",
+                        "on-primary-container": "#8398ac",
+                        "secondary-fixed-dim": "#ffb4ab",
+                        "tertiary-container": "#412911",
+                        "on-secondary-fixed-variant": "#900d0f",
+                        "on-primary-fixed-variant": "#34495b",
+                        "on-error-container": "#93000a",
+                        "on-surface-variant": "#43474c",
+                        "on-secondary": "#ffffff",
+                        "primary-container": "#1b3041",
+                        "background": "#faf9f5",
+                        "primary-fixed": "#cfe5fb",
+                        "on-primary-fixed": "#061d2e",
+                        "surface-tint": "#4c6173",
+                        "on-tertiary-fixed": "#2b1702",
+                        "inverse-surface": "#30312e",
+                        "on-tertiary-fixed-variant": "#5d4127",
+                        "on-background": "#1b1c1a",
+                        "secondary-fixed": "#ffdad5",
+                        "surface-variant": "#e3e2df",
+                        "surface-container-highest": "#e3e2df",
+                        "surface-container-high": "#e9e8e4",
+                        "secondary-container": "#ff6154",
+                        "navy-light": "#2C4A63",
+                        "on-secondary-container": "#650004",
+                        "tertiary-fixed-dim": "#e7bf9d",
+                        "tertiary": "#291502",
+                        "primary-fixed-dim": "#b3c9df",
+                        "error-container": "#ffdad6",
+                        "on-surface": "#1b1c1a",
+                        "text-muted": "#6B7280",
+                        "secondary": "#b22a24",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed": "#410002",
+                        "surface-bright": "#faf9f5",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#dbdad6",
+                        "primary": "#041b2b",
+                        "outline": "#73777d",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed": "#ffdcbf",
+                        "surface-container-low": "#f5f4ef",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "surface": "#FFFFFF"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px"
+                    },
+                    spacing: {
+                        gutter: "24px",
+                        "margin-mobile": "16px",
+                        base: "8px",
+                        "container-max": "1200px",
+                        "margin-desktop": "40px"
+                    },
+                    fontFamily: {
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["DM Sans"],
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["DM Sans"],
+                        "headline-lg": ["DM Sans"],
+                        "label-md": ["Inter"],
+                        "display": ["DM Sans"],
+                        "body-sm": ["Inter"]
+                    },
+                    fontSize: {
+                        "label-sm": ["12px", { lineHeight: "14px", letterSpacing: "0.02em", fontWeight: "500" }],
+                        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+                        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "headline-lg-mobile": ["24px", { lineHeight: "32px", fontWeight: "700" }],
+                        "headline-lg": ["32px", { lineHeight: "40px", fontWeight: "700" }],
+                        "label-md": ["14px", { lineHeight: "16px", letterSpacing: "0.01em", fontWeight: "600" }],
+                        "display": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #EFEEEA; }
+        .template-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .template-card:hover { 
+            transform: translateY(-4px);
+            box-shadow: 0px 10px 30px rgba(27, 48, 65, 0.10); 
+        }
+        .template-hover-overlay { opacity: 0; transition: opacity 0.2s ease; }
+        .template-card:hover .template-hover-overlay { opacity: 1; }
+        
+        /* Custom scrollbar for horizontal filter if needed on small screens */
+        .filter-scroll::-webkit-scrollbar { display: none; }
+        .filter-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="text-primary font-body-md min-h-screen flex flex-col">
+<!-- TopNavBar Shared Component -->
+<header class="bg-surface dark:bg-primary docked full-width top-0 shadow-sm dark:bg-primary-container z-50">
+<div class="flex justify-between items-center px-gutter py-4 w-full max-w-container-max mx-auto">
+<div class="text-headline-md font-headline-md font-bold text-primary dark:text-on-primary">
+                douzCv
+            </div>
+<nav class="hidden md:flex gap-8">
+<a class="text-on-surface-variant dark:text-on-primary-container hover:text-secondary transition-colors duration-200 font-body-md text-body-md" href="#">Éditeur</a>
+<a class="text-secondary dark:text-secondary-fixed font-bold border-b-2 border-secondary font-body-md text-body-md" href="#">Modèles</a>
+</nav>
+<div class="flex gap-4 text-primary dark:text-on-primary">
+<button aria-label="Help" class="hover:text-secondary transition-colors duration-200">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+<button aria-label="Account" class="hover:text-secondary transition-colors duration-200">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-grow w-full max-w-container-max mx-auto px-gutter py-12">
+<div class="mb-10 text-center md:text-left">
+<h1 class="font-headline-lg text-headline-lg md:text-display font-display text-primary mb-4">Explorez nos modèles</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Choisissez parmi notre sélection de modèles professionnels, conçus pour mettre en valeur votre parcours et capter l'attention des recruteurs.</p>
+</div>
+<!-- Filter Bar -->
+<div class="flex overflow-x-auto filter-scroll gap-4 mb-12 pb-2">
+<button class="px-6 py-2 rounded-full font-label-md text-label-md bg-secondary text-on-secondary whitespace-nowrap shadow-sm">Tous</button>
+<button class="px-6 py-2 rounded-full font-label-md text-label-md bg-surface text-on-surface-variant hover:bg-surface-variant transition-colors whitespace-nowrap border border-outline-variant">Professionnel</button>
+<button class="px-6 py-2 rounded-full font-label-md text-label-md bg-surface text-on-surface-variant hover:bg-surface-variant transition-colors whitespace-nowrap border border-outline-variant">Moderne</button>
+<button class="px-6 py-2 rounded-full font-label-md text-label-md bg-surface text-on-surface-variant hover:bg-surface-variant transition-colors whitespace-nowrap border border-outline-variant">Créatif</button>
+<button class="px-6 py-2 rounded-full font-label-md text-label-md bg-surface text-on-surface-variant hover:bg-surface-variant transition-colors whitespace-nowrap border border-outline-variant">Sans Photo (ATS)</button>
+</div>
+<!-- Template Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Template Item 1 -->
+<div class="template-card relative bg-surface rounded-xl overflow-hidden shadow-[0px_4px_20px_rgba(27,48,65,0.05)] border border-outline-variant/30 group">
+<div class="aspect-[210/297] w-full bg-surface-container-low p-6 relative">
+<!-- Miniature Preview Abstract Content -->
+<div class="w-16 h-16 bg-surface-variant rounded-full mb-4"></div>
+<div class="h-4 w-3/4 bg-primary/80 rounded mb-2"></div>
+<div class="h-3 w-1/2 bg-on-surface-variant/60 rounded mb-6"></div>
+<div class="flex gap-4">
+<div class="w-1/3">
+<div class="h-3 w-full bg-primary/20 rounded mb-2"></div>
+<div class="h-2 w-5/6 bg-surface-variant rounded mb-1"></div>
+<div class="h-2 w-full bg-surface-variant rounded mb-1"></div>
+<div class="h-2 w-2/3 bg-surface-variant rounded mb-4"></div>
+</div>
+<div class="w-2/3">
+<div class="h-3 w-full bg-primary/20 rounded mb-2"></div>
+<div class="h-2 w-full bg-surface-variant rounded mb-1"></div>
+<div class="h-2 w-5/6 bg-surface-variant rounded mb-1"></div>
+<div class="h-2 w-full bg-surface-variant rounded mb-4"></div>
+<div class="h-3 w-3/4 bg-primary/20 rounded mb-2"></div>
+<div class="h-2 w-full bg-surface-variant rounded mb-1"></div>
+<div class="h-2 w-11/12 bg-surface-variant rounded mb-1"></div>
+</div>
+</div>
+<!-- Hover Overlay -->
+<div class="template-hover-overlay absolute inset-0 bg-primary/40 backdrop-blur-[2px] flex items-center justify-center">
+<button class="bg-secondary text-on-secondary font-label-md text-label-md px-6 py-3 rounded-lg shadow-lg hover:bg-secondary-container transition-colors">
+                            Utiliser ce modèle
+                        </button>
+</div>
+</div>
+<div class="p-4 border-t border-outline-variant/20">
+<h3 class="font-headline-md text-body-lg text-primary">L'Exécutif</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Classique, structuré, idéal finance</p>
+</div>
+</div>
+<!-- Template Item 2 -->
+<div class="template-card relative bg-surface rounded-xl overflow-hidden shadow-[0px_4px_20px_rgba(27,48,65,0.05)] border border-outline-variant/30 group">
+<div class="aspect-[210/297] w-full bg-surface-container-low p-0 relative flex">
+<!-- Miniature Preview Abstract Content - Side col -->
+<div class="w-1/3 bg-primary h-full p-4">
+<div class="w-12 h-12 bg-white/20 rounded-full mb-4 mx-auto"></div>
+<div class="h-2 w-full bg-white/30 rounded mb-1"></div>
+<div class="h-2 w-3/4 bg-white/30 rounded mb-6 mx-auto"></div>
+<div class="h-2 w-full bg-white/20 rounded mb-2 mt-4"></div>
+<div class="h-2 w-5/6 bg-white/20 rounded mb-2"></div>
+<div class="h-2 w-4/6 bg-white/20 rounded mb-2"></div>
+</div>
+<!-- Main col -->
+<div class="w-2/3 p-4">
+<div class="h-4 w-3/4 bg-primary/80 rounded mb-2"></div>
+<div class="h-3 w-1/2 bg-on-surface-variant/60 rounded mb-6"></div>
+<div class="h-3 w-full bg-primary/20 rounded mb-2 mt-4"></div>
+<div class="h-2 w-full bg-surface-variant rounded mb-1"></div>
+<div class="h-2 w-5/6 bg-surface-variant rounded mb-1"></div>
+<div class="h-2 w-full bg-surface-variant rounded mb-4"></div>
+</div>
+<!-- Hover Overlay -->
+<div class="template-hover-overlay absolute inset-0 bg-primary/40 backdrop-blur-[2px] flex items-center justify-center">
+<button class="bg-secondary text-on-secondary font-label-md text-label-md px-6 py-3 rounded-lg shadow-lg hover:bg-secondary-container transition-colors">
+                            Utiliser ce modèle
+                        </button>
+</div>
+</div>
+<div class="p-4 border-t border-outline-variant/20">
+<h3 class="font-headline-md text-body-lg text-primary">Le Créatif</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Design audacieux, colonne latérale</p>
+</div>
+</div>
+<!-- Template Item 3 -->
+<div class="template-card relative bg-surface rounded-xl overflow-hidden shadow-[0px_4px_20px_rgba(27,48,65,0.05)] border border-outline-variant/30 group">
+<div class="aspect-[210/297] w-full bg-surface-container-low p-6 relative">
+<!-- Miniature Preview Abstract Content -->
+<div class="text-center mb-6">
+<div class="h-5 w-1/2 bg-primary/80 rounded mx-auto mb-2"></div>
+<div class="h-3 w-1/3 bg-on-surface-variant/60 rounded mx-auto mb-4"></div>
+<div class="flex justify-center gap-2">
+<div class="h-2 w-8 bg-surface-variant rounded"></div>
+<div class="h-2 w-8 bg-surface-variant rounded"></div>
+<div class="h-2 w-8 bg-surface-variant rounded"></div>
+</div>
+</div>
+<div class="w-full">
+<div class="h-3 w-1/4 bg-primary/20 rounded mb-3 border-b-2 border-primary/20 pb-1"></div>
+<div class="h-2 w-full bg-surface-variant rounded mb-1"></div>
+<div class="h-2 w-5/6 bg-surface-variant rounded mb-1"></div>
+<div class="h-2 w-full bg-surface-variant rounded mb-4"></div>
+<div class="h-3 w-1/4 bg-primary/20 rounded mb-3 border-b-2 border-primary/20 pb-1 mt-4"></div>
+<div class="h-2 w-full bg-surface-variant rounded mb-1"></div>
+<div class="h-2 w-11/12 bg-surface-variant rounded mb-1"></div>
+</div>
+<!-- Hover Overlay -->
+<div class="template-hover-overlay absolute inset-0 bg-primary/40 backdrop-blur-[2px] flex items-center justify-center">
+<button class="bg-secondary text-on-secondary font-label-md text-label-md px-6 py-3 rounded-lg shadow-lg hover:bg-secondary-container transition-colors">
+                            Utiliser ce modèle
+                        </button>
+</div>
+</div>
+<div class="p-4 border-t border-outline-variant/20">
+<h3 class="font-headline-md text-body-lg text-primary">Le Minimaliste (ATS)</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Optimisé pour les logiciels de tri</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Shared Component -->
+<footer class="bg-surface-container-highest dark:bg-primary full-width border-t border-outline-variant mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center px-gutter py-base w-full max-w-container-max mx-auto py-8 gap-4 md:gap-0">
+<div class="text-on-surface-variant font-label-sm text-label-sm">
+                © 2024 douzCv. Tous droits réservés.
+            </div>
+<div class="flex gap-6">
+<a class="text-on-surface-variant dark:text-on-primary-container font-label-sm text-label-sm hover:text-secondary underline transition-all" href="#">Mentions Légales</a>
+<a class="text-on-surface-variant dark:text-on-primary-container font-label-sm text-label-sm hover:text-secondary underline transition-all" href="#">Aide</a>
+<a class="text-on-surface-variant dark:text-on-primary-container font-label-sm text-label-sm hover:text-secondary underline transition-all" href="#">Confidentialité</a>
+</div>
+<div class="text-body-md font-bold text-primary">
+                douzCv
+            </div>
+</div>
+</footer>
+</body></html>
