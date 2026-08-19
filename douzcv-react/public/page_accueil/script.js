@@ -109,9 +109,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let currentFrame = 1;
   let targetFrame = 1;
+  let lastHeroIdx = -1;
 
   let currentAtsFrame = 1;
   let targetAtsFrame = 1;
+  let lastAtsIdx = -1;
 
   function handleScroll() {
     // 1. Hero track calculation
@@ -123,8 +125,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const scrolled = -trackRect.top;
         const p = Math.max(0, Math.min(1, scrolled / scrollable));
 
-        // Finish frame animation by 75% of track, holding the result for the remaining 25%
-        const frameProgress = Math.max(0, Math.min(1, p / 0.75));
+        // Frame progression (finish around 80% and hold)
+        const frameProgress = Math.max(0, Math.min(1, p / 0.80));
         targetFrame = 1 + frameProgress * (TOTAL_FRAMES - 1);
       }
     }
@@ -146,8 +148,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (atsScrollable > 0) {
         const atsScrolled = -atsRect.top;
         const atsP = Math.max(0, Math.min(1, atsScrolled / atsScrollable));
-
-        // Smooth frame progression, finishing by 85% and holding final triumphant expression
         const atsFrameProgress = Math.max(0, Math.min(1, atsP / 0.85));
         targetAtsFrame = 1 + atsFrameProgress * (ATS_TOTAL_FRAMES - 1);
       }
@@ -155,30 +155,34 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   window.addEventListener('scroll', handleScroll, { passive: true });
+  window.addEventListener('resize', handleScroll, { passive: true });
+  window.addEventListener('orientationchange', handleScroll, { passive: true });
   handleScroll();
 
   function loop() {
     // 1. Hero Lerp
     const diff = targetFrame - currentFrame;
-    if (Math.abs(diff) > 0.005) {
-      const lerpSpeed = (targetFrame >= TOTAL_FRAMES - 1) ? 0.35 : 0.22;
-      currentFrame += diff * lerpSpeed;
+    if (Math.abs(diff) > 0.001) {
+      currentFrame += diff * 0.28;
       const idx = Math.max(1, Math.min(TOTAL_FRAMES, Math.round(currentFrame)));
-      const path = getFramePath(idx);
-      if (imgEl && !imgEl.src.endsWith(path)) {
-        imgEl.src = path;
+      if (idx !== lastHeroIdx) {
+        lastHeroIdx = idx;
+        if (imgEl) {
+          imgEl.src = getFramePath(idx);
+        }
       }
     }
 
     // 2. ATS Lerp
     const atsDiff = targetAtsFrame - currentAtsFrame;
-    if (Math.abs(atsDiff) > 0.005) {
-      const atsLerpSpeed = (targetAtsFrame >= ATS_TOTAL_FRAMES - 1) ? 0.35 : 0.24;
-      currentAtsFrame += atsDiff * atsLerpSpeed;
+    if (Math.abs(atsDiff) > 0.001) {
+      currentAtsFrame += atsDiff * 0.28;
       const idxAts = Math.max(1, Math.min(ATS_TOTAL_FRAMES, Math.round(currentAtsFrame)));
-      const atsPath = getAtsFramePath(idxAts);
-      if (atsImgEl && !atsImgEl.src.endsWith(atsPath)) {
-        atsImgEl.src = atsPath;
+      if (idxAts !== lastAtsIdx) {
+        lastAtsIdx = idxAts;
+        if (atsImgEl) {
+          atsImgEl.src = getAtsFramePath(idxAts);
+        }
       }
     }
 
