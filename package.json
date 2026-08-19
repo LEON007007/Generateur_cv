@@ -1,0 +1,9 @@
+{
+  "name": "generateur-cv-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "cd douzcv-react && npm run build",
+    "dev": "cd douzcv-react && npm run dev"
+  }
+}

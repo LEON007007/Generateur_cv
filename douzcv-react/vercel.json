@@ -1,0 +1,24 @@
+{
+  "rewrites": [
+    {
+      "source": "/page_accueil/(.*)",
+      "destination": "/page_accueil/$1"
+    },
+    {
+      "source": "/images2/(.*)",
+      "destination": "/images2/$1"
+    },
+    {
+      "source": "/images/(.*)",
+      "destination": "/images/$1"
+    },
+    {
+      "source": "/favicon.svg",
+      "destination": "/favicon.svg"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
