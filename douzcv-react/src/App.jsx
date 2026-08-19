@@ -129,6 +129,13 @@ const Header = () => {
   )
 }
 
+const HomeRedirect = () => {
+  React.useEffect(() => {
+    window.location.replace('/page_accueil/index.html')
+  }, [])
+  return null
+}
+
 const AppContent = () => {
   const location = useLocation()
   const isAuthPage = ['/connexion', '/login'].includes(location.pathname)
@@ -138,7 +145,8 @@ const AppContent = () => {
       {!isAuthPage && <Header />}
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         <Routes>
-          <Route path="/" element={<Templates />} />
+          <Route path="/" element={<HomeRedirect />} />
+          <Route path="/accueil" element={<HomeRedirect />} />
           <Route path="/modeles" element={<Templates />} />
           <Route path="/templates" element={<Templates />} />
           <Route path="/editeur" element={<Editor />} />
