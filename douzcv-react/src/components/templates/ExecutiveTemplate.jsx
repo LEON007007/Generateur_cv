@@ -13,7 +13,7 @@ export default function ExecutiveTemplate({ personalInfo, experiences, education
         )}
         <div style={{ flex: 1 }}>
           <h1 style={{ 
-            fontSize: 'clamp(26px, 4vw, 36px)', 
+            fontSize: '34px', 
             fontWeight: '800', 
             marginBottom: '6px', 
             letterSpacing: '-0.02em',
@@ -75,9 +75,7 @@ export default function ExecutiveTemplate({ personalInfo, experiences, education
               }}>
                 Profil
               </h3>
-              <p style={{ fontSize: '13.5px', lineHeight: '1.6', color: '#374151', whiteSpace: 'pre-line' }}>
-                {personalInfo.summary}
-              </p>
+              <div style={{ fontSize: '13.5px', lineHeight: '1.6', color: '#374151', }} className="rich-text-content" dangerouslySetInnerHTML={{ __html: personalInfo.summary }} />
             </section>
           )}
 
@@ -105,9 +103,7 @@ export default function ExecutiveTemplate({ personalInfo, experiences, education
                   <div style={{ fontSize: '13px', fontStyle: 'italic', marginBottom: '6px', color: accentColor }}>
                     {exp.company}
                   </div>
-                  <div style={{ fontSize: '13px', lineHeight: '1.55', color: '#374151', whiteSpace: 'pre-line' }}>
-                    {exp.description}
-                  </div>
+                  <div style={{ fontSize: '13px', lineHeight: '1.55', color: '#374151', }} className="rich-text-content" dangerouslySetInnerHTML={{ __html: exp.description }} />
                 </div>
               ))}
             </div>

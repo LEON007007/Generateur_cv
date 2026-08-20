@@ -5,19 +5,19 @@ import { saveCVRecord, getCVRecord, listAllCVRecords, deleteCVRecord } from './s
 const defaultState = {
   activeCVId: 'default_cv',
   guestUser: {
-    name: 'Alexandre Martin',
-    title: 'Designer UI & Illustration',
+    name: '',
+    title: '',
     email: '',
-    avatar: '/images/avatar-user.jpg'
+    avatar: ''
   },
   personalInfo: {
-    firstName: 'Alexandre',
-    lastName: 'Martin',
-    title: 'Designer UI & Illustration',
+    firstName: '',
+    lastName: '',
+    title: '',
     email: '',
     phone: '',
     location: '',
-    avatar: '/images/avatar-user.jpg',
+    avatar: '',
     summary: ''
   },
   experiences: [],
@@ -115,7 +115,8 @@ export const useCVStore = create(
             degree: 'Nouveau Diplôme',
             school: 'École / Université',
             startDate: '2020',
-            endDate: '2023'
+            endDate: '2023',
+            description: ''
           }
         ],
         lastSavedAt: new Date().toISOString()
@@ -180,8 +181,8 @@ export const useCVStore = create(
           activeCVId: newId,
           personalInfo: {
             ...defaultState.personalInfo,
-            firstName: 'Leon',
-            lastName: 'Atangana'
+            firstName: '',
+            lastName: ''
           },
           lastSavedAt: new Date().toISOString()
         })
@@ -204,6 +205,7 @@ export const useCVStore = create(
     {
       name: 'douzcv_embedded_storage', // Key for embedded local persistence
       storage: createJSONStorage(() => localStorage),
+      version: 1, // Bump version to force clear old prefilled states
     }
   )
 )

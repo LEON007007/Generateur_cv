@@ -52,9 +52,7 @@ export default function TechLeadTemplate({ personalInfo, experiences, education,
             <h3 style={{ fontSize: '13px', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.08em', color: accentColor, marginBottom: '8px' }}>
               // Résumé Professionnel
             </h3>
-            <p style={{ color: '#334155', lineHeight: '1.6', whiteSpace: 'pre-line' }}>
-              {personalInfo.summary}
-            </p>
+            <div style={{ color: '#334155', lineHeight: '1.6', }} className="rich-text-content" dangerouslySetInnerHTML={{ __html: personalInfo.summary }} />
           </section>
         )}
 
@@ -73,7 +71,7 @@ export default function TechLeadTemplate({ personalInfo, experiences, education,
                     <span style={{ fontSize: '11.5px', color: '#64748B', fontFamily: 'monospace' }}>{exp.startDate} - {exp.endDate}</span>
                   </div>
                   <div style={{ fontSize: '12.5px', color: accentColor, fontWeight: '600', marginBottom: '4px' }}>{exp.company}</div>
-                  <p style={{ color: '#475569', lineHeight: '1.5', whiteSpace: 'pre-line' }}>{exp.description}</p>
+                  <div style={{ color: '#475569', lineHeight: '1.5', }} className="rich-text-content" dangerouslySetInnerHTML={{ __html: exp.description }} />
                 </div>
               ))}
             </div>

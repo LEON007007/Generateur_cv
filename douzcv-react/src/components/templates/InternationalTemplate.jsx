@@ -41,9 +41,7 @@ export default function InternationalTemplate({ personalInfo, experiences, educa
           <h3 style={{ fontSize: '12.5px', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.08em', color: accentColor, marginBottom: '6px' }}>
             Executive Summary
           </h3>
-          <p style={{ color: '#334155', lineHeight: '1.6', whiteSpace: 'pre-line' }}>
-            {personalInfo.summary}
-          </p>
+          <div style={{ color: '#334155', lineHeight: '1.6', }} className="rich-text-content" dangerouslySetInnerHTML={{ __html: personalInfo.summary }} />
         </section>
       )}
 
@@ -61,7 +59,7 @@ export default function InternationalTemplate({ personalInfo, experiences, educa
                 <span style={{ fontSize: '12px', color: '#64748B', fontWeight: '600' }}>{exp.startDate} – {exp.endDate}</span>
               </div>
               <div style={{ fontSize: '13px', fontWeight: '600', color: accentColor, marginBottom: '4px' }}>{exp.company}</div>
-              <p style={{ color: '#475569', lineHeight: '1.5', whiteSpace: 'pre-line' }}>{exp.description}</p>
+              <div style={{ color: '#475569', lineHeight: '1.5', }} className="rich-text-content" dangerouslySetInnerHTML={{ __html: exp.description }} />
             </div>
           ))}
         </section>

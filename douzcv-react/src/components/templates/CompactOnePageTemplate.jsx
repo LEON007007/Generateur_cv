@@ -28,9 +28,7 @@ export default function CompactOnePageTemplate({ personalInfo, experiences, educ
 
       {/* Summary */}
       {personalInfo.summary && (
-        <div style={{ marginBottom: '10px', fontSize: '11.5px', color: '#334155' }}>
-          {personalInfo.summary}
-        </div>
+        <div style={{ marginBottom: '10px', fontSize: '11.5px', color: '#334155' }} className="rich-text-content" dangerouslySetInnerHTML={{ __html: personalInfo.summary }} />
       )}
 
       {/* Experience Section */}
@@ -44,7 +42,7 @@ export default function CompactOnePageTemplate({ personalInfo, experiences, educ
               <strong style={{ fontSize: '12.5px', color: '#0F172A' }}>{exp.title} — {exp.company}</strong>
               <span style={{ fontSize: '11px', color: '#64748B', fontWeight: '600' }}>{exp.startDate} - {exp.endDate}</span>
             </div>
-            <p style={{ color: '#475569', fontSize: '11.5px', marginTop: '1px', whiteSpace: 'pre-line' }}>{exp.description}</p>
+            <div style={{ color: '#475569', fontSize: '11.5px', marginTop: '1px', }} className="rich-text-content" dangerouslySetInnerHTML={{ __html: exp.description }} />
           </div>
         ))}
       </section>

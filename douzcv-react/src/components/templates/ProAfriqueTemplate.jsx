@@ -35,9 +35,7 @@ export default function ProAfriqueTemplate({ personalInfo, experiences, educatio
           <h3 style={{ fontSize: '13px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', color: accentColor, borderBottom: '1px solid #E5E7EB', paddingBottom: '3px', marginBottom: '8px' }}>
             Résumé Exécutif
           </h3>
-          <p style={{ color: '#374151', lineHeight: '1.6', whiteSpace: 'pre-line' }}>
-            {personalInfo.summary}
-          </p>
+          <div style={{ color: '#374151', lineHeight: '1.6', }} className="rich-text-content" dangerouslySetInnerHTML={{ __html: personalInfo.summary }} />
         </section>
       )}
 
@@ -55,7 +53,7 @@ export default function ProAfriqueTemplate({ personalInfo, experiences, educatio
                 <span style={{ fontSize: '12px', color: '#6B7280', fontWeight: '600' }}>{exp.startDate} – {exp.endDate}</span>
               </div>
               <div style={{ fontSize: '13px', fontWeight: '600', color: accentColor, marginBottom: '4px' }}>{exp.company}</div>
-              <p style={{ color: '#4B5563', lineHeight: '1.55', whiteSpace: 'pre-line' }}>{exp.description}</p>
+              <div style={{ color: '#4B5563', lineHeight: '1.55', }} className="rich-text-content" dangerouslySetInnerHTML={{ __html: exp.description }} />
             </div>
           ))}
         </section>

@@ -34,7 +34,7 @@ const Navigation = () => {
 
       {/* 2. Modèles */}
       <Link 
-        to="/"
+        to="/modeles"
         className="header-nav-link"
         style={{ 
           color: (isActive('/') || isActive('/modeles') || isActive('/templates')) ? 'var(--color-coral)' : 'var(--color-text-main)',

@@ -31,7 +31,7 @@ export async function generateNativeDocx({ personalInfo, experiences, education,
       spacing: { before: 0, after: 60 },
       children: [
         new TextRun({
-          text: `${personalInfo.firstName || 'Leon'} ${personalInfo.lastName || 'Atangana'}`.toUpperCase(),
+          text: ([personalInfo.firstName, personalInfo.lastName].filter(Boolean).join(' ').trim() || 'Mon CV').toUpperCase(),
           bold: true,
           size: 38, // 19pt
           color: primaryColor,
@@ -87,6 +87,27 @@ export async function generateNativeDocx({ personalInfo, experiences, education,
     )
   }
 
+  // Helper to safely strip HTML and convert to clean text with line breaks
+  const htmlToPlainText = (html) => {
+    if (!html) return ''
+    let text = html
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<\/p>/gi, '\n')
+      .replace(/<\/li>/gi, '\n')
+      .replace(/<li[^>]*>/gi, '• ')
+      .replace(/<[^>]*>?/gm, '') // Strip all remaining tags
+    
+    // Decode basic entities
+    text = text.replace(/&nbsp;/g, ' ')
+               .replace(/&amp;/g, '&')
+               .replace(/&lt;/g, '<')
+               .replace(/&gt;/g, '>')
+               .replace(/&quot;/g, '"')
+               .replace(/&#39;/g, "'")
+    
+    return text.replace(/\n\s*\n/g, '\n').trim()
+  }
+
   // Helper: Section Heading
   const createSectionHeader = (title) => {
     return new Paragraph({
@@ -114,20 +135,27 @@ export async function generateNativeDocx({ personalInfo, experiences, education,
 
   // 4. Professional Summary (Profil)
   if (personalInfo.summary) {
-    children.push(createSectionHeader('Profil & Résumé Professionnel'))
-    children.push(
-      new Paragraph({
-        spacing: { before: 60, after: 180 },
-        children: [
-          new TextRun({
-            text: personalInfo.summary,
-            size: 21, // 10.5pt
-            color: textColor,
-            font: 'Calibri'
+    const cleanSummary = htmlToPlainText(personalInfo.summary)
+    if (cleanSummary) {
+      children.push(createSectionHeader('Profil & Résumé Professionnel'))
+      
+      const summaryLines = cleanSummary.split('\n')
+      summaryLines.forEach(line => {
+        children.push(
+          new Paragraph({
+            spacing: { before: 30, after: 30 },
+            children: [
+              new TextRun({
+                text: line.trim(),
+                size: 21, // 10.5pt
+                color: textColor,
+                font: 'Calibri'
+              })
+            ]
           })
-        ]
+        )
       })
-    )
+    }
   }
 
   // 5. Work Experiences
@@ -166,12 +194,16 @@ export async function generateNativeDocx({ personalInfo, experiences, education,
 
       // Description / Bullet Points
       if (exp.description) {
-        const lines = exp.description.split('\n').filter(Boolean)
+        const cleanDesc = htmlToPlainText(exp.description)
+        const lines = cleanDesc.split('\n').filter(Boolean)
+        
         lines.forEach((line) => {
+          const isBullet = line.trim().startsWith('•')
           const cleanLine = line.replace(/^[•\-\*]\s*/, '').trim()
+          
           children.push(
             new Paragraph({
-              bullet: { level: 0 },
+              bullet: isBullet ? { level: 0 } : undefined,
               spacing: { before: 30, after: 30 },
               children: [
                 new TextRun({

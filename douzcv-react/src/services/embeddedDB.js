@@ -48,9 +48,9 @@ function openDB() {
 export async function saveCVRecord(cvData) {
   const record = {
     ...cvData,
-    id: cvData.id || 'default_cv',
+    id: cvData.id || `cv_${Date.now()}`,
     updatedAt: new Date().toISOString(),
-    title: cvData.title || `${cvData.personalInfo?.firstName || 'Leon'} ${cvData.personalInfo?.lastName || 'Atangana'} - CV`
+    title: cvData.title || `${[cvData.personalInfo?.firstName, cvData.personalInfo?.lastName].filter(Boolean).join(' ').trim() || 'Mon CV'} - CV`
   }
 
   // 1. Write to localStorage for immediate synchronous cache

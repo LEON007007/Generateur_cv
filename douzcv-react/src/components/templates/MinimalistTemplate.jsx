@@ -11,7 +11,7 @@ export default function MinimalistTemplate({ personalInfo, experiences, educatio
           </div>
         )}
         <h1 style={{ 
-          fontSize: 'clamp(24px, 3.5vw, 32px)', 
+          fontSize: '30px', 
           fontWeight: '800', 
           textTransform: 'uppercase',
           letterSpacing: '0.05em',
@@ -45,9 +45,7 @@ export default function MinimalistTemplate({ personalInfo, experiences, educatio
           }}>
             Résumé Professionnel
           </h2>
-          <p style={{ lineHeight: '1.6', color: '#374151', whiteSpace: 'pre-line' }}>
-            {personalInfo.summary}
-          </p>
+          <div style={{ lineHeight: '1.6', color: '#374151', }} className="rich-text-content" dangerouslySetInnerHTML={{ __html: personalInfo.summary }} />
         </section>
       )}
 
@@ -75,9 +73,7 @@ export default function MinimalistTemplate({ personalInfo, experiences, educatio
                 {exp.startDate} – {exp.endDate}
               </span>
             </div>
-            <p style={{ marginTop: '4px', lineHeight: '1.55', color: '#374151', whiteSpace: 'pre-line' }}>
-              {exp.description}
-            </p>
+            <div style={{ marginTop: '4px', lineHeight: '1.55', color: '#374151', }} className="rich-text-content" dangerouslySetInnerHTML={{ __html: exp.description }} />
           </div>
         ))}
       </section>

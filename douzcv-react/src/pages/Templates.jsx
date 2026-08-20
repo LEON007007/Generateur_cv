@@ -122,50 +122,34 @@ const TemplateThumbnail = ({ id, accentColor }) => {
   );
 };
 
-const TemplateCard = ({ id, title, description, category, badge, accentColor = '#1B3041', onClick, isSelected }) => (
+const TemplateCard = ({ id, title, category, accentColor = '#1B3041', onClick, isSelected }) => (
   <div 
     className="card" 
     style={{ 
       overflow: 'hidden', 
       display: 'flex', 
       flexDirection: 'column', 
-      height: '100%', 
+      height: '380px', 
       cursor: 'pointer', 
-      transition: 'all 0.25s ease',
-      border: isSelected ? '2px solid var(--color-coral)' : '1px solid var(--color-border)',
+      transition: 'all var(--duration-normal) var(--ease-premium)',
+      border: isSelected ? '2px solid var(--color-primary)' : '1px solid var(--color-border)',
       position: 'relative'
     }}
     onClick={onClick}
     onMouseEnter={(e) => { 
-      e.currentTarget.style.transform = 'translateY(-4px)'
+      e.currentTarget.style.transform = 'translateY(-6px)'
       e.currentTarget.style.boxShadow = 'var(--shadow-level-2)' 
+      e.currentTarget.style.borderColor = 'var(--color-primary)'
     }}
     onMouseLeave={(e) => { 
       e.currentTarget.style.transform = 'none'
-      e.currentTarget.style.boxShadow = 'var(--shadow-level-1)' 
+      e.currentTarget.style.boxShadow = 'var(--shadow-level-1)'
+      e.currentTarget.style.borderColor = isSelected ? 'var(--color-primary)' : 'var(--color-border)'
     }}
   >
-    {badge && (
-      <span style={{
-        position: 'absolute',
-        top: '12px',
-        right: '12px',
-        backgroundColor: badge === 'Populaire' ? 'var(--color-coral)' : badge === '100% ATS' ? '#059669' : '#1B3041',
-        color: '#FFFFFF',
-        padding: '3px 9px',
-        borderRadius: 'var(--radius-full)',
-        fontSize: '11.5px',
-        fontWeight: '700',
-        zIndex: 10,
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-      }}>
-        {badge}
-      </span>
-    )}
-
     {/* Real Template Visual Preview */}
     <div style={{
-      height: '240px',
+      flex: 1,
       backgroundColor: '#F8FAFC',
       borderBottom: '1px solid var(--color-border)',
       padding: '12px',
@@ -199,10 +183,9 @@ const TemplateCard = ({ id, title, description, category, badge, accentColor = '
           objectPosition: 'top',
           borderRadius: '4px',
           boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-          transition: 'transform 0.3s ease'
+          transition: 'transform var(--duration-slow) var(--ease-premium)'
         }}
         onError={(e) => {
-          // Fallback to SVG thumbnail if image is not found
           e.target.style.display = 'none';
           if (e.target.nextSibling) {
             e.target.nextSibling.style.display = 'flex';
@@ -212,47 +195,36 @@ const TemplateCard = ({ id, title, description, category, badge, accentColor = '
       <div style={{ display: 'none', width: '100%', height: '100%' }}>
         <TemplateThumbnail id={id} accentColor={accentColor} />
       </div>
+      
+      {/* Check overlay for active state */}
+      {isSelected && (
+        <div style={{
+          position: 'absolute',
+          top: '12px',
+          right: '12px',
+          width: '28px',
+          height: '28px',
+          backgroundColor: 'var(--color-primary)',
+          borderRadius: '50%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#FFFFFF',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+        }}>
+          <Check size={16} strokeWidth={3} />
+        </div>
+      )}
     </div>
 
-    {/* Content Info */}
-    <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-      <div style={{ fontSize: '11px', textTransform: 'uppercase', color: 'var(--color-text-muted)', fontWeight: '700', letterSpacing: '0.05em', marginBottom: '4px' }}>
+    {/* Content Info (Minimalist) */}
+    <div style={{ padding: '20px 16px', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ fontSize: '11px', textTransform: 'uppercase', color: 'var(--color-text-muted)', fontWeight: '700', letterSpacing: '0.06em', marginBottom: '6px' }}>
         {category}
       </div>
-      <h3 style={{ fontSize: '16px', fontWeight: '700', color: 'var(--color-primary)', marginBottom: '6px' }}>
+      <h3 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--color-primary)', margin: 0, letterSpacing: '-0.01em' }}>
         {title}
       </h3>
-      <p style={{ fontSize: '13px', color: 'var(--color-text-muted)', lineHeight: '1.4', flex: 1, marginBottom: '14px' }}>
-        {description}
-      </p>
-
-      <div className="flex items-center justify-between mt-auto pt-3" style={{ borderTop: '1px solid var(--color-border)' }}>
-        <div className="flex items-center gap-1.5" style={{ fontSize: '12px', color: 'var(--color-text-muted)' }}>
-          <FileText size={14} color="var(--color-coral)" />
-          <span>Format A4 standard</span>
-        </div>
-
-        <button 
-          className={isSelected ? "btn-primary" : "btn-secondary"}
-          style={{ 
-            padding: '6px 14px', 
-            fontSize: '12.5px',
-            backgroundColor: isSelected ? 'var(--color-primary)' : undefined,
-            color: isSelected ? '#FFFFFF' : undefined,
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px'
-          }}
-        >
-          {isSelected ? (
-            <>
-              <Check size={15} /> Modèle actif
-            </>
-          ) : (
-            'Choisir ce modèle'
-          )}
-        </button>
-      </div>
     </div>
   </div>
 )
@@ -402,15 +374,15 @@ export default function Templates() {
   }
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '24px 24px 64px 24px' }}>
+    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '32px 24px 64px 24px' }}>
       
       {/* Title & Introduction */}
-      <div style={{ textAlign: 'center', marginBottom: '36px' }}>
-        <h1 style={{ fontSize: '32px', fontWeight: '800', color: 'var(--color-primary)', letterSpacing: '-0.02em', marginBottom: '8px' }}>
-          Galerie des 12 Modèles Professionnels
+      <div style={{ textAlign: 'left', marginBottom: '40px' }}>
+        <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(28px, 4vw, 36px)', fontWeight: '800', color: 'var(--color-primary)', letterSpacing: '-0.03em', marginBottom: '8px' }}>
+          Modèles
         </h1>
-        <p style={{ color: 'var(--color-text-muted)', fontSize: '16px', maxWidth: '650px', margin: '0 auto' }}>
-          Choisissez parmi nos modèles optimisés pour les recruteurs et les robots ATS. Cliquez sur un modèle pour ouvrir l'éditeur instantanément.
+        <p style={{ color: 'var(--color-text-muted)', fontSize: '16px', maxWidth: '650px' }}>
+          Choisissez votre modèle de CV.
         </p>
       </div>
 
@@ -454,11 +426,7 @@ export default function Templates() {
           }}
         >
           <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            {categories.find(c => c.value === filterCategory)?.label || 'Tous les modèles'} ({
-              filterCategory === 'Tous' 
-                ? templatesList.length 
-                : templatesList.filter(t => t.category === filterCategory).length
-            })
+            {categories.find(c => c.value === filterCategory)?.label || 'Tous les modèles'}
           </span>
           <svg 
             width="18" 
@@ -541,7 +509,7 @@ export default function Templates() {
                       if (!isSelected) e.currentTarget.style.backgroundColor = 'transparent'
                     }}
                   >
-                    <span>{cat.label} ({count})</span>
+                    <span>{cat.label}</span>
                     {isSelected && (
                       <span style={{ color: 'var(--color-coral)', display: 'flex', alignItems: 'center' }}>
                         <Check size={16} strokeWidth={2.5} />
@@ -579,7 +547,7 @@ export default function Templates() {
                 boxShadow: filterCategory === cat.value ? '0 2px 8px rgba(255, 97, 84, 0.25)' : 'none'
               }}
             >
-              {cat.label} ({count})
+              {cat.label}
             </button>
           )
         })}
@@ -588,8 +556,8 @@ export default function Templates() {
       {/* Grid of 12 Templates */}
       <div style={{ 
         display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', 
-        gap: '24px' 
+        gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', 
+        gap: '20px' 
       }}>
         {filteredTemplates.map(template => (
           <TemplateCard
@@ -597,8 +565,6 @@ export default function Templates() {
             id={template.id}
             title={template.title}
             category={template.category}
-            description={template.description}
-            badge={template.badge}
             accentColor={template.accentColor}
             isSelected={selectedTemplate === template.id}
             onClick={() => handleSelectTemplate(template)}

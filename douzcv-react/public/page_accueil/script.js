@@ -536,9 +536,50 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     };
 
-    setTimeout(checkInitialReveal, 100);
+    checkInitialReveal();
     window.addEventListener('scroll', checkInitialReveal, { passive: true });
   }
 
-});
+  // ── 8. TYPEWRITER EFFECT ──────────────────────────────────────────────────
+  const typeTarget = document.getElementById('typewriter-target');
+  if (typeTarget) {
+    const phrases = [
+      "propulse votre carrière.",
+      "décroche l'entretien.",
+      "bat les algorithmes ATS.",
+      "sublime votre parcours."
+    ];
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let typingSpeed = 100;
 
+    function typeEffect() {
+      const currentPhrase = phrases[phraseIndex];
+      
+      if (isDeleting) {
+        typeTarget.textContent = currentPhrase.substring(0, charIndex - 1);
+        charIndex--;
+        typingSpeed = 50;
+      } else {
+        typeTarget.textContent = currentPhrase.substring(0, charIndex + 1);
+        charIndex++;
+        typingSpeed = 100;
+      }
+
+      if (!isDeleting && charIndex === currentPhrase.length) {
+        isDeleting = true;
+        typingSpeed = 2000;
+      } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+        typingSpeed = 500;
+      }
+
+      setTimeout(typeEffect, typingSpeed);
+    }
+    
+    setTimeout(typeEffect, 1000);
+  }
+
+});

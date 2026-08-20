@@ -1,0 +1,54 @@
+.rich-text-container {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  transition: border-color 0.2s ease;
+}
+
+.rich-text-container:focus-within {
+  border-color: var(--color-primary);
+}
+
+.rich-text-container .ql-toolbar.ql-snow {
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-background);
+  font-family: var(--font-main);
+  padding: 8px 12px;
+}
+
+.rich-text-container .ql-container.ql-snow {
+  border: none;
+  min-height: 120px;
+  font-family: var(--font-main);
+  font-size: 14px;
+  color: var(--color-text-main);
+  background: var(--color-surface);
+}
+
+.rich-text-container .ql-editor {
+  min-height: 120px;
+  max-height: 300px;
+  overflow-y: auto;
+  line-height: 1.6;
+}
+
+/* Fix colors for toolbar icons in dark mode environments if needed */
+.rich-text-container .ql-snow .ql-stroke {
+  stroke: var(--color-text-main);
+}
+
+.rich-text-container .ql-snow .ql-fill, 
+.rich-text-container .ql-snow .ql-stroke.ql-fill {
+  fill: var(--color-text-main);
+}
+
+.rich-text-container .ql-snow .ql-picker {
+  color: var(--color-text-main);
+}
+
+.rich-text-container .ql-snow .ql-picker-options {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}

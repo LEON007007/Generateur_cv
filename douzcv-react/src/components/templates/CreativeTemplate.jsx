@@ -117,9 +117,7 @@ export default function CreativeTemplate({ personalInfo, experiences, education,
                 À Propos de moi
               </h3>
             </div>
-            <p style={{ fontSize: '13.5px', lineHeight: '1.6', color: '#374151', whiteSpace: 'pre-line' }}>
-              {personalInfo.summary}
-            </p>
+            <div style={{ fontSize: '13.5px', lineHeight: '1.6', color: '#374151', }} className="rich-text-content" dangerouslySetInnerHTML={{ __html: personalInfo.summary }} />
           </section>
         )}
 
@@ -151,9 +149,7 @@ export default function CreativeTemplate({ personalInfo, experiences, education,
                 <div style={{ fontSize: '13px', fontWeight: '600', color: accentColor, marginBottom: '6px' }}>
                   {exp.company}
                 </div>
-                <div style={{ fontSize: '13px', lineHeight: '1.55', color: '#4B5563', whiteSpace: 'pre-line' }}>
-                  {exp.description}
-                </div>
+                <div style={{ fontSize: '13px', lineHeight: '1.55', color: '#4B5563', }} className="rich-text-content" dangerouslySetInnerHTML={{ __html: exp.description }} />
               </div>
             ))}
           </div>

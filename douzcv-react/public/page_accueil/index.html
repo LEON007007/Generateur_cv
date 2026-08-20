@@ -119,37 +119,10 @@
                 <span>Tester le Score ATS</span>
               </a>
             </div>
-          </div>
-
-          <!-- Right Column: Glassmorphism Bento Card -->
-          <div class="hero-right">
-            <div class="hero-glass-card">
-              <div class="card-glow-edge"></div>
-              <div class="card-top-row">
-                <div class="live-status-pill">
-                  <span class="pulse-emerald"></span>
-                  <span>MOTEUR IA EN LIGNE</span>
-                </div>
-                <span class="metric-highlight">98.8% ATS COMPATIBLE</span>
-              </div>
-              <div class="card-quote">
-                "Un recruteur consacre moins de 6 secondes à votre CV. Chaque millimètre et chaque mot doivent être
-                calculés."
-              </div>
-              <div class="card-stats-grid">
-                <div class="c-stat">
-                  <span class="c-stat-num">3.8x</span>
-                  <span class="c-stat-lbl">Taux d'entretien</span>
-                </div>
-                <div class="c-stat">
-                  <span class="c-stat-num">0s</span>
-                  <span class="c-stat-lbl">Temps de configuration</span>
-                </div>
-                <div class="c-stat">
-                  <span class="c-stat-num">100%</span>
-                  <span class="c-stat-lbl">Données privées</span>
-                </div>
-              </div>
+            
+            <div class="hero-scroll-message">
+              <span class="static-text">L'outil qui </span>
+              <span class="typewriter-text" id="typewriter-target"></span><span class="typewriter-cursor">|</span>
             </div>
           </div>
         </div>
@@ -173,7 +146,7 @@
           <div class="metric-item">
             <span class="m-index">03</span>
             <div class="m-text">
-              <strong>RÉDACTION IA GEMINI</strong>
+              <strong>RÉDACTION EXPERTE</strong>
               <span>Formulation STAR & verbes d'impact</span>
             </div>
           </div>
@@ -243,18 +216,12 @@
                   d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
               </svg>
             </div>
-            <span class="bento-badge">IA GEMINI INTÉGRÉE</span>
           </div>
           <h3 class="bento-title">Assistant de Rédaction Stratégique</h3>
           <p class="bento-desc">
             Ne partez jamais d'une page blanche. Générez des résumés percutants, transformez vos tâches en réalisations
             chiffrées selon la méthode STAR et injectez les mots-clés les plus recherchés.
           </p>
-          <div class="bento-code-preview">
-            <div class="code-line"><span class="c-key">prompt:</span> "Optimiser expérience Développeur Fullstack"</div>
-            <div class="code-line highlight"><span class="c-out">→ "+35% de performance applicative et refonte de
-                l'architecture micro-services pour 120k utilisateurs actifs."</span></div>
-          </div>
         </div>
 
         <!-- Bento 2: ATS Safe (Tall Card) -->
@@ -266,19 +233,12 @@
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
               </svg>
             </div>
-            <span class="bento-badge green-badge">CONFORMITÉ 98%+</span>
           </div>
           <h3 class="bento-title">Structure Algorithmique Pure</h3>
           <p class="bento-desc">
             Zéro tableau invisible bloquant, zéro graphisme parasite. Votre CV est parfaitement lisible et indexable par
-            Workday, Taleo, et Greenhouse.
+            les systèmes ATS comme Workday, Taleo, et Greenhouse.
           </p>
-          <div class="bento-mini-meter">
-            <div class="meter-label"><span>Indexation Robots ATS</span><strong>100%</strong></div>
-            <div class="meter-bar">
-              <div class="meter-fill" style="width: 100%;"></div>
-            </div>
-          </div>
         </div>
 
         <!-- Bento 3: Pixel-Perfect A4 -->
@@ -292,7 +252,6 @@
                 <line x1="12" x2="12" y1="15" y2="3" />
               </svg>
             </div>
-            <span class="bento-badge">EXPORT VECTORIEL</span>
           </div>
           <h3 class="bento-title">Pagination A4 Chirurgicale</h3>
           <p class="bento-desc">
@@ -311,7 +270,6 @@
                 <path d="M7 11V7a5 5 0 0 1 10 0v4" />
               </svg>
             </div>
-            <span class="bento-badge amber-badge">100% LOCAL</span>
           </div>
           <h3 class="bento-title">Confidentialité Totale</h3>
           <p class="bento-desc">
@@ -346,7 +304,6 @@
           <div class="card-meta">
             <span class="category-pill pink">DESIGN & STUDIO</span>
             <h4 class="card-name">Le Créatif Studio</h4>
-            <p class="card-desc">Idéal pour directeurs artistiques, designers UI/UX et métiers de l'image.</p>
           </div>
         </a>
 
@@ -359,7 +316,6 @@
           <div class="card-meta">
             <span class="category-pill blue">TECH & DEV</span>
             <h4 class="card-name">Le Tech Lead / CTO</h4>
-            <p class="card-desc">Hiérarchie optimisée pour la stack technique, projets GitHub et réalisations clés.</p>
           </div>
         </a>
 
@@ -372,7 +328,6 @@
           <div class="card-meta">
             <span class="category-pill green">EXPAT & BILINGUE</span>
             <h4 class="card-name">L'International Global</h4>
-            <p class="card-desc">Format standardisé mondialement pour candidatures bilingues, UE et USA.</p>
           </div>
         </a>
       </div>
@@ -455,14 +410,30 @@
                   <p class="ats-view-title">Choisissez un format pour lancer l'audit simulé :</p>
                   <div class="ats-btn-group">
                     <button class="ats-choice-btn btn-classic" id="btn-scan-classic" type="button">
-                      <div class="choice-icon">📄</div>
+                      <div class="choice-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                          <polyline points="14 2 14 8 20 8"/>
+                          <line x1="16" y1="13" x2="8" y2="13"/>
+                          <line x1="16" y1="17" x2="8" y2="17"/>
+                          <line x1="10" y1="9" x2="8" y2="9"/>
+                        </svg>
+                      </div>
                       <div class="choice-text">
                         <strong>CV Classique (Word / Canva)</strong>
                         <span>Format standard non optimisé pour les robots</span>
                       </div>
                     </button>
                     <button class="ats-choice-btn btn-douzcv" id="btn-scan-douzcv" type="button">
-                      <div class="choice-icon">✨</div>
+                      <div class="choice-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+                          <path d="M5 3v4"/>
+                          <path d="M19 17v4"/>
+                          <path d="M3 5h4"/>
+                          <path d="M17 19h4"/>
+                        </svg>
+                      </div>
                       <div class="choice-text">
                         <strong>CV D'Élite douzCv</strong>
                         <span>Format vectoriel certifié 98%+ de conformité</span>
@@ -475,7 +446,12 @@
                 <div id="ats-state-scanning" class="ats-view">
                   <div class="laser-scanner">
                     <div class="laser-bar"></div>
-                    <div class="scanner-status-icon">🔍</div>
+                    <div class="scanner-status-icon">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                      </svg>
+                    </div>
                   </div>
                   <div class="scan-progress-area">
                     <div class="scan-step-label" id="scan-status">Lecture du document...</div>
@@ -614,45 +590,7 @@
          SECTION 8: GRAND FOOTER PREMIUM ULTRA-DESIGN
     ═════════════════════════════════════════════ -->
     <footer class="footer-ultra">
-      <!-- Trust Strip -->
-      <div class="footer-trust-strip" data-reveal="up">
-        <div class="trust-badge-item">
-          <div class="trust-icon-box">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            </svg>
-          </div>
-          <div>
-            <strong>100% Confidentialité Locale</strong>
-            <span>Données stockées uniquement sur votre navigateur</span>
-          </div>
-        </div>
-        <div class="trust-badge-item">
-          <div class="trust-icon-box">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
-            </svg>
-          </div>
-          <div>
-            <strong>IA Gemini 2.5 Flash</strong>
-            <span>Optimisation sémantique et méthode STAR</span>
-          </div>
-        </div>
-        <div class="trust-badge-item">
-          <div class="trust-icon-box">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-              <line x1="16" y1="13" x2="8" y2="13"/>
-              <line x1="16" y1="17" x2="8" y2="17"/>
-            </svg>
-          </div>
-          <div>
-            <strong>Norme ATS & Vectoriel A4</strong>
-            <span>Zéro décalage à l'impression et au tri robot</span>
-          </div>
-        </div>
-      </div>
+
 
       <div class="footer-grid">
         <!-- Col 1: Brand -->

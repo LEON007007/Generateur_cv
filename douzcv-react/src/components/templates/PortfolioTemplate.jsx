@@ -34,9 +34,7 @@ export default function PortfolioTemplate({ personalInfo, experiences, education
           <h3 style={{ fontSize: '12px', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.1em', color: accentColor, marginBottom: '8px' }}>
             // Manifeste & Approche
           </h3>
-          <p style={{ color: '#3F3F46', lineHeight: '1.6', fontSize: '13.5px', whiteSpace: 'pre-line' }}>
-            {personalInfo.summary}
-          </p>
+          <div style={{ color: '#3F3F46', lineHeight: '1.6', fontSize: '13.5px', }} className="rich-text-content" dangerouslySetInnerHTML={{ __html: personalInfo.summary }} />
         </section>
       )}
 
@@ -55,7 +53,7 @@ export default function PortfolioTemplate({ personalInfo, experiences, education
                   <span style={{ fontSize: '11.5px', color: '#A1A1AA', fontWeight: '500' }}>{exp.startDate} — {exp.endDate}</span>
                 </div>
                 <div style={{ fontSize: '13px', fontWeight: '600', color: accentColor, marginBottom: '4px' }}>{exp.company}</div>
-                <p style={{ color: '#52525B', lineHeight: '1.5', whiteSpace: 'pre-line' }}>{exp.description}</p>
+                <div style={{ color: '#52525B', lineHeight: '1.5', }} className="rich-text-content" dangerouslySetInnerHTML={{ __html: exp.description }} />
               </div>
             ))}
           </div>

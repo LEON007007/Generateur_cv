@@ -5,11 +5,12 @@
  */
 
 const CANDIDATE_MODELS = [
-  'gemini-3.6-flash',
-  'gemini-3.7-flash',
-  'gemini-flash-latest',
-  'gemini-3.5-flash',
-  'gemini-2.5-flash-lite'
+  'gemini-2.5-flash',
+  'gemini-2.0-flash',
+  'gemini-1.5-flash',
+  'gemini-2.0-flash-lite',
+  'gemini-1.5-pro',
+  'gemini-flash-latest'
 ]
 
 const DEFAULT_SYSTEM_INSTRUCTION = `Tu es un expert mondial en recrutement de cadres et optimisation de CV de haut niveau.
@@ -20,7 +21,7 @@ RÈGLES STRICTES ET NON-NÉGOCIABLES :
 4. Utilise un français irréprochable, soutenu, axé sur les résultats, l'impact, le leadership et l'efficacité opérationnelle.`
 
 export async function generateWithGemini({ prompt, systemInstruction, apiKey }) {
-  const rawKey = apiKey || localStorage.getItem('douzcv_gemini_api_key')
+  const rawKey = apiKey || localStorage.getItem('douzcv_gemini_api_key') || import.meta.env.VITE_GEMINI_API_KEY
   const key = rawKey ? rawKey.trim() : ''
 
   // If an API key is provided, query Google's Gemini API

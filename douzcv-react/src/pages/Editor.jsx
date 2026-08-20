@@ -13,12 +13,15 @@ import {
   Plus, 
   Trash2, 
   Globe, 
-  X 
+  X,
+  Palette,
+  Camera
 } from 'lucide-react'
 import { useCVStore } from '../store'
 import CVPreview from '../components/CVPreview'
 import AIAssistantModal from '../components/AIAssistantModal'
 import GeminiApiKeyModal from '../components/GeminiApiKeyModal'
+import RichTextEditor from '../components/RichTextEditor'
 
 const Accordion = ({ title, icon: Icon, badgeCount, children, defaultOpen = false }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen)
@@ -84,8 +87,25 @@ export default function Editor() {
     fontFamily,
     setFontFamily,
     spacing,
-    setSpacing 
+    setSpacing,
+    guestUser
   } = useCVStore()
+
+  // Dynamic document name based on entered names or login name (no hardcoded fallback)
+  const getDocumentDisplayName = () => {
+    const names = [personalInfo.lastName, personalInfo.firstName].filter(Boolean).map(s => s.trim())
+    if (names.length > 0) {
+      return `CV_${names.join('_')}`
+    }
+    if (guestUser?.name?.trim()) {
+      return `CV_${guestUser.name.trim().replace(/\s+/g, '_')}`
+    }
+    const localName = typeof window !== 'undefined' ? localStorage.getItem('douzcv_guest_name') : ''
+    if (localName?.trim()) {
+      return `CV_${localName.trim().replace(/\s+/g, '_')}`
+    }
+    return 'CV_MonCV'
+  }
 
   const [mobileTab, setMobileTab] = useState('edit') // 'edit' | 'preview'
   const [newSkillInput, setNewSkillInput] = useState('')
@@ -115,7 +135,58 @@ export default function Editor() {
   }, [selectedTemplate, setSelectedTemplate])
 
   const handlePersonalChange = (e) => {
-    updatePersonalInfo(e.target.name, e.target.value)
+    const { name, value } = e.target
+    updatePersonalInfo(name, value)
+  }
+
+  // Helper to convert plain text / markdown from AI output into clean HTML for RichTextEditor
+  const formatPlainTextToHtml = (text) => {
+    if (!text) return ''
+    if (text.includes('<p>') || text.includes('<ul>')) return text // already HTML
+    
+    const lines = text.split('\n').map(l => l.trim()).filter(Boolean)
+    const hasBullets = lines.some(l => l.startsWith('•') || l.startsWith('-') || l.startsWith('*'))
+    
+    if (hasBullets) {
+      const listItems = lines.map(line => {
+        const clean = line.replace(/^[•\-\*]\s*/, '').trim()
+        return `<li>${clean}</li>`
+      }).join('')
+      return `<ul>${listItems}</ul>`
+    }
+    
+    return lines.map(l => `<p>${l}</p>`).join('')
+  }
+
+  // Dynamic AI Modal Handlers with integrated Gemini AI
+  const openAiModalForSection = (section, id = null) => {
+    setAiTargetSection(section)
+    setAiTargetExpId(id)
+    setAiUserRole(personalInfo.title || 'Professionnel')
+
+    if (section === 'summary') {
+      setAiCurrentText(personalInfo.summary || '')
+      setAiInitialPrompt(personalInfo.summary
+        ? `Perfectionne et sublime ce résumé professionnel pour un profil de ${personalInfo.title || 'Professionnel'} :\n"${personalInfo.summary.replace(/<[^>]*>/g, '')}"`
+        : `Rédige un résumé professionnel percutant et captivant de 3-4 lignes pour un ${personalInfo.title || 'Consultant Senior'}`)
+    } else if (section === 'experience' && id) {
+      const exp = experiences.find(e => e.id === id)
+      setAiCurrentText(exp?.description || '')
+      setAiInitialPrompt(exp?.description
+        ? `Transforme et sublime ces missions en 3-4 puces de réalisations majeures et chiffrées avec verbes d'action pour le poste de ${exp.title || 'Collaborateur'} chez ${exp.company || 'l\'entreprise'} :\n"${exp.description.replace(/<[^>]*>/g, '')}"`
+        : `Rédige 4 réalisations majeures et chiffrées avec verbes d'action pour le poste de ${exp?.title || 'Collaborateur'} chez ${exp?.company || 'l\'entreprise'}`)
+    } else if (section === 'education' && id) {
+      const edu = education.find(e => e.id === id)
+      setAiCurrentText(edu?.description || '')
+      setAiInitialPrompt(edu?.description
+        ? `Améliore cette description de formation pour ${edu.degree || 'mon diplôme'} chez ${edu.school || 'mon établissement'} :\n"${edu.description.replace(/<[^>]*>/g, '')}"`
+        : `Rédige une description concise et valorisante des compétences et projets majeurs acquis lors de la formation ${edu?.degree || 'Diplôme'} chez ${edu?.school || 'Établissement'}`)
+    } else if (section === 'skills') {
+      setAiCurrentText(skills.join(', '))
+      setAiInitialPrompt(`Génère une sélection des 6 à 8 compétences techniques et stratégiques incontournables pour un ${personalInfo.title || 'Professionnel'}.`)
+    }
+
+    setAiModalOpen(true)
   }
 
   const handleAddSkill = (e) => {
@@ -126,52 +197,15 @@ export default function Editor() {
     }
   }
 
-  const handleOpenAiForSummary = () => {
-    setAiTargetSection('summary')
-    setAiCurrentText(personalInfo.summary || '')
-    setAiUserRole(personalInfo.title || 'Consultant Senior en Stratégie')
-    setAiInitialPrompt(personalInfo.summary 
-      ? `Perfectionne et sublime ce résumé professionnel pour un profil de ${personalInfo.title || 'Consultant'} :\n"${personalInfo.summary}"`
-      : `Rédige un résumé professionnel captivant et structuré de 3-4 lignes pour un ${personalInfo.title || 'Consultant Senior'}`)
-    setAiModalOpen(true)
-  }
-
-  const handleOpenAiForExp = (exp) => {
-    setAiTargetSection('experience')
-    setAiTargetExpId(exp.id)
-    setAiCurrentText(exp.description || '')
-    setAiUserRole(exp.title || personalInfo.title || 'Collaborateur')
-    setAiInitialPrompt(exp.description 
-      ? `Transforme et sublime ces missions en 3-4 puces percutantes et chiffrées avec verbes d'action pour le poste de ${exp.title || 'Collaborateur'} chez ${exp.company || 'l\'entreprise'} :\n"${exp.description}"`
-      : `Rédige 4 réalisations majeures et chiffrées avec verbes d'action pour le poste de ${exp.title || 'Collaborateur'} chez ${exp.company || 'l\'entreprise'}`)
-    setAiModalOpen(true)
-  }
-
-  const handleOpenAiForSkills = () => {
-    setAiTargetSection('skills')
-    setAiCurrentText(skills.join(', '))
-    setAiUserRole(personalInfo.title || 'Consultant Senior')
-    setAiInitialPrompt(`Génère une sélection des 6 à 8 compétences techniques, méthodologiques et stratégiques incontournables pour un ${personalInfo.title || 'Consultant Senior'}.`)
-    setAiModalOpen(true)
-  }
-
-  const handleOpenGeneralAi = () => {
-    setAiTargetSection('summary')
-    setAiCurrentText(personalInfo.summary || '')
-    setAiUserRole(personalInfo.title || 'Consultant Senior')
-    setAiInitialPrompt(personalInfo.summary
-      ? `Perfectionne et optimise ce profil professionnel pour mon CV :\n"${personalInfo.summary}"`
-      : `Rédige un profil professionnel percutant et captivant de 3-4 lignes pour un ${personalInfo.title || 'Consultant Senior'}`)
-    setAiModalOpen(true)
-  }
-
   const handleApplyAIText = (generatedText) => {
+    const formattedHtml = formatPlainTextToHtml(generatedText)
     if (aiTargetSection === 'summary') {
-      updatePersonalInfo('summary', generatedText)
+      updatePersonalInfo('summary', formattedHtml)
     } else if (aiTargetSection === 'experience' && aiTargetExpId) {
-      updateExperience(aiTargetExpId, 'description', generatedText)
+      updateExperience(aiTargetExpId, 'description', formattedHtml)
+    } else if (aiTargetSection === 'education' && aiTargetExpId) {
+      updateEducation(aiTargetExpId, 'description', formattedHtml)
     } else if (aiTargetSection === 'skills') {
-      // Split by commas, bullet points or new lines and add each skill
       const items = generatedText
         .split(/[\n,•]/)
         .map(s => s.replace(/^\d+[\.\)]\s*/, '').trim())
@@ -185,7 +219,7 @@ export default function Editor() {
       {/* Sub Header & Customization Bar */}
       <div className="editor-subheader">
         <div className="editor-subheader-doc">
-          Document : <strong style={{ color: 'var(--color-primary)' }}>CV_{personalInfo.lastName || 'Atangana'}_{personalInfo.firstName || 'Leon'}</strong>
+          Document : <strong style={{ color: 'var(--color-primary)' }}>{getDocumentDisplayName()}</strong>
         </div>
 
         {/* Customization Toolbar */}
@@ -208,90 +242,11 @@ export default function Editor() {
             ))}
           </div>
 
-          {/* Typography Selector */}
-          <select 
-            value={fontFamily} 
-            onChange={(e) => setFontFamily(e.target.value)}
-            style={{ 
-              padding: '6px 10px', 
-              borderRadius: 'var(--radius-sm)', 
-              border: '1px solid var(--color-border)', 
-              backgroundColor: 'var(--color-surface)', 
-              fontSize: '12.5px',
-              fontWeight: '500',
-              outline: 'none',
-              cursor: 'pointer'
-            }}
-          >
-            <option value="Inter">Police : Inter (Moderne)</option>
-            <option value="Plus Jakarta Sans">Police : Plus Jakarta (Tech)</option>
-            <option value="DM Sans">Police : DM Sans (Géométrique)</option>
-            <option value="Playfair Display">Police : Playfair (Élégant)</option>
-            <option value="Merriweather">Police : Merriweather (Sérif)</option>
-          </select>
-
-          {/* Template Selector for all 12 templates */}
-          <select 
-            value={selectedTemplate || "L'Exécutif"} 
-            onChange={(e) => setSelectedTemplate(e.target.value)}
-            style={{ 
-              padding: '6px 10px', 
-              borderRadius: 'var(--radius-sm)', 
-              border: '1px solid var(--color-border)', 
-              backgroundColor: 'var(--color-surface)', 
-              fontSize: '12.5px',
-              fontWeight: '600',
-              outline: 'none',
-              cursor: 'pointer',
-              maxWidth: '180px'
-            }}
-          >
-            <optgroup label="ATS & Classique">
-              <option value="L'Exécutif">1. L'Exécutif Standard</option>
-              <option value="Le Minimaliste (ATS)">2. Le Minimaliste Pur</option>
-              <option value="L'Académique & Recherche">3. L'Académique</option>
-            </optgroup>
-            <optgroup label="Tech & Moderne">
-              <option value="Le Tech Lead">4. Le Tech Lead</option>
-              <option value="Le Silicon Valley">5. Le Silicon Valley</option>
-              <option value="L'Ingénieur & Industriel">6. L'Ingénieur</option>
-            </optgroup>
-            <optgroup label="Créatif & Design">
-              <option value="Le Créatif">7. Le Créatif Studio</option>
-              <option value="L'Élégant Prestige">8. L'Élégant Prestige</option>
-              <option value="Le Portfolio Visuel">9. Le Portfolio Visuel</option>
-            </optgroup>
-            <optgroup label="Compact & Spécialisé">
-              <option value="Le Condensé 1-Page">10. Le Condensé 1-Page</option>
-              <option value="L'International / Expat">11. L'International</option>
-              <option value="Le Polyvalent Pro-Afrique">12. Pro-Afrique</option>
-            </optgroup>
-          </select>
-
-          {/* Density / Spacing Selector */}
-          <select 
-            value={spacing || 'normal'} 
-            onChange={(e) => setSpacing(e.target.value)}
-            title="Densité et espacement du document"
-            style={{ 
-              padding: '6px 10px', 
-              borderRadius: 'var(--radius-sm)', 
-              border: '1px solid var(--color-border)', 
-              backgroundColor: 'var(--color-surface)', 
-              fontSize: '12.5px',
-              fontWeight: '500',
-              outline: 'none',
-              cursor: 'pointer'
-            }}
-          >
-            <option value="compact">Densité : Compact (Idéal 1 page)</option>
-            <option value="normal">Densité : Standard (Équilibré)</option>
-            <option value="spacious">Densité : Spacieux (Multi-pages)</option>
-          </select>
+          {/* Selects moved to Personnalisation Accordion */}
 
           <button 
             type="button"
-            onClick={handleOpenGeneralAi}
+            onClick={() => openAiModalForSection('summary')}
             className="btn-subheader-action flex items-center gap-1.5"
             style={{
               padding: '6px 12px',
@@ -344,6 +299,117 @@ export default function Editor() {
             Édition du contenu
           </h1>
           
+          {/* SECTION 0: Personnalisation */}
+          <Accordion title="Personnalisation visuelle" icon={Palette} defaultOpen={false}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              
+              <div>
+                <label className="label">Modèle de CV</label>
+                <div style={{ position: 'relative' }}>
+                  <select 
+                    value={selectedTemplate || "L'Exécutif"} 
+                    onChange={(e) => setSelectedTemplate(e.target.value)}
+                    className="input-field"
+                    style={{ appearance: 'none', paddingRight: '32px', cursor: 'pointer', fontWeight: '600' }}
+                  >
+                    <optgroup label="ATS & Classique">
+                      <option value="L'Exécutif">1. L'Exécutif Standard</option>
+                      <option value="Le Minimaliste (ATS)">2. Le Minimaliste Pur</option>
+                      <option value="L'Académique & Recherche">3. L'Académique</option>
+                    </optgroup>
+                    <optgroup label="Tech & Moderne">
+                      <option value="Le Tech Lead">4. Le Tech Lead</option>
+                      <option value="Le Silicon Valley">5. Le Silicon Valley</option>
+                      <option value="L'Ingénieur & Industriel">6. L'Ingénieur</option>
+                    </optgroup>
+                    <optgroup label="Créatif & Design">
+                      <option value="Le Créatif">7. Le Créatif Studio</option>
+                      <option value="L'Élégant Prestige">8. L'Élégant Prestige</option>
+                      <option value="Le Portfolio Visuel">9. Le Portfolio Visuel</option>
+                    </optgroup>
+                    <optgroup label="Compact & Spécialisé">
+                      <option value="Le Condensé 1-Page">10. Le Condensé 1-Page</option>
+                      <option value="L'International / Expat">11. L'International</option>
+                      <option value="Le Polyvalent Pro-Afrique">12. Pro-Afrique</option>
+                    </optgroup>
+                  </select>
+                  <ChevronDown size={16} color="var(--color-text-muted)" style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} />
+                </div>
+              </div>
+
+              <div>
+                <label className="label">Typographie</label>
+                <div style={{ position: 'relative' }}>
+                  <select 
+                    value={fontFamily} 
+                    onChange={(e) => setFontFamily(e.target.value)}
+                    className="input-field"
+                    style={{ appearance: 'none', paddingRight: '32px', cursor: 'pointer' }}
+                  >
+                    <option value="Inter">Inter (Moderne)</option>
+                    <option value="Plus Jakarta Sans">Plus Jakarta (Tech)</option>
+                    <option value="DM Sans">DM Sans (Géométrique)</option>
+                    <option value="Playfair Display">Playfair (Élégant)</option>
+                    <option value="Merriweather">Merriweather (Sérif)</option>
+                  </select>
+                  <ChevronDown size={16} color="var(--color-text-muted)" style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} />
+                </div>
+              </div>
+
+              <div>
+                <label className="label">Densité (Espacement)</label>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
+                  <button 
+                    onClick={() => setSpacing('compact')}
+                    style={{
+                      padding: '8px',
+                      borderRadius: 'var(--radius-sm)',
+                      border: spacing === 'compact' ? '2px solid var(--color-primary)' : '1px solid var(--color-border)',
+                      backgroundColor: spacing === 'compact' ? 'rgba(27, 48, 65, 0.05)' : 'var(--color-surface)',
+                      color: spacing === 'compact' ? 'var(--color-primary)' : 'var(--color-text-muted)',
+                      fontSize: '12px',
+                      fontWeight: '600',
+                      transition: 'all var(--duration-fast) var(--ease-premium)'
+                    }}
+                  >
+                    Compact
+                  </button>
+                  <button 
+                    onClick={() => setSpacing('normal')}
+                    style={{
+                      padding: '8px',
+                      borderRadius: 'var(--radius-sm)',
+                      border: spacing === 'normal' ? '2px solid var(--color-primary)' : '1px solid var(--color-border)',
+                      backgroundColor: spacing === 'normal' ? 'rgba(27, 48, 65, 0.05)' : 'var(--color-surface)',
+                      color: spacing === 'normal' ? 'var(--color-primary)' : 'var(--color-text-muted)',
+                      fontSize: '12px',
+                      fontWeight: '600',
+                      transition: 'all var(--duration-fast) var(--ease-premium)'
+                    }}
+                  >
+                    Standard
+                  </button>
+                  <button 
+                    onClick={() => setSpacing('spacious')}
+                    style={{
+                      padding: '8px',
+                      borderRadius: 'var(--radius-sm)',
+                      border: spacing === 'spacious' ? '2px solid var(--color-primary)' : '1px solid var(--color-border)',
+                      backgroundColor: spacing === 'spacious' ? 'rgba(27, 48, 65, 0.05)' : 'var(--color-surface)',
+                      color: spacing === 'spacious' ? 'var(--color-primary)' : 'var(--color-text-muted)',
+                      fontSize: '12px',
+                      fontWeight: '600',
+                      transition: 'all var(--duration-fast) var(--ease-premium)'
+                    }}
+                  >
+                    Spacieux
+                  </button>
+                </div>
+              </div>
+              
+            </div>
+          </Accordion>
+
           {/* SECTION 1: Personal Information */}
           <Accordion title="Informations personnelles" icon={User} defaultOpen={true}>
             <div style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '16px' }}>
@@ -363,7 +429,7 @@ export default function Editor() {
                 {personalInfo.avatar ? (
                   <img src={personalInfo.avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
-                  <User size={24} color="var(--color-text-muted)" />
+                  <Camera size={24} color="var(--color-text-muted)" />
                 )}
               </div>
               <div style={{ flex: 1 }}>
@@ -479,24 +545,37 @@ export default function Editor() {
             <div>
               <div className="flex justify-between items-center" style={{ marginBottom: '6px' }}>
                 <label className="label" style={{ marginBottom: 0 }}>Résumé professionnel</label>
+              </div>
+              <div style={{ marginTop: '8px' }}>
+                <RichTextEditor 
+                  value={personalInfo.summary} 
+                  onChange={(html) => updatePersonalInfo('summary', html)} 
+                  placeholder="Présentez brièvement vos compétences clés et votre parcours..."
+                />
                 <button 
-                  type="button"
-                  onClick={handleOpenAiForSummary}
-                  className="flex items-center gap-1" 
-                  style={{ fontSize: '12px', color: 'var(--color-coral)', fontWeight: '600', cursor: 'pointer' }}
+                  type="button" 
+                  onClick={() => openAiModalForSection('summary')} 
+                  className="btn-ai-assist-box flex items-center gap-2"
+                  style={{
+                    marginTop: '10px',
+                    padding: '8px 14px',
+                    borderRadius: '10px',
+                    backgroundColor: 'rgba(255, 97, 84, 0.08)',
+                    color: 'var(--color-coral)',
+                    border: '1px solid rgba(255, 97, 84, 0.3)',
+                    fontSize: '12.5px',
+                    fontWeight: '700',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    transition: 'all 0.2s ease',
+                    boxShadow: '0 2px 8px rgba(255, 97, 84, 0.08)'
+                  }}
                 >
-                  <Sparkles size={13} />
-                  <span>Améliorer avec Gemini IA</span>
+                  <Sparkles size={14} color="var(--color-coral)" />
+                  <span>Rédiger & Optimiser avec l'IA Gemini</span>
                 </button>
               </div>
-              <textarea 
-                name="summary" 
-                value={personalInfo.summary} 
-                onChange={handlePersonalChange} 
-                className="input-field" 
-                style={{ minHeight: '90px', resize: 'vertical', lineHeight: '1.4' }}
-                placeholder="Présentez brièvement vos compétences clés et votre parcours..."
-              />
             </div>
           </Accordion>
 
@@ -509,15 +588,6 @@ export default function Editor() {
                     Expérience #{index + 1}
                   </span>
                   <div className="flex items-center gap-2">
-                    <button 
-                      type="button" 
-                      onClick={() => handleOpenAiForExp(exp)}
-                      className="flex items-center gap-1"
-                      style={{ fontSize: '11.5px', color: 'var(--color-coral)', fontWeight: '600', padding: '2px 8px', borderRadius: '4px', backgroundColor: 'rgba(255, 97, 84, 0.08)' }}
-                    >
-                      <Sparkles size={12} />
-                      Rédiger avec l'IA
-                    </button>
                     <button 
                       type="button" 
                       onClick={() => removeExperience(exp.id)} 
@@ -578,24 +648,37 @@ export default function Editor() {
                 <div>
                   <div className="flex justify-between items-center" style={{ marginBottom: '6px' }}>
                     <label className="label" style={{ marginBottom: 0 }}>Missions & Réalisations</label>
+                  </div>
+                  <div style={{ marginTop: '4px' }}>
+                    <RichTextEditor 
+                      value={exp.description} 
+                      onChange={(html) => updateExperience(exp.id, 'description', html)} 
+                      placeholder="Détaillez vos réalisations principales (utilisez les puces)..."
+                    />
                     <button 
-                      type="button"
-                      onClick={() => handleOpenAiForExp(exp)}
-                      className="flex items-center gap-1" 
-                      style={{ fontSize: '11.5px', color: 'var(--color-coral)', fontWeight: '600', cursor: 'pointer', background: 'none', border: 'none' }}
-                      title="Sublimer ces missions avec Gemini IA"
+                      type="button" 
+                      onClick={() => openAiModalForSection('experience', exp.id)} 
+                      className="btn-ai-assist-box flex items-center gap-2"
+                      style={{
+                        marginTop: '10px',
+                        padding: '8px 14px',
+                        borderRadius: '10px',
+                        backgroundColor: 'rgba(255, 97, 84, 0.08)',
+                        color: 'var(--color-coral)',
+                        border: '1px solid rgba(255, 97, 84, 0.3)',
+                        fontSize: '12.5px',
+                        fontWeight: '700',
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        transition: 'all 0.2s ease',
+                        boxShadow: '0 2px 8px rgba(255, 97, 84, 0.08)'
+                      }}
                     >
-                      <Sparkles size={13} />
-                      <span>Améliorer avec Gemini IA</span>
+                      <Sparkles size={14} color="var(--color-coral)" />
+                      <span>Générer des réalisations percutantes avec l'IA</span>
                     </button>
                   </div>
-                  <textarea 
-                    value={exp.description} 
-                    onChange={(e) => updateExperience(exp.id, 'description', e.target.value)} 
-                    className="input-field" 
-                    style={{ minHeight: '75px', resize: 'vertical', fontSize: '13px' }}
-                    placeholder="• Détaillez vos réalisations principales..."
-                  />
                 </div>
               </div>
             ))}
@@ -603,7 +686,8 @@ export default function Editor() {
             <button 
               type="button" 
               onClick={addExperience} 
-              className="btn-outline-dashed"
+              className="btn-secondary"
+              style={{ width: '100%' }}
             >
               <Plus size={16} />
               Ajouter une expérience
@@ -665,13 +749,50 @@ export default function Editor() {
                     />
                   </div>
                 </div>
+
+                <div style={{ marginTop: '10px' }}>
+                  <div className="flex justify-between items-center" style={{ marginBottom: '6px' }}>
+                    <label className="label" style={{ marginBottom: 0 }}>Description (Optionnel)</label>
+                  </div>
+                  <div style={{ marginTop: '4px' }}>
+                    <RichTextEditor 
+                      value={edu.description || ''} 
+                      onChange={(html) => updateEducation(edu.id, 'description', html)} 
+                      placeholder="Ajoutez une description de votre formation..."
+                    />
+                    <button 
+                      type="button" 
+                      onClick={() => openAiModalForSection('education', edu.id)} 
+                      className="btn-ai-assist-box flex items-center gap-2"
+                      style={{
+                        marginTop: '10px',
+                        padding: '8px 14px',
+                        borderRadius: '10px',
+                        backgroundColor: 'rgba(255, 97, 84, 0.08)',
+                        color: 'var(--color-coral)',
+                        border: '1px solid rgba(255, 97, 84, 0.3)',
+                        fontSize: '12.5px',
+                        fontWeight: '700',
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        transition: 'all 0.2s ease',
+                        boxShadow: '0 2px 8px rgba(255, 97, 84, 0.08)'
+                      }}
+                    >
+                      <Sparkles size={14} color="var(--color-coral)" />
+                      <span>Enrichir la description avec l'IA Gemini</span>
+                    </button>
+                  </div>
+                </div>
               </div>
             ))}
 
             <button 
               type="button" 
               onClick={addEducation} 
-              className="btn-outline-dashed"
+              className="btn-secondary"
+              style={{ width: '100%' }}
             >
               <Plus size={16} />
               Ajouter une formation
@@ -683,14 +804,22 @@ export default function Editor() {
             <div className="flex justify-between items-center" style={{ marginBottom: '12px' }}>
               <label className="label" style={{ marginBottom: 0 }}>Ajouter une compétence</label>
               <button 
-                type="button"
-                onClick={handleOpenAiForSkills}
-                className="flex items-center gap-1" 
-                style={{ fontSize: '11.5px', color: 'var(--color-coral)', fontWeight: '600', cursor: 'pointer', background: 'none', border: 'none' }}
-                title="Générer des compétences pertinentes avec l'IA"
+                type="button" 
+                onClick={() => openAiModalForSection('skills')} 
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--color-coral)',
+                  fontSize: '12.5px',
+                  fontWeight: '700',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '5px'
+                }}
               >
-                <Sparkles size={13} />
-                <span>Suggérer avec Gemini IA</span>
+                <Sparkles size={14} />
+                <span>Suggérer avec l'IA</span>
               </button>
             </div>
             <div style={{ marginBottom: '16px' }}>
@@ -770,7 +899,8 @@ export default function Editor() {
             <button 
               type="button" 
               onClick={addLanguage} 
-              className="btn-outline-dashed"
+              className="btn-secondary"
+              style={{ width: '100%' }}
             >
               <Plus size={16} />
               Ajouter une langue

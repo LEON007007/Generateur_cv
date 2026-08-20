@@ -32,9 +32,7 @@ export default function EngineerTemplate({ personalInfo, experiences, education,
       {/* Summary */}
       {personalInfo.summary && (
         <div style={{ backgroundColor: '#F8FAFC', borderLeft: `3px solid ${accentColor}`, padding: '10px 14px', marginBottom: '20px' }}>
-          <p style={{ color: '#334155', lineHeight: '1.55', whiteSpace: 'pre-line', fontSize: '13px' }}>
-            {personalInfo.summary}
-          </p>
+          <div style={{ color: '#334155', lineHeight: '1.55', fontSize: '13px' }} className="rich-text-content" dangerouslySetInnerHTML={{ __html: personalInfo.summary }} />
         </div>
       )}
 
@@ -50,7 +48,7 @@ export default function EngineerTemplate({ personalInfo, experiences, education,
               <span style={{ fontSize: '12px', fontWeight: '600', color: '#64748B' }}>{exp.startDate} - {exp.endDate}</span>
             </div>
             <div style={{ fontSize: '12.5px', fontWeight: '600', color: accentColor, marginBottom: '4px' }}>{exp.company}</div>
-            <p style={{ color: '#475569', lineHeight: '1.5', whiteSpace: 'pre-line' }}>{exp.description}</p>
+            <div style={{ color: '#475569', lineHeight: '1.5', }} className="rich-text-content" dangerouslySetInnerHTML={{ __html: exp.description }} />
           </div>
         ))}
       </section>

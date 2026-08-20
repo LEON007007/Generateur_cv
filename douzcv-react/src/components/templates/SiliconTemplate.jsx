@@ -38,9 +38,7 @@ export default function SiliconTemplate({ personalInfo, experiences, education, 
               <h3 style={{ fontSize: '12px', fontWeight: '800', letterSpacing: '0.1em', textTransform: 'uppercase', color: accentColor, marginBottom: '8px' }}>
                 À propos
               </h3>
-              <p style={{ color: '#334155', lineHeight: '1.6', whiteSpace: 'pre-line' }}>
-                {personalInfo.summary}
-              </p>
+              <div style={{ color: '#334155', lineHeight: '1.6', }} className="rich-text-content" dangerouslySetInnerHTML={{ __html: personalInfo.summary }} />
             </section>
           )}
 
@@ -58,9 +56,7 @@ export default function SiliconTemplate({ personalInfo, experiences, education, 
                   <div style={{ fontSize: '13px', fontWeight: '600', color: accentColor, marginBottom: '6px' }}>
                     {exp.company}
                   </div>
-                  <p style={{ color: '#475569', lineHeight: '1.55', whiteSpace: 'pre-line' }}>
-                    {exp.description}
-                  </p>
+                  <div style={{ color: '#475569', lineHeight: '1.55', }} className="rich-text-content" dangerouslySetInnerHTML={{ __html: exp.description }} />
                 </div>
               ))}
             </div>

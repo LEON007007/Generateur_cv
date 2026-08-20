@@ -29,9 +29,7 @@ export default function AcademicTemplate({ personalInfo, experiences, education,
           <h2 style={{ fontSize: '14px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', color: accentColor, borderBottom: '1px solid #E5E7EB', paddingBottom: '4px', marginBottom: '8px' }}>
             Domaines de Compétences & Recherche
           </h2>
-          <p style={{ textAlign: 'justify', color: '#374151', whiteSpace: 'pre-line' }}>
-            {personalInfo.summary}
-          </p>
+          <div style={{ textAlign: 'justify', color: '#374151', }} className="rich-text-content" dangerouslySetInnerHTML={{ __html: personalInfo.summary }} />
         </section>
       )}
 
@@ -63,7 +61,7 @@ export default function AcademicTemplate({ personalInfo, experiences, education,
               <span style={{ fontSize: '12px', color: '#6B7280' }}>{exp.startDate} – {exp.endDate}</span>
             </div>
             <div style={{ color: accentColor, fontStyle: 'italic', fontSize: '12.5px', marginBottom: '4px' }}>{exp.company}</div>
-            <p style={{ color: '#374151', whiteSpace: 'pre-line' }}>{exp.description}</p>
+            <div style={{ color: '#374151', }} className="rich-text-content" dangerouslySetInnerHTML={{ __html: exp.description }} />
           </div>
         ))}
       </section>

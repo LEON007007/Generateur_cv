@@ -53,7 +53,7 @@ export default function PrestigeTemplate({ personalInfo, experiences, education,
                   <span style={{ fontSize: '12px', color: '#71717A' }}>{exp.startDate} - {exp.endDate}</span>
                 </div>
                 <div style={{ fontSize: '13px', color: accentColor, fontWeight: '500', fontStyle: 'italic', marginBottom: '6px' }}>{exp.company}</div>
-                <p style={{ color: '#52525B', fontSize: '13px', lineHeight: '1.55', whiteSpace: 'pre-line' }}>{exp.description}</p>
+                <div style={{ color: '#52525B', fontSize: '13px', lineHeight: '1.55', }} className="rich-text-content" dangerouslySetInnerHTML={{ __html: exp.description }} />
               </div>
             ))}
           </section>
