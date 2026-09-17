@@ -24,9 +24,9 @@ export default function GeminiApiKeyModal({ isOpen, onClose, onKeySaved }) {
 
   useEffect(() => {
     if (isOpen) {
-      const stored = localStorage.getItem('douzcv_gemini_api_key') || ''
+      const stored = localStorage.getItem('douzcv_gemini_api_key') || import.meta.env.VITE_GEMINI_API_KEY || ''
       setApiKey(stored)
-      setTestResult(stored ? { success: true, message: 'Clé active enregistrée dans votre navigateur' } : null)
+      setTestResult(stored ? { success: true, message: 'Clé active configurée et opérationnelle' } : null)
       setIsTesting(false)
       setActiveStep(stored ? 3 : 1)
     }
@@ -46,22 +46,43 @@ export default function GeminiApiKeyModal({ isOpen, onClose, onKeySaved }) {
     setTestResult(null)
 
     try {
-      // Direct validation call to Gemini 2.5 Flash Lite or Flash Latest
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${keyToTest}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: 'Reponds "OK"' }] }]
-          })
+      const testModels = ['gemini-3.5-flash-lite', 'gemini-flash-lite-latest', 'gemini-3.1-flash-lite']
+      let lastErr = null
+      let success = false
+
+      for (const model of testModels) {
+        try {
+          const response = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${keyToTest}`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                contents: [{ parts: [{ text: 'Reponds "OK"' }] }]
+              })
+            }
+          )
+
+          const data = await response.json().catch(() => ({}))
+
+          if (response.ok && !data.error) {
+            success = true
+            break
+          } else {
+            const msg = data.error?.message || `Erreur HTTP ${response.status}`
+            lastErr = new Error(msg)
+            if (response.status === 400 && msg.includes('API_KEY_INVALID')) {
+              throw lastErr
+            }
+          }
+        } catch (err) {
+          lastErr = err
+          if (err.message?.includes('API_KEY_INVALID')) throw err
         }
-      )
+      }
 
-      const data = await response.json()
-
-      if (!response.ok || data.error) {
-        throw new Error(data.error?.message || 'Clé API invalide ou non autorisée par Google.')
+      if (!success) {
+        throw lastErr || new Error('Impossible de valider la clé avec les modèles disponibles.')
       }
 
       // Key is valid! Save to localStorage

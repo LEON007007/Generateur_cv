@@ -7,7 +7,6 @@ import {
   Briefcase, 
   GraduationCap, 
   PenTool, 
-  Sparkles, 
   Eye, 
   Edit3, 
   Plus, 
@@ -15,13 +14,15 @@ import {
   Globe, 
   X,
   Palette,
-  Camera
+  Camera,
+  Loader2
 } from 'lucide-react'
 import { useCVStore } from '../store'
 import CVPreview from '../components/CVPreview'
-import AIAssistantModal from '../components/AIAssistantModal'
+import InlineAIAssistant from '../components/InlineAIAssistant'
 import GeminiApiKeyModal from '../components/GeminiApiKeyModal'
 import RichTextEditor from '../components/RichTextEditor'
+import { generateWithGemini } from '../services/geminiService'
 
 const Accordion = ({ title, icon: Icon, badgeCount, children, defaultOpen = false }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen)
@@ -109,13 +110,8 @@ export default function Editor() {
 
   const [mobileTab, setMobileTab] = useState('edit') // 'edit' | 'preview'
   const [newSkillInput, setNewSkillInput] = useState('')
-  const [isGeneratingAI, setIsGeneratingAI] = useState(false)
-  const [aiModalOpen, setAiModalOpen] = useState(false)
-  const [aiTargetSection, setAiTargetSection] = useState('summary') // 'summary' | 'experience' | 'skills'
-  const [aiTargetExpId, setAiTargetExpId] = useState(null)
-  const [aiInitialPrompt, setAiInitialPrompt] = useState('')
-  const [aiCurrentText, setAiCurrentText] = useState('')
-  const [aiUserRole, setAiUserRole] = useState('')
+  const [isSuggestingSkills, setIsSuggestingSkills] = useState(false)
+  const [skillsAiError, setSkillsAiError] = useState('')
   const [apiKeyModalOpen, setApiKeyModalOpen] = useState(false)
 
   const colorPalette = [
@@ -139,56 +135,6 @@ export default function Editor() {
     updatePersonalInfo(name, value)
   }
 
-  // Helper to convert plain text / markdown from AI output into clean HTML for RichTextEditor
-  const formatPlainTextToHtml = (text) => {
-    if (!text) return ''
-    if (text.includes('<p>') || text.includes('<ul>')) return text // already HTML
-    
-    const lines = text.split('\n').map(l => l.trim()).filter(Boolean)
-    const hasBullets = lines.some(l => l.startsWith('•') || l.startsWith('-') || l.startsWith('*'))
-    
-    if (hasBullets) {
-      const listItems = lines.map(line => {
-        const clean = line.replace(/^[•\-\*]\s*/, '').trim()
-        return `<li>${clean}</li>`
-      }).join('')
-      return `<ul>${listItems}</ul>`
-    }
-    
-    return lines.map(l => `<p>${l}</p>`).join('')
-  }
-
-  // Dynamic AI Modal Handlers with integrated Gemini AI
-  const openAiModalForSection = (section, id = null) => {
-    setAiTargetSection(section)
-    setAiTargetExpId(id)
-    setAiUserRole(personalInfo.title || 'Professionnel')
-
-    if (section === 'summary') {
-      setAiCurrentText(personalInfo.summary || '')
-      setAiInitialPrompt(personalInfo.summary
-        ? `Perfectionne et sublime ce résumé professionnel pour un profil de ${personalInfo.title || 'Professionnel'} :\n"${personalInfo.summary.replace(/<[^>]*>/g, '')}"`
-        : `Rédige un résumé professionnel percutant et captivant de 3-4 lignes pour un ${personalInfo.title || 'Consultant Senior'}`)
-    } else if (section === 'experience' && id) {
-      const exp = experiences.find(e => e.id === id)
-      setAiCurrentText(exp?.description || '')
-      setAiInitialPrompt(exp?.description
-        ? `Transforme et sublime ces missions en 3-4 puces de réalisations majeures et chiffrées avec verbes d'action pour le poste de ${exp.title || 'Collaborateur'} chez ${exp.company || 'l\'entreprise'} :\n"${exp.description.replace(/<[^>]*>/g, '')}"`
-        : `Rédige 4 réalisations majeures et chiffrées avec verbes d'action pour le poste de ${exp?.title || 'Collaborateur'} chez ${exp?.company || 'l\'entreprise'}`)
-    } else if (section === 'education' && id) {
-      const edu = education.find(e => e.id === id)
-      setAiCurrentText(edu?.description || '')
-      setAiInitialPrompt(edu?.description
-        ? `Améliore cette description de formation pour ${edu.degree || 'mon diplôme'} chez ${edu.school || 'mon établissement'} :\n"${edu.description.replace(/<[^>]*>/g, '')}"`
-        : `Rédige une description concise et valorisante des compétences et projets majeurs acquis lors de la formation ${edu?.degree || 'Diplôme'} chez ${edu?.school || 'Établissement'}`)
-    } else if (section === 'skills') {
-      setAiCurrentText(skills.join(', '))
-      setAiInitialPrompt(`Génère une sélection des 6 à 8 compétences techniques et stratégiques incontournables pour un ${personalInfo.title || 'Professionnel'}.`)
-    }
-
-    setAiModalOpen(true)
-  }
-
   const handleAddSkill = (e) => {
     e?.preventDefault()
     if (newSkillInput.trim()) {
@@ -197,20 +143,29 @@ export default function Editor() {
     }
   }
 
-  const handleApplyAIText = (generatedText) => {
-    const formattedHtml = formatPlainTextToHtml(generatedText)
-    if (aiTargetSection === 'summary') {
-      updatePersonalInfo('summary', formattedHtml)
-    } else if (aiTargetSection === 'experience' && aiTargetExpId) {
-      updateExperience(aiTargetExpId, 'description', formattedHtml)
-    } else if (aiTargetSection === 'education' && aiTargetExpId) {
-      updateEducation(aiTargetExpId, 'description', formattedHtml)
-    } else if (aiTargetSection === 'skills') {
-      const items = generatedText
-        .split(/[\n,•]/)
-        .map(s => s.replace(/^\d+[\.\)]\s*/, '').trim())
-        .filter(s => s.length > 1 && s.length < 40)
-      items.forEach(skill => addSkill(skill))
+  // Direct Inline AI Skills Suggestion
+  const handleSuggestSkills = async () => {
+    setIsSuggestingSkills(true)
+    setSkillsAiError('')
+    try {
+      const role = personalInfo.title || 'Professionnel'
+      const existing = skills.length > 0 ? ` (compétences déjà présentes : ${skills.join(', ')})` : ''
+      const result = await generateWithGemini({
+        prompt: `Génère une sélection des 6 à 8 compétences techniques et stratégiques indispensables pour un profil de ${role}${existing}. Réponds UNIQUEMENT avec la liste des compétences séparées par des virgules, sans aucune phrase d'introduction, de politesse ni de conclusion.`
+      })
+
+      if (result) {
+        const items = result
+          .split(/[\n,•]/)
+          .map(s => s.replace(/^\d+[\.\)]\s*/, '').trim())
+          .filter(s => s.length > 1 && s.length < 45)
+        
+        items.forEach(skill => addSkill(skill))
+      }
+    } catch (err) {
+      setSkillsAiError(err.message || 'Erreur lors de la suggestion des compétences avec Gemini.')
+    } finally {
+      setIsSuggestingSkills(false)
     }
   }
 
@@ -552,29 +507,13 @@ export default function Editor() {
                   onChange={(html) => updatePersonalInfo('summary', html)} 
                   placeholder="Présentez brièvement vos compétences clés et votre parcours..."
                 />
-                <button 
-                  type="button" 
-                  onClick={() => openAiModalForSection('summary')} 
-                  className="btn-ai-assist-box flex items-center gap-2"
-                  style={{
-                    marginTop: '10px',
-                    padding: '8px 14px',
-                    borderRadius: '10px',
-                    backgroundColor: 'rgba(255, 97, 84, 0.08)',
-                    color: 'var(--color-coral)',
-                    border: '1px solid rgba(255, 97, 84, 0.3)',
-                    fontSize: '12.5px',
-                    fontWeight: '700',
-                    cursor: 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    transition: 'all 0.2s ease',
-                    boxShadow: '0 2px 8px rgba(255, 97, 84, 0.08)'
-                  }}
-                >
-                  <Sparkles size={14} color="var(--color-coral)" />
-                  <span>Rédiger & Optimiser avec l'IA Gemini</span>
-                </button>
+                <InlineAIAssistant 
+                  currentText={personalInfo.summary}
+                  onApply={(newHtml) => updatePersonalInfo('summary', newHtml)}
+                  userRole={personalInfo.title || 'Professionnel'}
+                  contextType="summary"
+                  placeholder="Consigne libre (ex: axer sur l'impact managérial et les résultats)..."
+                />
               </div>
             </div>
           </Accordion>
@@ -655,29 +594,14 @@ export default function Editor() {
                       onChange={(html) => updateExperience(exp.id, 'description', html)} 
                       placeholder="Détaillez vos réalisations principales (utilisez les puces)..."
                     />
-                    <button 
-                      type="button" 
-                      onClick={() => openAiModalForSection('experience', exp.id)} 
-                      className="btn-ai-assist-box flex items-center gap-2"
-                      style={{
-                        marginTop: '10px',
-                        padding: '8px 14px',
-                        borderRadius: '10px',
-                        backgroundColor: 'rgba(255, 97, 84, 0.08)',
-                        color: 'var(--color-coral)',
-                        border: '1px solid rgba(255, 97, 84, 0.3)',
-                        fontSize: '12.5px',
-                        fontWeight: '700',
-                        cursor: 'pointer',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        transition: 'all 0.2s ease',
-                        boxShadow: '0 2px 8px rgba(255, 97, 84, 0.08)'
-                      }}
-                    >
-                      <Sparkles size={14} color="var(--color-coral)" />
-                      <span>Générer des réalisations percutantes avec l'IA</span>
-                    </button>
+                    <InlineAIAssistant 
+                      currentText={exp.description}
+                      onApply={(newHtml) => updateExperience(exp.id, 'description', newHtml)}
+                      userRole={exp.title || personalInfo.title || 'Collaborateur'}
+                      extraContext={exp.company}
+                      contextType="experience"
+                      placeholder="Consigne libre (ex: souligner le management et les KPI chiffrés)..."
+                    />
                   </div>
                 </div>
               </div>
@@ -760,29 +684,14 @@ export default function Editor() {
                       onChange={(html) => updateEducation(edu.id, 'description', html)} 
                       placeholder="Ajoutez une description de votre formation..."
                     />
-                    <button 
-                      type="button" 
-                      onClick={() => openAiModalForSection('education', edu.id)} 
-                      className="btn-ai-assist-box flex items-center gap-2"
-                      style={{
-                        marginTop: '10px',
-                        padding: '8px 14px',
-                        borderRadius: '10px',
-                        backgroundColor: 'rgba(255, 97, 84, 0.08)',
-                        color: 'var(--color-coral)',
-                        border: '1px solid rgba(255, 97, 84, 0.3)',
-                        fontSize: '12.5px',
-                        fontWeight: '700',
-                        cursor: 'pointer',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        transition: 'all 0.2s ease',
-                        boxShadow: '0 2px 8px rgba(255, 97, 84, 0.08)'
-                      }}
-                    >
-                      <Sparkles size={14} color="var(--color-coral)" />
-                      <span>Enrichir la description avec l'IA Gemini</span>
-                    </button>
+                    <InlineAIAssistant 
+                      currentText={edu.description}
+                      onApply={(newHtml) => updateEducation(edu.id, 'description', newHtml)}
+                      userRole={personalInfo.title || 'Diplômé'}
+                      extraContext={`${edu.degree || ''} ${edu.school ? 'chez ' + edu.school : ''}`.trim()}
+                      contextType="education"
+                      placeholder="Consigne libre (ex: projets de fin d'études et mention obtenue)..."
+                    />
                   </div>
                 </div>
               </div>
@@ -805,23 +714,39 @@ export default function Editor() {
               <label className="label" style={{ marginBottom: 0 }}>Ajouter une compétence</label>
               <button 
                 type="button" 
-                onClick={() => openAiModalForSection('skills')} 
+                disabled={isSuggestingSkills}
+                onClick={handleSuggestSkills} 
                 style={{
                   background: 'none',
                   border: 'none',
                   color: 'var(--color-coral)',
                   fontSize: '12.5px',
                   fontWeight: '700',
-                  cursor: 'pointer',
+                  cursor: isSuggestingSkills ? 'not-allowed' : 'pointer',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '5px'
+                  gap: '5px',
+                  opacity: isSuggestingSkills ? 0.7 : 1
                 }}
               >
-                <Sparkles size={14} />
-                <span>Suggérer avec l'IA</span>
+                {isSuggestingSkills ? (
+                  <>
+                    <Loader2 size={13} className="spin-animate" />
+                    <span>Génération en cours...</span>
+                  </>
+                ) : (
+                  <>
+                    <i className="fa-solid fa-robot" style={{ fontSize: '13px' }} />
+                    <span>Rédiger avec IA</span>
+                  </>
+                )}
               </button>
             </div>
+            {skillsAiError && (
+              <div style={{ color: '#DC2626', fontSize: '11.5px', marginBottom: '8px' }}>
+                {skillsAiError}
+              </div>
+            )}
             <div style={{ marginBottom: '16px' }}>
               <form onSubmit={handleAddSkill} className="flex gap-2">
                 <input 
@@ -913,24 +838,6 @@ export default function Editor() {
           <CVPreview isActiveTab={mobileTab === 'preview'} />
         </div>
       </div>
-
-      {/* Gemini AI Assistant Modal */}
-      <AIAssistantModal 
-        isOpen={aiModalOpen}
-        onClose={() => setAiModalOpen(false)}
-        initialPrompt={aiInitialPrompt}
-        currentText={aiCurrentText}
-        userRole={aiUserRole}
-        sectionType={aiTargetSection}
-        onApplyText={handleApplyAIText}
-        title={
-          aiTargetSection === 'summary' 
-            ? 'Assistant IA : Résumé Professionnel' 
-            : aiTargetSection === 'skills'
-            ? 'Assistant IA : Compétences Clés'
-            : 'Assistant IA : Rédaction d\'Expérience'
-        }
-      />
 
       {/* Standalone Gemini 3-Step Guide Modal */}
       <GeminiApiKeyModal 
