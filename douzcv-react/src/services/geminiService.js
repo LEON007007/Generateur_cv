@@ -22,7 +22,7 @@ export async function generateWithGemini({ prompt, systemInstruction, apiKey }) 
   const key = rawKey ? rawKey.trim() : ''
 
   if (!key) {
-    throw new Error('Aucune clé API Gemini configurée. Ajoutez votre clé dans le bouton de connexion Gemini.')
+    throw new Error('Clé Gemini absente du déploiement. Dans Vercel, vérifiez VITE_GEMINI_API_KEY puis cliquez sur Redéployer.')
   }
 
   let lastError = null
