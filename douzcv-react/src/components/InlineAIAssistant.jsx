@@ -31,8 +31,7 @@ export default function InlineAIAssistant({
   userRole = 'Professionnel',
   contextType = 'summary',
   extraContext = '',
-  placeholder = 'Ex: accentuer l\'impact managérial et les chiffres clés...',
-  onRequestApiKey
+  placeholder = 'Ex: accentuer l\'impact managérial et les chiffres clés...'
 }) {
   const [customPrompt, setCustomPrompt] = useState('')
   const [isExpanded, setIsExpanded] = useState(false)
@@ -410,15 +409,6 @@ export default function InlineAIAssistant({
         >
           <AlertCircle size={13} />
           <span>{error}</span>
-          {onRequestApiKey && (
-            <button
-              type="button"
-              onClick={onRequestApiKey}
-              style={{ marginLeft: 'auto', color: '#991B1B', fontWeight: '700', textDecoration: 'underline' }}
-            >
-              Configurer la clé Gemini
-            </button>
-          )}
         </div>
       )}
     </div>

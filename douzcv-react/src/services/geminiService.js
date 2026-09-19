@@ -17,6 +17,23 @@ RÈGLES STRICTES ET NON-NÉGOCIABLES :
 4. Utilise un français irréprochable, soutenu, axé sur les résultats, l'impact, le leadership et l'efficacité opérationnelle.`
 
 export async function generateWithGemini({ prompt, systemInstruction, apiKey }) {
+  if (!apiKey) {
+    try {
+      const proxyResponse = await fetch('/api/gemini', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt, systemInstruction })
+      })
+      const proxyData = await proxyResponse.json().catch(() => ({}))
+      if (proxyResponse.ok && proxyData.text) return proxyData.text
+      if (proxyResponse.status !== 404) {
+        throw new Error(proxyData.error || 'Le service Gemini est indisponible.')
+      }
+    } catch (error) {
+      if (error.message !== 'Failed to fetch') throw error
+    }
+  }
+
   const storedKey = typeof window !== 'undefined' ? localStorage.getItem('douzcv_gemini_api_key') : ''
   const rawKey = apiKey || storedKey || import.meta.env.VITE_GEMINI_API_KEY
   const key = rawKey ? rawKey.trim() : ''
