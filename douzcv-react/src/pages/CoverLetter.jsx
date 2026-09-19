@@ -172,7 +172,8 @@ export default function CoverLetter() {
 
         <h1 className="cover-letter-page-title">Lettre de motivation</h1>
         <p className="cover-letter-page-sub">
-          CV : <strong>{selectedTemplate}</strong> — éditez la lettre uniquement sur la page A4.
+          CV : <strong>{selectedTemplate}</strong><br />
+          Vous pouvez aussi éditer directement la lettre sur la page de modification.
         </p>
 
         <section className="cover-letter-form-section" aria-labelledby="cover-letter-sender-title">

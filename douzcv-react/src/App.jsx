@@ -19,7 +19,7 @@ const Navigation = () => {
       {/* 1. Bouton Retour à la Page d'accueil HTML/CSS/JS */}
       <a 
         href="/page_accueil/index.html"
-        className="header-nav-link"
+          className="header-nav-link header-home-link"
         style={{ 
           color: 'var(--color-text-main)', 
           display: 'flex', 

@@ -374,7 +374,7 @@ export default function Templates() {
   }
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '32px 24px 64px 24px' }}>
+    <div className="templates-page" style={{ maxWidth: '1200px', margin: '0 auto', padding: '32px 24px 64px 24px' }}>
       
       {/* Title & Introduction */}
       <div style={{ textAlign: 'left', marginBottom: '40px' }}>
