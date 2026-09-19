@@ -15,7 +15,8 @@ import {
   X,
   Palette,
   Camera,
-  Loader2
+  Loader2,
+  Sparkles
 } from 'lucide-react'
 import { useCVStore } from '../store'
 import CVPreview from '../components/CVPreview'
@@ -114,6 +115,10 @@ export default function Editor() {
   const [skillsAiError, setSkillsAiError] = useState('')
   const [apiKeyModalOpen, setApiKeyModalOpen] = useState(false)
 
+  const openAiModalForSection = () => {
+    setApiKeyModalOpen(true)
+  }
+
   const colorPalette = [
     { name: 'Bleu Nuit', value: '#1B3041' },
     { name: 'Corail Douz', value: '#FF6154' },
@@ -198,25 +203,6 @@ export default function Editor() {
           </div>
 
           {/* Selects moved to Personnalisation Accordion */}
-
-          <button 
-            type="button"
-            onClick={() => openAiModalForSection('summary')}
-            className="btn-subheader-action flex items-center gap-1.5"
-            style={{
-              padding: '6px 12px',
-              fontSize: '12.5px',
-              fontWeight: '600',
-              backgroundColor: 'rgba(255, 97, 84, 0.1)',
-              color: 'var(--color-coral)',
-              border: '1px solid rgba(255, 97, 84, 0.3)',
-              borderRadius: 'var(--radius-sm)',
-              cursor: 'pointer'
-            }}
-          >
-            <Sparkles size={14} />
-            <span>Assistant IA</span>
-          </button>
 
           <button 
             onClick={() => navigate('/exporter')} 

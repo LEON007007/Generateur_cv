@@ -554,11 +554,7 @@ export default function Templates() {
       </div>
 
       {/* Grid of 12 Templates */}
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', 
-        gap: '20px' 
-      }}>
+      <div className="templates-grid">
         {filteredTemplates.map(template => (
           <TemplateCard
             key={template.id}

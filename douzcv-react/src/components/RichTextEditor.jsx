@@ -16,7 +16,7 @@ const modules = {
 
 const formats = [
   'bold', 'italic', 'underline',
-  'list', 'bullet',
+  'list',
   'link',
   'align',
   'color'

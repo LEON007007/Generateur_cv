@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { ZoomIn, ZoomOut, RotateCcw, FileText, Scissors } from 'lucide-react'
 import { useCVStore } from '../store'
 import ExecutiveTemplate from './templates/ExecutiveTemplate'
@@ -39,10 +39,10 @@ export default function CVPreview({ isActiveTab = true }) {
   const [contentHeight, setContentHeight] = useState(1123)
 
   // Compute Auto-Fit Scale (FlowCV Mobile & Desktop System)
-  useEffect(() => {
+  useLayoutEffect(() => {
     const updateScale = () => {
       if (!outerWrapperRef.current) return
-      const wrapperWidth = outerWrapperRef.current.clientWidth || window.innerWidth
+      const wrapperWidth = outerWrapperRef.current.getBoundingClientRect().width || window.innerWidth
       const padding = window.innerWidth <= 600 ? 16 : 32
       const availableWidth = Math.max(280, wrapperWidth - padding)
       const standardA4Width = 794 // Standard A4 width in px at 96 DPI (210mm)
@@ -65,11 +65,18 @@ export default function CVPreview({ isActiveTab = true }) {
     const timer2 = setTimeout(updateScale, 200)
 
     window.addEventListener('resize', updateScale)
+    const resizeObserver = typeof ResizeObserver !== 'undefined'
+      ? new ResizeObserver(updateScale)
+      : null
+    if (resizeObserver && outerWrapperRef.current) {
+      resizeObserver.observe(outerWrapperRef.current)
+    }
     return () => {
       cancelAnimationFrame(rAF)
       clearTimeout(timer1)
       clearTimeout(timer2)
       window.removeEventListener('resize', updateScale)
+      resizeObserver?.disconnect()
     }
   }, [
     isActiveTab,
