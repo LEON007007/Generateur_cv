@@ -498,6 +498,7 @@ export default function Editor() {
                   onApply={(newHtml) => updatePersonalInfo('summary', newHtml)}
                   userRole={personalInfo.title || 'Professionnel'}
                   contextType="summary"
+                  onRequestApiKey={openAiModalForSection}
                   placeholder="Consigne libre (ex: axer sur l'impact managérial et les résultats)..."
                 />
               </div>
@@ -586,6 +587,7 @@ export default function Editor() {
                       userRole={exp.title || personalInfo.title || 'Collaborateur'}
                       extraContext={exp.company}
                       contextType="experience"
+                      onRequestApiKey={openAiModalForSection}
                       placeholder="Consigne libre (ex: souligner le management et les KPI chiffrés)..."
                     />
                   </div>
@@ -676,6 +678,7 @@ export default function Editor() {
                       userRole={personalInfo.title || 'Diplômé'}
                       extraContext={`${edu.degree || ''} ${edu.school ? 'chez ' + edu.school : ''}`.trim()}
                       contextType="education"
+                      onRequestApiKey={openAiModalForSection}
                       placeholder="Consigne libre (ex: projets de fin d'études et mention obtenue)..."
                     />
                   </div>
