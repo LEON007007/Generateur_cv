@@ -4,6 +4,14 @@
   "private": true,
   "scripts": {
     "build": "cd douzcv-react && npm run build",
-    "dev": "cd douzcv-react && npm run dev --"
+    "dev": "concurrently \"node server.js\" \"cd douzcv-react && npm run dev -- --host 0.0.0.0\"",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.0.1",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0"
   }
 }

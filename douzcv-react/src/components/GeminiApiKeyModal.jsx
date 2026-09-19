@@ -46,7 +46,7 @@ export default function GeminiApiKeyModal({ isOpen, onClose, onKeySaved }) {
     setTestResult(null)
 
     try {
-      const testModels = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash']
+      const testModels = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-2.0-flash']
       let lastErr = null
       let success = false
 

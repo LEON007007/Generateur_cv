@@ -1,13 +1,7 @@
 /**
  * Gemini AI Service for douzCv
- * Calls Google Gemini REST API with public Flash models.
+ * Uses the secure backend route only. No browser-side Gemini key is used anymore.
  */
-
-const CANDIDATE_MODELS = [
-  'gemini-2.5-flash',
-  'gemini-2.0-flash',
-  'gemini-1.5-flash'
-]
 
 const DEFAULT_SYSTEM_INSTRUCTION = `Tu es un expert mondial en recrutement de cadres et optimisation de CV de haut niveau.
 RÈGLES STRICTES ET NON-NÉGOCIABLES :
@@ -16,78 +10,50 @@ RÈGLES STRICTES ET NON-NÉGOCIABLES :
 3. Ne pose JAMAIS de questions et ne demande JAMAIS d'informations supplémentaires. Si la consigne est brève ou générale, produis immédiatement le meilleur texte professionnel complet et percutant possible.
 4. Utilise un français irréprochable, soutenu, axé sur les résultats, l'impact, le leadership et l'efficacité opérationnelle.`
 
-export async function generateWithGemini({ prompt, systemInstruction, apiKey }) {
-  if (!apiKey) {
+export async function generateWithGemini({ prompt, systemInstruction }) {
+  const clearStoredGeminiKey = () => {
     try {
-      const proxyResponse = await fetch('/api/gemini', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt, systemInstruction })
-      })
-      const proxyData = await proxyResponse.json().catch(() => ({}))
-      if (proxyResponse.ok && proxyData.text) return proxyData.text
-      if (proxyResponse.status !== 404) {
-        throw new Error(proxyData.error || 'Le service Gemini est indisponible.')
+      if (typeof window !== 'undefined') {
+        window.localStorage.removeItem('douzcv_gemini_api_key')
       }
     } catch (error) {
-      if (error.message !== 'Failed to fetch') throw error
+      console.warn('Impossible de nettoyer la clé Gemini stockée.', error)
     }
   }
 
-  const storedKey = typeof window !== 'undefined' ? localStorage.getItem('douzcv_gemini_api_key') : ''
-  const rawKey = apiKey || storedKey || import.meta.env.VITE_GEMINI_API_KEY
-  const key = rawKey ? rawKey.trim() : ''
+  try {
+    const proxyResponse = await fetch('/api/gemini', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, systemInstruction: systemInstruction || DEFAULT_SYSTEM_INSTRUCTION })
+    })
 
-  if (!key) {
-    throw new Error('Clé Gemini absente du déploiement. Dans Vercel, vérifiez VITE_GEMINI_API_KEY puis cliquez sur Redéployer.')
-  }
+    const proxyData = await proxyResponse.json().catch(() => ({}))
 
-  let lastError = null
-
-  for (const model of CANDIDATE_MODELS) {
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`
-
-    try {
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          contents: [{ role: 'user', parts: [{ text: prompt }] }],
-          systemInstruction: {
-            parts: [{ text: systemInstruction || DEFAULT_SYSTEM_INSTRUCTION }]
-          },
-          generationConfig: {
-            temperature: 0.6,
-            maxOutputTokens: 800
-          }
-        })
-      })
-
-      if (response.ok) {
-        const data = await response.json()
-        const text = data?.candidates?.[0]?.content?.parts?.[0]?.text
-        if (text) {
-          let cleanText = text.trim()
-          cleanText = cleanText.replace(/^(Voici une proposition de résumé|Voici votre texte corrigé|Voici quelques puces|Bien sûr, voici|Voici une version améliorée)\s*:\s*\n*/i, '')
-          return cleanText
-        }
-      }
-
-      const errorData = await response.json().catch(() => ({}))
-      const errorMessage = errorData?.error?.message || `HTTP ${response.status}`
-      lastError = new Error(errorMessage)
-
-      if (response.status === 400 || response.status === 401 || response.status === 403) {
-        throw new Error(`La clé API Gemini a été refusée : ${errorMessage}`)
-      }
-    } catch (err) {
-      lastError = err
-      if (err.message?.includes('clé API Gemini')) throw err
-      console.warn(`Échec avec ${model}, tentative du modèle suivant...`, err.message)
+    if (proxyResponse.ok && proxyData.text) {
+      return proxyData.text.trim()
     }
-  }
 
-  throw new Error(`Gemini n'a pas pu générer de réponse : ${lastError?.message || 'service indisponible'}`)
+    if (proxyResponse.status === 503 || proxyResponse.status === 502 || proxyResponse.status === 400) {
+      const detailedError = proxyData.error || 'Le service Gemini n’est pas correctement configuré.'
+      throw new Error(detailedError)
+    }
+
+    if (proxyResponse.status === 404) {
+      throw new Error('Le backend Gemini n’est pas disponible dans cette instance. Vérifiez le déploiement Vercel ou la configuration serveur.')
+    }
+
+    throw new Error(proxyData.error || 'Le service Gemini est indisponible.')
+  } catch (error) {
+    const message = error?.message || 'Erreur inconnue du service Gemini.'
+
+    if (typeof window !== 'undefined') {
+      const storedKey = localStorage.getItem('douzcv_gemini_api_key')
+      if (storedKey) {
+        clearStoredGeminiKey()
+      }
+    }
+
+    throw new Error(message)
+  }
 }

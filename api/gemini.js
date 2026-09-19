@@ -1,4 +1,10 @@
-const MODELS = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash']
+import path from 'node:path';
+import dotenv from 'dotenv';
+
+dotenv.config();
+dotenv.config({ path: path.resolve(process.cwd(), 'douzcv-react', '.env') });
+
+const PREFERRED_MODELS = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-2.0-flash']
 
 const DEFAULT_SYSTEM_INSTRUCTION = `Tu es un expert mondial en recrutement et optimisation de CV.
 Réponds directement avec le texte final prêt à être inséré dans le CV, sans introduction ni conclusion.
@@ -22,9 +28,30 @@ export default async function handler(request, response) {
     return response.status(400).json({ error: 'Le prompt Gemini est obligatoire.' })
   }
 
-  let lastMessage = 'Service Gemini indisponible.'
+  let lastMessage = 'Aucun modèle Gemini compatible n’est disponible pour cette clé.'
 
-  for (const model of MODELS) {
+  try {
+    const modelsResponse = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`
+    )
+    const modelsData = await modelsResponse.json().catch(() => ({}))
+    const availableModels = (modelsData.models || [])
+      .filter((model) => model.supportedGenerationMethods?.includes('generateContent'))
+      .map((model) => model.name.replace(/^models\//, ''))
+      .filter((name) => name.includes('flash') && !/(tts|audio|voice|image)/i.test(name))
+
+    const models = [
+      ...PREFERRED_MODELS.filter((model) => availableModels.includes(model)),
+      ...availableModels.filter((model) => !PREFERRED_MODELS.includes(model))
+    ]
+
+    if (models.length === 0) {
+      return response.status(502).json({
+        error: 'La clé Gemini ne donne accès à aucun modèle Flash compatible avec generateContent.'
+      })
+    }
+
+    for (const model of models) {
     try {
       const geminiResponse = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
@@ -52,6 +79,9 @@ export default async function handler(request, response) {
     } catch (error) {
       lastMessage = error.message || lastMessage
     }
+    }
+  } catch (error) {
+    lastMessage = error.message || lastMessage
   }
 
   return response.status(502).json({ error: lastMessage })
