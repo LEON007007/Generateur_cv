@@ -31,6 +31,7 @@ export default function InlineAIAssistant({
   userRole = 'Professionnel',
   contextType = 'summary',
   extraContext = '',
+  systemInstruction,
   placeholder = 'Ex: accentuer l\'impact managérial et les chiffres clés...'
 }) {
   const [customPrompt, setCustomPrompt] = useState('')
@@ -40,7 +41,9 @@ export default function InlineAIAssistant({
   const [previousText, setPreviousText] = useState(null)
   const [successMessage, setSuccessMessage] = useState('')
 
-  const cleanCurrent = stripHtml(currentText)
+  const cleanCurrent = contextType === 'coverLetter'
+    ? (currentText || '').trim()
+    : stripHtml(currentText)
   const hasContent = cleanCurrent.length > 0
 
   // ── Presets ──────────────────────────────────────────────────────────────
@@ -68,6 +71,32 @@ export default function InlineAIAssistant({
           prompt: hasContent
             ? `Corrige et élève le niveau de style de ce texte pour un rendu exécutif haut de gamme, sans changer le fond :\n"${cleanCurrent}"`
             : `Rédige 3 points forts clés pour un ${userRole}.`
+        }
+      ]
+    }
+
+    if (contextType === 'coverLetter') {
+      const offerCtx = extraContext ? ` pour ${extraContext}` : ''
+      return [
+        {
+          id: 'align_offer',
+          icon: 'fa-solid fa-bullseye',
+          label: 'Aligner sur l\'offre',
+          prompt: hasContent
+            ? `Réécris cette lettre de motivation${offerCtx} en réutilisant le vocabulaire métier de l'offre sans copier mot pour mot, en t'appuyant sur le CV :\n"${cleanCurrent}"`
+            : `Rédige une lettre de motivation professionnelle${offerCtx} basée sur le profil ${userRole}.`
+        },
+        {
+          id: 'concise',
+          icon: 'fa-solid fa-compress',
+          label: 'Plus concis',
+          prompt: `Réduis cette lettre à 200 mots maximum en gardant l'essentiel et la structure formelle :\n"${cleanCurrent || userRole}"`
+        },
+        {
+          id: 'formal',
+          icon: 'fa-solid fa-user-tie',
+          label: 'Plus formel',
+          prompt: `Réécris cette lettre avec un registre soutenu et un vouvoiement strict, sans changer les faits :\n"${cleanCurrent || userRole}"`
         }
       ]
     }
@@ -126,11 +155,17 @@ export default function InlineAIAssistant({
     setPreviousText(currentText)
 
     try {
-      const result = await generateWithGemini({ prompt: promptText.trim() })
+      const result = await generateWithGemini({
+        prompt: promptText.trim(),
+        ...(systemInstruction ? { systemInstruction } : {})
+      })
 
       if (result) {
-        const formatted = formatPlainTextToHtml(result)
-        onApply(formatted)
+        if (contextType === 'coverLetter') {
+          onApply(result.trim())
+        } else {
+          onApply(formatPlainTextToHtml(result))
+        }
         setSuccessMessage('Texte inséré avec succès !')
         setCustomPrompt('')
         setIsExpanded(false)

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 92" fill="none" role="img" aria-labelledby="logo-title logo-desc">
+  <title id="logo-title">douzCv</title>
+  <desc id="logo-desc">Symbole géométrique de page de CV avec wordmark douzCv</desc>
+  <g aria-hidden="true">
+    <rect x="4" y="4" width="84" height="84" rx="24" fill="#172B3A"/>
+    <path d="M28 24h27c12 0 21 9 21 22s-9 22-21 22H28V24Z" fill="#fff"/>
+    <path d="M42 37h11c5 0 9 4 9 9s-4 9-9 9H42V37Z" fill="#172B3A"/>
+    <path d="M28 24v44h10V24H28Z" fill="#FF6154"/>
+    <path d="M58 24h-7l18 18 7-7-18-11Z" fill="#FF6154"/>
+  </g>
+  <text x="108" y="61" font-family="Plus Jakarta Sans, Arial, sans-serif" font-size="48" font-weight="800" letter-spacing="-1.8" fill="#172B3A">douz<tspan fill="#FF6154">Cv</tspan></text>
+</svg>

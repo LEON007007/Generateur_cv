@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { 
   ChevronDown, 
   ChevronUp, 
@@ -817,6 +817,38 @@ export default function Editor() {
               Ajouter une langue
             </button>
           </Accordion>
+
+          <div
+            className="editor-cover-letter-cta"
+            style={{
+              marginTop: '24px',
+              padding: '16px 18px',
+              borderRadius: '14px',
+              border: '1px solid rgba(255, 97, 84, 0.25)',
+              background: 'linear-gradient(135deg, rgba(255, 97, 84, 0.08) 0%, rgba(27, 48, 65, 0.04) 100%)'
+            }}
+          >
+            <p style={{ fontSize: '13px', fontWeight: 700, color: 'var(--color-primary)', marginBottom: '6px' }}>
+              Lettre de motivation
+            </p>
+            <p style={{ fontSize: '12px', color: 'var(--color-text-muted)', lineHeight: 1.45, marginBottom: '12px' }}>
+              Créez une lettre assortie au modèle <strong>{selectedTemplate || 'sélectionné'}</strong>, avec l&apos;IA et export PDF.
+            </p>
+            <Link
+              to="/lettre-motivation"
+              className="btn-secondary"
+              style={{
+                width: '100%',
+                justifyContent: 'center',
+                textDecoration: 'none',
+                fontWeight: 700,
+                borderColor: 'var(--color-coral)',
+                color: 'var(--color-coral)'
+              }}
+            >
+              Rédiger ma lettre de motivation →
+            </Link>
+          </div>
         </div>
 
         {/* Right Panel: Live CV Preview */}

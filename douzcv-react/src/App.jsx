@@ -6,6 +6,7 @@ import { useCVStore } from './store'
 import Templates from './pages/Templates'
 import Editor from './pages/Editor'
 import Export from './pages/Export'
+import CoverLetter from './pages/CoverLetter'
 import Login from './pages/Login'
 
 const Navigation = () => {
@@ -46,16 +47,28 @@ const Navigation = () => {
 
       {/* 3. Éditeur (appears when a template is selected) */}
       {selectedTemplate && (
-        <Link 
-          to="/editeur" 
-          className="header-nav-link"
-          style={{ 
-            color: isActive('/editeur') ? 'var(--color-coral)' : 'var(--color-text-main)',
-            borderBottom: isActive('/editeur') ? '2px solid var(--color-coral)' : '2px solid transparent'
-          }}
-        >
-          Éditeur
-        </Link>
+        <>
+          <Link 
+            to="/editeur" 
+            className="header-nav-link"
+            style={{ 
+              color: isActive('/editeur') ? 'var(--color-coral)' : 'var(--color-text-main)',
+              borderBottom: isActive('/editeur') ? '2px solid var(--color-coral)' : '2px solid transparent'
+            }}
+          >
+            Éditeur
+          </Link>
+          <Link 
+            to="/lettre-motivation" 
+            className="header-nav-link"
+            style={{ 
+              color: isActive('/lettre-motivation') ? 'var(--color-coral)' : 'var(--color-text-main)',
+              borderBottom: isActive('/lettre-motivation') ? '2px solid var(--color-coral)' : '2px solid transparent'
+            }}
+          >
+            Lettre
+          </Link>
+        </>
       )}
     </nav>
   )
@@ -70,7 +83,7 @@ const Header = () => {
       <div className="header-left">
         {/* Logo links back to HTML/CSS/JS Landing page */}
         <a href="/page_accueil/index.html" className="header-logo" title="Retourner à l'accueil">
-          douz<span style={{ color: 'var(--color-coral)' }}>Cv</span>
+          <img src="/douzcv-logo.svg" alt="douzCv" />
         </a>
         <Navigation />
       </div>
@@ -151,6 +164,7 @@ const AppContent = () => {
           <Route path="/templates" element={<Templates />} />
           <Route path="/editeur" element={<Editor />} />
           <Route path="/exporter" element={<Export />} />
+          <Route path="/lettre-motivation" element={<CoverLetter />} />
           <Route path="/connexion" element={<Login />} />
           <Route path="/login" element={<Login />} />
         </Routes>

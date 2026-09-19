@@ -283,6 +283,12 @@ input, textarea, select {
   white-space: nowrap;
 }
 
+.header-logo img {
+  display: block;
+  width: 132px;
+  height: auto;
+}
+
 .header-logo span {
   color: var(--color-coral) !important;
 }
@@ -745,10 +751,493 @@ input, textarea, select {
   background-color: #E7E6E2;
   padding: clamp(16px, 2.5vw, 32px);
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
   overflow-y: auto;
   height: 100%;
+}
+
+/* ── Lettre de motivation (WYSIWYG A4, aligné éditeur CV) ───────────────── */
+.cover-letter-workspace .editor-left-panel.cover-letter-tools {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 24px clamp(22px, 2.4vw, 34px);
+  border-right: 1px solid var(--color-border);
+}
+
+.cover-letter-workspace {
+  grid-template-columns: minmax(360px, 420px) minmax(0, 1fr);
+}
+
+.cover-letter-mobile-tabs {
+  width: 100%;
+}
+
+.cover-letter-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  margin-bottom: 16px;
+}
+
+.cover-letter-page-title {
+  font-size: clamp(20px, 2.5vw, 24px);
+  font-weight: 800;
+  color: var(--color-primary);
+  margin: 0 0 6px;
+}
+
+.cover-letter-page-sub {
+  font-size: 12.5px;
+  color: var(--color-text-muted);
+  line-height: 1.45;
+  margin-bottom: 20px;
+}
+
+.cover-letter-form-section {
+  margin-bottom: 16px;
+  padding: 0 0 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.cover-letter-section-heading {
+  margin-bottom: 11px;
+}
+
+.cover-letter-section-kicker {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--color-coral);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cover-letter-section-heading h2 {
+  margin: 0;
+  color: var(--color-primary);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.cover-letter-sender-summary {
+  display: grid;
+  gap: 3px;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.cover-letter-sender-summary strong {
+  color: var(--color-primary);
+  font-size: 13px;
+}
+
+.cover-letter-panel-link {
+  display: inline-block;
+  margin-top: 9px;
+  color: var(--color-coral);
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.cover-letter-panel-link:hover {
+  text-decoration: underline;
+}
+
+.cover-letter-field-label {
+  display: block;
+  margin: 8px 0 4px;
+  color: var(--color-text-main);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.cover-letter-panel-input {
+  min-height: 36px;
+  font-size: 12px;
+}
+
+.cover-letter-panel-textarea {
+  min-height: 92px;
+  resize: vertical;
+  line-height: 1.45;
+}
+
+.cover-letter-panel-textarea-small {
+  min-height: 58px;
+}
+
+.cover-letter-panel-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.cover-letter-tool-block {
+  margin-bottom: 14px;
+}
+
+.cover-letter-style-note {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin: 8px 0 0;
+}
+
+.cover-letter-btn-ai {
+  width: 100%;
+  min-height: 42px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.cover-letter-btn-pdf {
+  width: 100%;
+  min-height: 42px;
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.cover-letter-error {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+  font-size: 12px;
+}
+
+.cover-letter-tools > .cover-letter-mobile-tabs {
+  margin: 0 -4px 12px;
+}
+
+.cover-letter-doc-panel {
+  background: #E7E6E2;
+  padding: clamp(20px, 3vw, 40px);
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.letter-doc {
+  width: 100%;
+  max-width: 794px;
+  min-height: 1123px;
+  padding: 52px 56px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.letter-doc-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.letter-main-content {
+  min-height: 835px;
+  display: flex;
+  flex-direction: column;
+}
+
+.letter-layout-sidebar {
+  padding-left: 48px;
+}
+
+.letter-sidebar-accent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  opacity: 0.85;
+}
+
+.letter-layout-sidebar .letter-doc-inner {
+  padding-left: 8px;
+}
+
+.letter-layout-prestige .letter-sender-name {
+  font-size: 14pt;
+  letter-spacing: 0.02em;
+}
+
+.letter-layout-minimal {
+  font-size: 10.5pt;
+  letter-spacing: 0.015em;
+}
+
+.letter-sender-name {
+  font-size: 13pt;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.letter-sender-meta {
+  font-size: 10pt;
+  color: #64748B;
+  margin-top: 4px;
+  line-height: 1.45;
+}
+
+.letter-cv-sync-link {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-coral);
+  text-decoration: none;
+  opacity: 0.85;
+}
+
+.letter-cv-sync-link:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.letter-date-row {
+  text-align: right;
+  font-size: 10.5pt;
+  margin-bottom: 28px;
+  color: #475569;
+}
+
+.letter-recipient-block {
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.letter-subject-block,
+.letter-reference-row {
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.letter-subject-block {
+  margin-bottom: 24px;
+}
+
+.letter-subject-label {
+  font-weight: 700;
+}
+
+.letter-salutation {
+  margin: 0;
+}
+
+.letter-body-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.letter-body-field {
+  min-height: 360px;
+  line-height: 1.65;
+  text-align: justify;
+  margin: 0 0 38px;
+  white-space: pre-wrap;
+}
+
+.letter-closing {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.letter-closing-block {
+  margin-top: 30px;
+  padding-top: 4px;
+}
+
+.letter-signature {
+  font-weight: 700;
+}
+
+.letter-signature-block {
+  margin-top: auto;
+  width: 220px;
+  margin-left: auto;
+  text-align: right;
+}
+
+.letter-signature-image {
+  display: block;
+  width: 220px;
+  max-height: 72px;
+  object-fit: contain;
+  object-position: right center;
+  margin-top: -18px;
+  margin-bottom: 24px;
+}
+
+.signature-pad {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border);
+}
+
+.signature-pad-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.signature-pad-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+.signature-pad-clear {
+  border: 0;
+  background: transparent;
+  color: var(--color-coral);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.signature-pad-canvas {
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  height: 90px;
+  border: 1px dashed rgba(100, 116, 139, 0.45);
+  border-radius: 8px;
+  background: #ffffff;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.signature-pad-hint {
+  margin: 6px 0 0;
+  color: var(--color-text-muted);
+  font-size: 10px;
+}
+
+.cover-letter-ai-panel {
+  margin-top: 36px;
+  padding-top: 16px;
+  border-top: 1px dashed rgba(100, 116, 139, 0.35);
+}
+
+.letter-ai-panel-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #94A3B8;
+  margin-bottom: 8px;
+}
+
+.cover-letter-editable {
+  display: block;
+  width: 100%;
+  border: none;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  resize: none;
+  field-sizing: content;
+}
+
+.cover-letter-editable--inline {
+  display: inline;
+  width: auto;
+  min-width: 4ch;
+}
+
+.cover-letter-editable--multiline {
+  resize: vertical;
+  min-height: 4em;
+}
+
+.cover-letter-editable::placeholder {
+  color: #CBD5E1;
+}
+
+.cover-letter-editable:hover,
+.cover-letter-editable:focus {
+  background: rgba(27, 48, 65, 0.03);
+  border-radius: 2px;
+}
+
+@media (max-width: 900px) {
+  .cover-letter-workspace {
+    flex-direction: column;
+  }
+  .cover-letter-workspace .editor-left-panel.cover-letter-tools {
+    max-width: none;
+    border-right: none;
+  }
+
+  .cover-letter-workspace.tab-edit .cover-letter-tools {
+    display: block !important;
+  }
+
+  .cover-letter-workspace.tab-edit .cover-letter-doc-panel {
+    display: none !important;
+  }
+
+  .cover-letter-workspace.tab-preview .cover-letter-tools {
+    display: none !important;
+  }
+
+  .cover-letter-workspace.tab-preview .cover-letter-doc-panel {
+    display: flex !important;
+    min-height: calc(100vh - 118px);
+    padding: 18px 10px 32px;
+    overflow-x: auto;
+  }
+
+  .cover-letter-workspace.tab-preview .letter-doc {
+    flex: 0 0 794px;
+    transform: scale(min(1, calc((100vw - 28px) / 794px)));
+    transform-origin: top center;
+  }
+  .letter-doc {
+    padding: 32px 24px;
+    min-height: auto;
+  }
+
+  .letter-main-content {
+    min-height: 760px;
+  }
+
+  .signature-pad-canvas {
+    max-width: 100%;
+  }
+
+  .cover-letter-panel-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
 }
 
 @media (max-width: 900px) {
@@ -1020,6 +1509,12 @@ input, textarea, select {
   font-weight: 900;
   letter-spacing: -0.03em;
   color: var(--color-primary);
+}
+
+.login-brand-logo img {
+  display: block;
+  width: 132px;
+  height: auto;
 }
 
 /* Center Form Content */

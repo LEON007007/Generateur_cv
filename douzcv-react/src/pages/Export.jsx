@@ -372,6 +372,22 @@ export default function Export() {
           <p style={{ color: 'var(--color-text-muted)', fontSize: '14px', lineHeight: '1.45', margin: 0 }}>
             Sélectionnez votre format de téléchargement haute fidélité.
           </p>
+          <Link
+            to="/lettre-motivation"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              marginTop: '12px',
+              fontSize: '13px',
+              fontWeight: '700',
+              color: 'var(--color-coral)',
+              textDecoration: 'none'
+            }}
+          >
+            <Sparkles size={14} />
+            Lettre de motivation (IA + PDF)
+          </Link>
         </div>
 
         <div className="card" style={{ padding: 'clamp(18px, 3vw, 26px)', borderRadius: '18px', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-level-1)' }}>

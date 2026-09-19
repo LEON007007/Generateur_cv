@@ -33,7 +33,24 @@ const defaultState = {
   spacing: 'normal',
   showPageBreaks: true,
   lastSavedAt: new Date().toISOString(),
-  dbStatus: 'synced' // 'synced' | 'saving'
+  dbStatus: 'synced', // 'synced' | 'saving'
+  coverLetter: {
+    letterTemplateId: '',
+    jobTitle: '',
+    companyName: '',
+    jobReference: '',
+    jobDescription: '',
+    place: '',
+    letterDate: '',
+    recipientName: '',
+    recipientAddress: '',
+    subject: '',
+    salutation: 'Madame, Monsieur,',
+    body: '',
+    closing: "Je vous prie d'agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
+    signatureName: '',
+    signatureImage: ''
+  }
 }
 
 export const useCVStore = create(
@@ -170,6 +187,30 @@ export const useCVStore = create(
 
       removeLanguage: (id) => set((state) => ({
         languages: state.languages.filter((lang) => lang.id !== id),
+        lastSavedAt: new Date().toISOString()
+      })),
+
+      updateCoverLetter: (field, value) => set((state) => ({
+        coverLetter: {
+          ...(state.coverLetter || defaultState.coverLetter),
+          [field]: value
+        },
+        lastSavedAt: new Date().toISOString()
+      })),
+
+      setCoverLetterBody: (body) => set((state) => ({
+        coverLetter: {
+          ...(state.coverLetter || defaultState.coverLetter),
+          body
+        },
+        lastSavedAt: new Date().toISOString()
+      })),
+
+      mergeCoverLetter: (partial) => set((state) => ({
+        coverLetter: {
+          ...(state.coverLetter || defaultState.coverLetter),
+          ...partial
+        },
         lastSavedAt: new Date().toISOString()
       })),
 

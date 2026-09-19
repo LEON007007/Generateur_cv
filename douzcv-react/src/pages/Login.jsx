@@ -52,7 +52,7 @@ export default function Login() {
           {/* Header with DouzCv Logo */}
           <div className="login-right-header">
             <Link to="/page_accueil/index.html" className="login-brand-logo">
-              douz<span style={{ color: 'var(--color-coral)' }}>Cv</span>
+              <img src="/douzcv-logo.svg" alt="douzCv" />
             </Link>
           </div>
 
