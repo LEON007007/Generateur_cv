@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCVStore } from '../store'
-import { Check, Sparkles, Layout, Cpu, Award, Zap, Globe, FileText, Palette, Layers } from 'lucide-react'
+import { Check } from 'lucide-react'
 
 const TemplateThumbnail = ({ id, accentColor }) => {
   // Determine layout based on template ID
@@ -122,118 +122,71 @@ const TemplateThumbnail = ({ id, accentColor }) => {
   );
 };
 
-const TemplateCard = ({ id, title, category, accentColor = '#1B3041', onClick, isSelected }) => (
-  <div 
-    className="card" 
-    style={{ 
-      overflow: 'hidden', 
-      display: 'flex', 
-      flexDirection: 'column', 
-      height: '380px', 
-      cursor: 'pointer', 
-      transition: 'all var(--duration-normal) var(--ease-premium)',
-      border: isSelected ? '2px solid var(--color-primary)' : '1px solid var(--color-border)',
-      position: 'relative'
-    }}
-    onClick={onClick}
-    onMouseEnter={(e) => { 
-      e.currentTarget.style.transform = 'translateY(-6px)'
-      e.currentTarget.style.boxShadow = 'var(--shadow-level-2)' 
-      e.currentTarget.style.borderColor = 'var(--color-primary)'
-    }}
-    onMouseLeave={(e) => { 
-      e.currentTarget.style.transform = 'none'
-      e.currentTarget.style.boxShadow = 'var(--shadow-level-1)'
-      e.currentTarget.style.borderColor = isSelected ? 'var(--color-primary)' : 'var(--color-border)'
-    }}
-  >
-    {/* Real Template Visual Preview */}
-    <div style={{
-      flex: 1,
-      backgroundColor: '#F8FAFC',
-      borderBottom: '1px solid var(--color-border)',
-      padding: '12px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      position: 'relative',
-      overflow: 'hidden'
-    }}>
-      {/* Template Image with dynamic mapping */}
-      <img 
-        src={
-          id === "L'Exécutif" ? "/templates/cv_executive.jpg" :
-          id === "Le Minimaliste (ATS)" ? "/templates/cv_minimalist.jpg" :
-          id === "L'Académique & Recherche" ? "/templates/cv_academic.jpg" :
-          id === "Le Tech Lead" ? "/templates/cv_techlead.jpg" :
-          id === "Le Silicon Valley" ? "/templates/cv_silicon.jpg" :
-          id === "L'Ingénieur & Industriel" ? "/templates/cv_engineer.jpg" :
-          id === "Le Créatif" ? "/templates/cv_creative.jpg" :
-          id === "L'Élégant Prestige" ? "/templates/cv_prestige.jpg" :
-          id === "Le Portfolio Visuel" ? "/templates/cv_portfolio.jpg" :
-          id === "Le Condensé 1-Page" ? "/templates/cv_compact.jpg" :
-          id === "L'International / Expat" ? "/templates/cv_international.jpg" :
-          "/templates/cv_proafrique.jpg"
-        }
-        alt={title}
-        style={{
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          objectPosition: 'top',
-          borderRadius: '4px',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-          transition: 'transform var(--duration-slow) var(--ease-premium)'
-        }}
-        onError={(e) => {
-          e.target.style.display = 'none';
-          if (e.target.nextSibling) {
-            e.target.nextSibling.style.display = 'flex';
-          }
-        }}
-      />
-      <div style={{ display: 'none', width: '100%', height: '100%' }}>
-        <TemplateThumbnail id={id} accentColor={accentColor} />
-      </div>
-      
-      {/* Check overlay for active state */}
-      {isSelected && (
-        <div style={{
-          position: 'absolute',
-          top: '12px',
-          right: '12px',
-          width: '28px',
-          height: '28px',
-          backgroundColor: 'var(--color-primary)',
-          borderRadius: '50%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#FFFFFF',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
-        }}>
-          <Check size={16} strokeWidth={3} />
-        </div>
-      )}
-    </div>
+const templatePreviewPaths = {
+  "L'Exécutif": '/templates/cv_executive.jpg',
+  'Le Minimaliste (ATS)': '/templates/cv_minimalist.jpg',
+  "L'Académique & Recherche": '/templates/cv_academic.jpg',
+  'Le Tech Lead': '/templates/cv_techlead.jpg',
+  'Le Silicon Valley': '/templates/cv_silicon.jpg',
+  "L'Ingénieur & Industriel": '/templates/cv_engineer.jpg',
+  'Le Créatif': '/templates/cv_creative.jpg',
+  "L'Élégant Prestige": '/templates/cv_prestige.jpg',
+  'Le Portfolio Visuel': '/templates/cv_portfolio.jpg',
+  'Le Condensé 1-Page': '/templates/cv_compact.jpg',
+  "L'International / Expat": '/templates/cv_international.jpg',
+  'Le Polyvalent Pro-Afrique': '/templates/cv_proafrique.jpg'
+}
 
-    {/* Content Info (Minimalist) */}
-    <div style={{ padding: '20px 16px', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ fontSize: '11px', textTransform: 'uppercase', color: 'var(--color-text-muted)', fontWeight: '700', letterSpacing: '0.06em', marginBottom: '6px' }}>
-        {category}
-      </div>
-      <h3 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--color-primary)', margin: 0, letterSpacing: '-0.01em' }}>
-        {title}
-      </h3>
-    </div>
-  </div>
-)
+const TemplateCard = ({ id, title, category, description, badge, accentColor = '#1B3041', onClick, isSelected }) => {
+  const previewPath = templatePreviewPaths[id] || templatePreviewPaths['Le Polyvalent Pro-Afrique']
+
+  return (
+    <button
+      type="button"
+      className={`template-card${isSelected ? ' is-selected' : ''}`}
+      style={{ '--template-accent': accentColor }}
+      onClick={onClick}
+      aria-pressed={isSelected}
+      aria-label={`${title}, ${category}${isSelected ? ', modèle sélectionné' : ''}`}
+    >
+      <span className="template-card-preview" aria-hidden="true">
+        <img
+          className="template-card-image"
+          src={previewPath}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          onError={(event) => {
+            event.currentTarget.hidden = true
+            event.currentTarget.nextElementSibling.hidden = false
+          }}
+        />
+        <span className="template-card-fallback" hidden>
+          <TemplateThumbnail id={id} accentColor={accentColor} />
+        </span>
+        {isSelected && (
+          <span className="template-card-check" aria-hidden="true">
+            <Check size={16} strokeWidth={3} />
+          </span>
+        )}
+      </span>
+      <span className="template-card-info">
+        <span className="template-card-category">{category}</span>
+        <span className="template-card-title">{title}</span>
+        <span className="template-card-description">{description}</span>
+        <span className="template-card-footer">
+          {badge && <span className="template-card-badge">{badge}</span>}
+          <span className="template-card-action">Utiliser ce modèle</span>
+        </span>
+      </span>
+    </button>
+  )
+}
 
 export default function Templates() {
   const navigate = useNavigate()
   const { selectedTemplate, setSelectedTemplate, setAccentColor } = useCVStore()
   const [filterCategory, setFilterCategory] = useState('Tous')
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   const templatesList = [
     // 1. ATS & Classique
@@ -374,199 +327,54 @@ export default function Templates() {
   }
 
   return (
-    <div className="templates-page" style={{ maxWidth: '1200px', margin: '0 auto', padding: '32px 24px 64px 24px' }}>
-      
-      {/* Title & Introduction */}
-      <div style={{ textAlign: 'left', marginBottom: '40px' }}>
-        <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(28px, 4vw, 36px)', fontWeight: '800', color: 'var(--color-primary)', letterSpacing: '-0.03em', marginBottom: '8px' }}>
-          Modèles
-        </h1>
-        <p style={{ color: 'var(--color-text-muted)', fontSize: '16px', maxWidth: '650px' }}>
-          Choisissez votre modèle de CV.
+    <section className="templates-page" aria-labelledby="templates-heading">
+      <header className="templates-heading">
+        <div>
+          <p className="templates-eyebrow">Votre prochain CV</p>
+          <h1 id="templates-heading">Choisissez votre modèle</h1>
+          <p className="templates-intro">Comparez les mises en page et sélectionnez celle qui correspond à votre parcours.</p>
+        </div>
+        <p className="templates-result-count" aria-live="polite">
+          <strong>{filteredTemplates.length}</strong> modèles
         </p>
-      </div>
+      </header>
 
-      {/* Mobile Filter: Custom Dropdown Menu (Contained strictly within mobile width) */}
-      <div className="templates-filter-mobile" style={{ position: 'relative', width: '100%', maxWidth: '280px', margin: '0 auto 28px' }}>
-        <label 
-          style={{ 
-            display: 'block', 
-            fontSize: '11px', 
-            fontWeight: '700', 
-            textTransform: 'uppercase', 
-            letterSpacing: '0.06em', 
-            color: 'var(--color-text-muted)', 
-            marginBottom: '8px',
-            textAlign: 'center'
-          }}
-        >
-          Filtrer par catégorie
-        </label>
-        
-        {/* Dropdown Toggle Button */}
-        <button
-          type="button"
-          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          style={{
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '11px 16px',
-            fontSize: '13.5px',
-            fontWeight: '700',
-            color: 'var(--color-primary)',
-            backgroundColor: 'var(--color-surface)',
-            border: isDropdownOpen ? '2px solid var(--color-coral)' : '1.5px solid var(--color-coral)',
-            borderRadius: 'var(--radius-full)',
-            outline: 'none',
-            boxShadow: isDropdownOpen ? '0 4px 16px rgba(255, 97, 84, 0.25)' : '0 2px 10px rgba(255, 97, 84, 0.12)',
-            cursor: 'pointer',
-            transition: 'all 0.2s ease'
-          }}
-        >
-          <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            {categories.find(c => c.value === filterCategory)?.label || 'Tous les modèles'}
-          </span>
-          <svg 
-            width="18" 
-            height="18" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="var(--color-coral)" 
-            strokeWidth="2.5" 
-            strokeLinecap="round" 
-            strokeLinejoin="round"
-            style={{
-              flexShrink: 0,
-              marginLeft: '8px',
-              transform: isDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-              transition: 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)'
-            }}
-          >
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
-        </button>
-
-        {/* Dropdown Options Popup (Guaranteed 100% inside container bounds) */}
-        {isDropdownOpen && (
-          <>
-            {/* Click-outside dismissal backdrop */}
-            <div 
-              onClick={() => setIsDropdownOpen(false)} 
-              style={{ position: 'fixed', inset: 0, zIndex: 40 }}
-            />
-            
-            <div
-              style={{
-                position: 'absolute',
-                top: 'calc(100% + 6px)',
-                left: 0,
-                right: 0,
-                width: '100%',
-                backgroundColor: 'var(--color-surface)',
-                border: '1px solid var(--color-border)',
-                borderRadius: '16px',
-                boxShadow: '0 12px 32px rgba(27, 48, 65, 0.18)',
-                overflow: 'hidden',
-                zIndex: 50
-              }}
-            >
-              {categories.map((cat, idx) => {
-                const count = cat.value === 'Tous' 
-                  ? templatesList.length 
-                  : templatesList.filter(t => t.category === cat.value).length
-                const isSelected = filterCategory === cat.value
-
-                return (
-                  <button
-                    key={cat.value}
-                    type="button"
-                    onClick={() => {
-                      setFilterCategory(cat.value)
-                      setIsDropdownOpen(false)
-                    }}
-                    style={{
-                      width: '100%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      padding: '11px 16px',
-                      fontSize: '13px',
-                      fontWeight: isSelected ? '700' : '500',
-                      color: isSelected ? 'var(--color-coral)' : 'var(--color-text-main)',
-                      backgroundColor: isSelected ? 'rgba(255, 97, 84, 0.08)' : 'transparent',
-                      border: 'none',
-                      borderBottom: idx < categories.length - 1 ? '1px solid var(--color-border)' : 'none',
-                      textAlign: 'left',
-                      cursor: 'pointer',
-                      transition: 'background-color 0.15s ease'
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!isSelected) e.currentTarget.style.backgroundColor = '#F8FAFC'
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isSelected) e.currentTarget.style.backgroundColor = 'transparent'
-                    }}
-                  >
-                    <span>{cat.label}</span>
-                    {isSelected && (
-                      <span style={{ color: 'var(--color-coral)', display: 'flex', alignItems: 'center' }}>
-                        <Check size={16} strokeWidth={2.5} />
-                      </span>
-                    )}
-                  </button>
-                )
-              })}
-            </div>
-          </>
-        )}
-      </div>
-
-      {/* Desktop Filter: Pill Tabs */}
-      <div className="templates-filter-desktop">
-        {categories.map(cat => {
-          const count = cat.value === 'Tous' 
-            ? templatesList.length 
-            : templatesList.filter(t => t.category === cat.value).length
-
-          return (
+      <section className="templates-catalog" aria-label="Catalogue de modèles">
+        <p className="templates-filter-label" id="templates-filter-label">Filtrer par catégorie</p>
+        <div className="templates-filter" role="group" aria-labelledby="templates-filter-label">
+          {categories.map(cat => (
             <button
               key={cat.value}
+              type="button"
+              className={`templates-filter-button${filterCategory === cat.value ? ' is-active' : ''}`}
               onClick={() => setFilterCategory(cat.value)}
-              style={{
-                padding: '8px 18px',
-                borderRadius: 'var(--radius-full)',
-                fontSize: '13.5px',
-                fontWeight: '600',
-                border: filterCategory === cat.value ? '1px solid var(--color-coral)' : '1px solid var(--color-border)',
-                backgroundColor: filterCategory === cat.value ? 'var(--color-coral)' : 'var(--color-surface)',
-                color: filterCategory === cat.value ? '#FFFFFF' : 'var(--color-text-main)',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                boxShadow: filterCategory === cat.value ? '0 2px 8px rgba(255, 97, 84, 0.25)' : 'none'
-              }}
+              aria-pressed={filterCategory === cat.value}
             >
               {cat.label}
             </button>
-          )
-        })}
-      </div>
+          ))}
+        </div>
 
-      {/* Grid of 12 Templates */}
-      <div className="templates-grid">
+        {filteredTemplates.length > 0 ? (
+          <div className="templates-grid" aria-live="polite">
         {filteredTemplates.map(template => (
           <TemplateCard
             key={template.id}
             id={template.id}
             title={template.title}
             category={template.category}
+            description={template.description}
+            badge={template.badge}
             accentColor={template.accentColor}
             isSelected={selectedTemplate === template.id}
             onClick={() => handleSelectTemplate(template)}
           />
         ))}
-      </div>
-    </div>
+          </div>
+        ) : (
+          <p className="templates-empty-state" role="status">Aucun modèle ne correspond à cette catégorie.</p>
+        )}
+      </section>
+    </section>
   )
 }

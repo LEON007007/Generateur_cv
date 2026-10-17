@@ -1,6 +1,5 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
-import { saveCVRecord, getCVRecord, listAllCVRecords, deleteCVRecord } from './services/embeddedDB'
 
 const defaultState = {
   activeCVId: 'default_cv',
@@ -55,7 +54,7 @@ const defaultState = {
 
 export const useCVStore = create(
   persist(
-    (set, get) => ({
+    (set) => ({
       ...defaultState,
 
       // Guest User Account

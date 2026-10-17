@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { 
   X, 
-  Key, 
   ExternalLink, 
   CheckCircle2, 
   AlertCircle, 
@@ -9,10 +8,7 @@ import {
   ShieldCheck, 
   Copy, 
   Check, 
-  Trash2, 
-  HelpCircle,
-  Cpu,
-  ArrowRight
+  Trash2
 } from 'lucide-react'
 
 export default function GeminiApiKeyModal({ isOpen, onClose, onKeySaved }) {

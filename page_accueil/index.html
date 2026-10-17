@@ -48,6 +48,7 @@
           <a href="#hero-track" class="active">ACCUEIL</a>
           <a href="#bento-features">INNOVATIONS</a>
           <a href="#templates-section">12 MODÈLES</a>
+          <a href="/connexion?type=lettre" class="nav-cover-badge">LETTRE DE MOTIVATION</a>
           <a href="#ats-scanner">SIMULATEUR ATS</a>
           <a href="#faq">FAQ</a>
         </nav>
@@ -96,7 +97,7 @@
 
             <!-- ANIMATION 2: Word-by-Word Title Reveal with Blur & Stagger -->
             <h1 class="hero-title" data-reveal-words>
-              Le CV d'Élite Conçu Pour Décrocher l'Entretien.
+              Le CV d'Élite &amp; la Lettre de Motivation Conçus Pour Décrocher l'Entretien.
             </h1>
 
             <div class="hero-spacer" aria-hidden="true"></div>
@@ -110,6 +111,14 @@
                   <path d="m12 5 7 7-7 7" />
                 </svg>
               </a>
+              <a href="/connexion?type=lettre" class="btn-hero-primary btn-cover-letter-hero">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+                <span>Créer ma Lettre</span>
+              </a>
               <a href="#ats-scanner" class="btn-hero-secondary">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                   stroke-linecap="round" stroke-linejoin="round">
@@ -121,36 +130,8 @@
             </div>
           </div>
 
-          <!-- Right Column: Glassmorphism Bento Card -->
+          <!-- Right Column: (supprimée) -->
           <div class="hero-right">
-            <div class="hero-glass-card">
-              <div class="card-glow-edge"></div>
-              <div class="card-top-row">
-                <div class="live-status-pill">
-                  <span class="pulse-emerald"></span>
-                  <span>MOTEUR IA EN LIGNE</span>
-                </div>
-                <span class="metric-highlight">98.8% ATS COMPATIBLE</span>
-              </div>
-              <div class="card-quote">
-                "Un recruteur consacre moins de 6 secondes à votre CV. Chaque millimètre et chaque mot doivent être
-                calculés."
-              </div>
-              <div class="card-stats-grid">
-                <div class="c-stat">
-                  <span class="c-stat-num">3.8x</span>
-                  <span class="c-stat-lbl">Taux d'entretien</span>
-                </div>
-                <div class="c-stat">
-                  <span class="c-stat-num">0s</span>
-                  <span class="c-stat-lbl">Temps de configuration</span>
-                </div>
-                <div class="c-stat">
-                  <span class="c-stat-num">100%</span>
-                  <span class="c-stat-lbl">Données privées</span>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -257,29 +238,7 @@
           </div>
         </div>
 
-        <!-- Bento 2: ATS Safe (Tall Card) -->
-        <div class="bento-card bento-tall" data-reveal="right">
-          <div class="bento-card-header">
-            <div class="bento-icon-box green">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              </svg>
-            </div>
-            <span class="bento-badge green-badge">CONFORMITÉ 98%+</span>
-          </div>
-          <h3 class="bento-title">Structure Algorithmique Pure</h3>
-          <p class="bento-desc">
-            Zéro tableau invisible bloquant, zéro graphisme parasite. Votre CV est parfaitement lisible et indexable par
-            Workday, Taleo, et Greenhouse.
-          </p>
-          <div class="bento-mini-meter">
-            <div class="meter-label"><span>Indexation Robots ATS</span><strong>100%</strong></div>
-            <div class="meter-bar">
-              <div class="meter-fill" style="width: 100%;"></div>
-            </div>
-          </div>
-        </div>
+        <!-- Bento 2: ATS Safe (Tall Card) - SUPPRIMÉ -->
 
         <!-- Bento 3: Pixel-Perfect A4 -->
         <div class="bento-card" data-reveal="left" data-delay="150">
@@ -302,7 +261,7 @@
         </div>
 
         <!-- Bento 4: 100% Local & Private -->
-        <div class="bento-card" data-reveal="right" data-delay="150">
+        <div class="bento-card" data-reveal="up" data-delay="150">
           <div class="bento-card-header">
             <div class="bento-icon-box amber">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -318,6 +277,39 @@
             Vos données personnelles sont stockées exclusivement dans votre navigateur (IndexedDB). Aucune donnée
             revendue, zéro compte obligatoire.
           </p>
+        </div>
+
+        <!-- Bento 5: NOUVEAU MODULE LETTRE DE MOTIVATION IA -->
+        <div class="bento-card bento-wide bento-coverletter-card" data-reveal="right" data-delay="200">
+          <div class="bento-card-header">
+            <div class="bento-icon-box purple">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                <polyline points="22,6 12,13 2,6" />
+              </svg>
+            </div>
+            <span class="bento-badge purple-badge">NOUVEAU • DUO GAGNANT</span>
+          </div>
+          <h3 class="bento-title">Lettre de Motivation IA Synchronisée au CV</h3>
+          <p class="bento-desc">
+            Ne rédigez plus deux fois. douzCv réutilise les expériences clés de votre CV pour générer automatiquement une lettre de motivation percutante, personnalisée selon l'entreprise cible et téléchargeable au format PDF A4 officiel.
+          </p>
+          <div class="bento-letter-cta-row">
+            <span class="tag-letter-status">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+              </svg>
+              <span>Ton et style adaptés à chaque modèle</span>
+            </span>
+            <a href="/connexion?type=lettre" class="btn-letter-explore">
+              <span>Créer mes lettres de motivation</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"/>
+                <path d="m12 5 7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -455,14 +447,23 @@
                   <p class="ats-view-title">Choisissez un format pour lancer l'audit simulé :</p>
                   <div class="ats-btn-group">
                     <button class="ats-choice-btn btn-classic" id="btn-scan-classic" type="button">
-                      <div class="choice-icon">📄</div>
+                      <div class="choice-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                          <polyline points="14 2 14 8 20 8" />
+                        </svg>
+                      </div>
                       <div class="choice-text">
                         <strong>CV Classique (Word / Canva)</strong>
                         <span>Format standard non optimisé pour les robots</span>
                       </div>
                     </button>
                     <button class="ats-choice-btn btn-douzcv" id="btn-scan-douzcv" type="button">
-                      <div class="choice-icon">✨</div>
+                      <div class="choice-icon" style="color: var(--color-coral);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+                        </svg>
+                      </div>
                       <div class="choice-text">
                         <strong>CV D'Élite douzCv</strong>
                         <span>Format vectoriel certifié 98%+ de conformité</span>
@@ -475,7 +476,13 @@
                 <div id="ats-state-scanning" class="ats-view">
                   <div class="laser-scanner">
                     <div class="laser-bar"></div>
-                    <div class="scanner-status-icon">🔍</div>
+                    <div class="scanner-status-icon">
+                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--color-coral)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        <path d="m11 8 3 3-3 3" />
+                      </svg>
+                    </div>
                   </div>
                   <div class="scan-progress-area">
                     <div class="scan-step-label" id="scan-status">Lecture du document...</div>
@@ -585,6 +592,16 @@
               SmartRecruiters).</p>
           </div>
         </div>
+
+        <div class="faq-card" data-reveal="left" data-delay="500">
+          <button class="faq-toggle" type="button">
+            <span>Puis-je générer et exporter une lettre de motivation assortie à mon CV ?</span>
+            <span class="faq-plus">+</span>
+          </button>
+          <div class="faq-collapse">
+            <p>Oui ! douzCv intègre un générateur intelligent de lettres de motivation. L'IA se base sur vos expériences déjà saisies dans votre CV pour rédiger une candidature percutante et ciblée, directement prête à être prévisualisée et téléchargée en PDF A4.</p>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -594,19 +611,23 @@
     <section class="section-box">
       <div class="cta-banner-epic" data-reveal="up">
         <span class="eyebrow-tag light">Prêt pour votre prochain palier de carrière ?</span>
-        <h2 class="cta-epic-title">FORGEZ VOTRE CV D'ÉLITE DÈS AUJOURD'HUI</h2>
+        <h2 class="cta-epic-title">FORGEZ VOTRE CV &amp; LETTRE D'ÉLITE DÈS AUJOURD'HUI</h2>
         <p class="cta-epic-desc">
-          Rejoignez les candidats qui se démarquent dès le premier coup d'œil grâce à un design chirurgical et des mots
-          à fort impact.
+          Rejoignez les candidats qui se démarquent dès le premier coup d'œil grâce à un duo CV + Lettre au design chirurgical et aux mots à fort impact.
         </p>
-        <a href="/connexion" class="btn-hero-primary cta-btn">
-          <span>COMMENCER MON CV GRATUITEMENT</span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 12h14" />
-            <path d="m12 5 7 7-7 7" />
-          </svg>
-        </a>
+        <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+          <a href="/connexion" class="btn-hero-primary cta-btn">
+            <span>COMMENCER MON CV GRATUITEMENT</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
+          </a>
+          <a href="/connexion?type=lettre" class="btn-hero-secondary" style="border-color: rgba(255,255,255,0.25); color: #fff;">
+            <span>Générer ma Lettre IA</span>
+          </a>
+        </div>
       </div>
     </section>
 
@@ -671,6 +692,7 @@
           <div class="footer-links-scroll">
             <a href="/connexion">12 Modèles Stratégiques</a>
             <a href="/connexion">Éditeur Intelligent</a>
+            <a href="/connexion?type=lettre">Générateur de Lettre IA</a>
             <a href="#ats-scanner">Simulateur de Score ATS</a>
             <a href="/connexion">Assistant Rédactionnel IA</a>
             <a href="/connexion">Export Vectoriel PDF A4</a>

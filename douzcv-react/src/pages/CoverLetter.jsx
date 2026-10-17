@@ -9,8 +9,7 @@ import {
   generateCoverLetterFromCv,
   COVER_LETTER_SYSTEM_INSTRUCTION,
   ensureLetterStructure,
-  extractBodyFromAiResponse,
-  formatLetterDateDisplay
+  extractBodyFromAiResponse
 } from '../services/coverLetterService'
 import { exportPreviewToPdf } from '../services/pdfExportService'
 import { COVER_LETTER_TEMPLATES, getCoverLetterTemplate } from '../data/coverLetterTemplates'

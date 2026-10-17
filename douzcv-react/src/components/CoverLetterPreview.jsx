@@ -27,8 +27,6 @@ function SenderFromCv({ personalInfo, accentColor, layout }) {
 }
 
 function LetterBody({
-  layout,
-  accentColor,
   letter,
   onUpdate
 }) {
@@ -109,12 +107,14 @@ function LetterBody({
         </div>
 
         <div className="letter-signature-block">
-          <CoverLetterEditable
-            value={letter.signatureName}
-            onChange={(v) => onUpdate('signatureName', v)}
-            placeholder="Signature"
-            className="letter-signature"
-          />
+          {!letter.signatureImage && (
+            <CoverLetterEditable
+              value={letter.signatureName}
+              onChange={(v) => onUpdate('signatureName', v)}
+              placeholder="Signature"
+              className="letter-signature"
+            />
+          )}
 
           {letter.signatureImage && (
             <img

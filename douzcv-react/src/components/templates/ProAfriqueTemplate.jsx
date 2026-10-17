@@ -1,5 +1,5 @@
 import React from 'react'
-import { Mail, Phone, MapPin, Award, CheckSquare } from 'lucide-react'
+import { Mail, Phone, MapPin } from 'lucide-react'
 
 export default function ProAfriqueTemplate({ personalInfo, experiences, education, skills, languages, accentColor }) {
   return (

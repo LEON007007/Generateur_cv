@@ -16,10 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
     heroPaths[i] = `/images/ezgif-frame-${String(i).padStart(3, '0')}.jpg`;
   }
 
-  function getFramePath(index) {
-    return heroPaths[index] || heroPaths[1];
-  }
-
   // Fast In-Memory Image Cache and Bitmap Array
   const heroLoadedMap = new Uint8Array(TOTAL_FRAMES + 1);
   const heroImages = new Array(TOTAL_FRAMES + 1);
@@ -91,10 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const atsPaths = new Array(ATS_TOTAL_FRAMES + 1);
   for (let i = 1; i <= ATS_TOTAL_FRAMES; i++) {
     atsPaths[i] = `/images2/ezgif-frame-${String(i).padStart(3, '0')}.jpg`;
-  }
-
-  function getAtsFramePath(index) {
-    return atsPaths[index] || atsPaths[1];
   }
 
   const atsLoadedMap = new Uint8Array(ATS_TOTAL_FRAMES + 1);

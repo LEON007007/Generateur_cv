@@ -5,11 +5,7 @@ import {
   TextRun, 
   HeadingLevel, 
   AlignmentType, 
-  BorderStyle, 
-  Table, 
-  TableRow, 
-  TableCell, 
-  WidthType 
+  BorderStyle 
 } from 'docx'
 
 /**
@@ -199,7 +195,7 @@ export async function generateNativeDocx({ personalInfo, experiences, education,
         
         lines.forEach((line) => {
           const isBullet = line.trim().startsWith('•')
-          const cleanLine = line.replace(/^[•\-\*]\s*/, '').trim()
+          const cleanLine = line.replace(/^[•\-*]\s*/, '').trim()
           
           children.push(
             new Paragraph({

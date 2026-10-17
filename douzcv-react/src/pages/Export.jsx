@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react'
 import { 
   Download, 
   FileText, 
-  CheckSquare, 
   ArrowLeft, 
   Printer, 
   FileCode, 
@@ -79,7 +78,7 @@ export default function Export() {
     }
 
     // Wait for all web fonts to be fully loaded
-    try { await document.fonts.ready } catch (e) { /* fallback */ }
+    try { await document.fonts.ready } catch { /* fallback */ }
 
     // === UNIVERSAL RENDERING TECHNIQUE ===
     // Create a full-size off-screen clone mounted directly in document.body
@@ -294,7 +293,7 @@ export default function Export() {
           setImportStatus('CV importé avec succès !')
           setTimeout(() => setImportStatus(''), 3000)
         }
-      } catch (err) {
+      } catch {
         setImportStatus('Erreur: fichier JSON non valide.')
         setTimeout(() => setImportStatus(''), 4000)
       }

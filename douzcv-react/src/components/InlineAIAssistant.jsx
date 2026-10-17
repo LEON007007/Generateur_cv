@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { Loader2, RotateCcw, Check, ChevronDown, ChevronUp, Wand2, AlertCircle } from 'lucide-react'
+import { Loader2, RotateCcw, Check, ChevronDown, ChevronUp, AlertCircle } from 'lucide-react'
 import { generateWithGemini } from '../services/geminiService'
 
-export function formatPlainTextToHtml(text) {
+function formatPlainTextToHtml(text) {
   if (!text) return ''
   if (text.includes('<p>') || text.includes('<ul>')) return text
 
@@ -11,7 +11,7 @@ export function formatPlainTextToHtml(text) {
 
   if (hasBullets) {
     const listItems = lines.map(line => {
-      const clean = line.replace(/^[•\-\*]\s*/, '').trim()
+      const clean = line.replace(/^[•\-*]\s*/, '').trim()
       return `<li>${clean}</li>`
     }).join('')
     return `<ul>${listItems}</ul>`

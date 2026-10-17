@@ -17,7 +17,7 @@ const STORE_NAME = 'cv_store'
 
 // Open / initialize IndexedDB
 function openDB() {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     if (typeof window === 'undefined' || !window.indexedDB) {
       resolve(null)
       return

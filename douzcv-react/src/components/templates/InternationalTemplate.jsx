@@ -1,5 +1,5 @@
 import React from 'react'
-import { Globe, Mail, Phone, MapPin, CheckCircle } from 'lucide-react'
+import { Globe, Mail, Phone, MapPin } from 'lucide-react'
 
 export default function InternationalTemplate({ personalInfo, experiences, education, skills, languages, accentColor }) {
   return (

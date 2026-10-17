@@ -1,5 +1,5 @@
 import React from 'react'
-import { Mail, Phone, MapPin, Sparkles } from 'lucide-react'
+import { Mail, Phone, MapPin } from 'lucide-react'
 
 export default function SiliconTemplate({ personalInfo, experiences, education, skills, languages, accentColor }) {
   return (

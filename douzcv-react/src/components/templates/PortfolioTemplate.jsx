@@ -1,5 +1,5 @@
 import React from 'react'
-import { Mail, Phone, MapPin, Palette, Award } from 'lucide-react'
+import { Mail, Phone, MapPin, Palette } from 'lucide-react'
 
 export default function PortfolioTemplate({ personalInfo, experiences, education, skills, languages, accentColor }) {
   return (

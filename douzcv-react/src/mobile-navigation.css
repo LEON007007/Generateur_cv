@@ -1,0 +1,103 @@
+.mobile-nav-toggle,
+.mobile-app-menu {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .app-header {
+    position: relative !important;
+    min-height: 64px !important;
+    height: auto !important;
+    padding: 6px 12px !important;
+    gap: 8px !important;
+    overflow: visible !important;
+  }
+
+  .app-header .header-left {
+    gap: 8px !important;
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+  }
+
+  .app-header .header-logo img {
+    display: block !important;
+    width: 96px !important;
+    height: auto !important;
+  }
+
+  .app-header .header-nav {
+    display: none !important;
+  }
+
+  .app-header .mobile-nav-toggle {
+    display: inline-flex !important;
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    color: var(--color-primary);
+    background: var(--color-surface);
+    cursor: pointer;
+    transition: border-color .18s ease, background-color .18s ease, color .18s ease;
+  }
+
+  .app-header .mobile-nav-toggle:hover,
+  .app-header .mobile-nav-toggle[aria-expanded="true"] {
+    border-color: var(--color-coral);
+    color: var(--color-coral-dark);
+    background: #fff8f5;
+  }
+
+  .app-header .mobile-nav-toggle:focus-visible,
+  .app-header .mobile-app-menu a:focus-visible {
+    outline: 3px solid rgb(255 97 84 / 38%);
+    outline-offset: 2px;
+  }
+
+  .app-header .mobile-app-menu {
+    position: absolute;
+    z-index: 120;
+    top: calc(100% + 8px);
+    right: 12px;
+    display: grid;
+    width: min(320px, calc(100vw - 24px));
+    gap: 4px;
+    padding: 8px;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background: var(--color-surface);
+    box-shadow: 0 16px 36px rgb(27 48 65 / 16%);
+  }
+
+  .app-header .mobile-app-menu a {
+    display: flex;
+    min-height: 48px;
+    align-items: center;
+    gap: 12px;
+    padding: 0 13px;
+    border-radius: 6px;
+    color: var(--color-text-main);
+    font-size: 14px;
+    font-weight: 650;
+    text-decoration: none;
+    transition: color .16s ease, background-color .16s ease;
+  }
+
+  .app-header .mobile-app-menu a svg {
+    flex: 0 0 auto;
+    color: var(--color-text-muted);
+  }
+
+  .app-header .mobile-app-menu a:hover,
+  .app-header .mobile-app-menu a.is-active {
+    color: var(--color-coral-dark);
+    background: rgb(255 97 84 / 8%);
+  }
+
+  .app-header .mobile-app-menu a.is-active svg {
+    color: var(--color-coral);
+  }
+}

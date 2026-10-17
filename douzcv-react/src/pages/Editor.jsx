@@ -15,8 +15,7 @@ import {
   X,
   Palette,
   Camera,
-  Loader2,
-  Sparkles
+  Loader2
 } from 'lucide-react'
 import { useCVStore } from '../store'
 import CVPreview from '../components/CVPreview'
@@ -115,10 +114,6 @@ export default function Editor() {
   const [skillsAiError, setSkillsAiError] = useState('')
   const [apiKeyModalOpen, setApiKeyModalOpen] = useState(false)
 
-  const openAiModalForSection = () => {
-    setApiKeyModalOpen(true)
-  }
-
   const colorPalette = [
     { name: 'Bleu Nuit', value: '#1B3041' },
     { name: 'Corail Douz', value: '#FF6154' },
@@ -162,7 +157,7 @@ export default function Editor() {
       if (result) {
         const items = result
           .split(/[\n,•]/)
-          .map(s => s.replace(/^\d+[\.\)]\s*/, '').trim())
+          .map(s => s.replace(/^\d+[.)]\s*/, '').trim())
           .filter(s => s.length > 1 && s.length < 45)
         
         items.forEach(skill => addSkill(skill))

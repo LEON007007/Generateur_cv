@@ -1,5 +1,5 @@
 import React from 'react'
-import { Terminal, Code, Mail, Phone, MapPin, ExternalLink } from 'lucide-react'
+import { Terminal, Mail, Phone, MapPin } from 'lucide-react'
 
 export default function TechLeadTemplate({ personalInfo, experiences, education, skills, languages, accentColor }) {
   return (

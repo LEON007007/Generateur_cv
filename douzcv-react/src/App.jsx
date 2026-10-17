@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom'
-import { HelpCircle, User, ArrowLeft } from 'lucide-react'
+import { HelpCircle, User, ArrowLeft, Menu, X, LayoutGrid, PencilLine, FileText } from 'lucide-react'
 import { useCVStore } from './store'
+import './mobile-navigation.css'
 
 import Templates from './pages/Templates'
 import Editor from './pages/Editor'
@@ -77,16 +78,71 @@ const Navigation = () => {
 const Header = () => {
   const guestUser = useCVStore((state) => state.guestUser)
   const userName = guestUser?.name || 'Invité'
+  const location = useLocation()
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const headerRef = useRef(null)
+  const mobileMenuToggleRef = useRef(null)
+  const mobileMenuPanelRef = useRef(null)
+  const isActive = (path) => location.pathname === path
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return undefined
+    mobileMenuPanelRef.current?.querySelector('a')?.focus()
+
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') {
+        setIsMobileMenuOpen(false)
+        mobileMenuToggleRef.current?.focus()
+      }
+    }
+    const closeOnOutsideClick = (event) => {
+      if (!headerRef.current?.contains(event.target)) setIsMobileMenuOpen(false)
+    }
+
+    document.addEventListener('keydown', closeOnEscape)
+    document.addEventListener('pointerdown', closeOnOutsideClick)
+    return () => {
+      document.removeEventListener('keydown', closeOnEscape)
+      document.removeEventListener('pointerdown', closeOnOutsideClick)
+    }
+  }, [isMobileMenuOpen])
 
   return (
-    <header className="app-header">
+    <header className="app-header" ref={headerRef}>
       <div className="header-left">
         {/* Logo links back to HTML/CSS/JS Landing page */}
         <a href="/page_accueil/index.html" className="header-logo" title="Retourner à l'accueil">
           <img src="/douzcv-logo.svg" alt="douzCv" />
         </a>
         <Navigation />
+        <button
+          type="button"
+          ref={mobileMenuToggleRef}
+          className="mobile-nav-toggle"
+          aria-label={isMobileMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+          aria-expanded={isMobileMenuOpen}
+          aria-controls="mobile-app-menu"
+          onClick={() => setIsMobileMenuOpen((open) => !open)}
+        >
+          {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
       </div>
+      {isMobileMenuOpen && (
+        <nav className="mobile-app-menu" id="mobile-app-menu" ref={mobileMenuPanelRef} aria-label="Navigation principale mobile">
+          <Link to="/modeles" onClick={() => setIsMobileMenuOpen(false)} className={isActive('/modeles') || isActive('/templates') ? 'is-active' : ''}>
+            <LayoutGrid size={18} aria-hidden="true" />
+            <span>Modèles</span>
+          </Link>
+          <Link to="/editeur" onClick={() => setIsMobileMenuOpen(false)} className={isActive('/editeur') ? 'is-active' : ''}>
+            <PencilLine size={18} aria-hidden="true" />
+            <span>Éditeur</span>
+          </Link>
+          <Link to="/lettre-motivation" onClick={() => setIsMobileMenuOpen(false)} className={isActive('/lettre-motivation') ? 'is-active' : ''}>
+            <FileText size={18} aria-hidden="true" />
+            <span>Lettre de motivation</span>
+          </Link>
+        </nav>
+      )}
       <div className="flex items-center gap-2 sm:gap-3">
         <button 
           title="Aide"
