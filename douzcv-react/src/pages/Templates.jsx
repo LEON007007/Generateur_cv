@@ -341,7 +341,7 @@ export default function Templates() {
 
       <section className="templates-catalog" aria-label="Catalogue de modèles">
         <p className="templates-filter-label" id="templates-filter-label">Filtrer par catégorie</p>
-        <div className="templates-filter" role="group" aria-labelledby="templates-filter-label">
+        <div className="templates-filter templates-filter-desktop" role="group" aria-labelledby="templates-filter-label">
           {categories.map(cat => (
             <button
               key={cat.value}
@@ -354,6 +354,16 @@ export default function Templates() {
             </button>
           ))}
         </div>
+        <select
+          className="templates-filter-mobile"
+          aria-labelledby="templates-filter-label"
+          value={filterCategory}
+          onChange={(event) => setFilterCategory(event.target.value)}
+        >
+          {categories.map((category) => (
+            <option key={category.value} value={category.value}>{category.label}</option>
+          ))}
+        </select>
 
         {filteredTemplates.length > 0 ? (
           <div className="templates-grid" aria-live="polite">
