@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { 
   ChevronDown, 
@@ -15,7 +15,8 @@ import {
   X,
   Palette,
   Camera,
-  Loader2
+  Loader2,
+  Upload
 } from 'lucide-react'
 import { useCVStore } from '../store'
 import CVPreview from '../components/CVPreview'
@@ -23,6 +24,7 @@ import InlineAIAssistant from '../components/InlineAIAssistant'
 import GeminiApiKeyModal from '../components/GeminiApiKeyModal'
 import RichTextEditor from '../components/RichTextEditor'
 import { generateWithGemini } from '../services/geminiService'
+import { importCVFile } from '../services/cvImportService'
 
 const Accordion = ({ title, icon: Icon, badgeCount, children, defaultOpen = false }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen)
@@ -89,7 +91,8 @@ export default function Editor() {
     setFontFamily,
     spacing,
     setSpacing,
-    guestUser
+    guestUser,
+    mergeImportedCV
   } = useCVStore()
 
   // Dynamic document name based on entered names or login name (no hardcoded fallback)
@@ -113,6 +116,9 @@ export default function Editor() {
   const [isSuggestingSkills, setIsSuggestingSkills] = useState(false)
   const [skillsAiError, setSkillsAiError] = useState('')
   const [apiKeyModalOpen, setApiKeyModalOpen] = useState(false)
+  const [isImportingCV, setIsImportingCV] = useState(false)
+  const [importCVStatus, setImportCVStatus] = useState('')
+  const importCVInputRef = useRef(null)
 
   const colorPalette = [
     { name: 'Bleu Nuit', value: '#1B3041' },
@@ -133,6 +139,24 @@ export default function Editor() {
   const handlePersonalChange = (e) => {
     const { name, value } = e.target
     updatePersonalInfo(name, value)
+  }
+
+  const handleImportCV = async (event) => {
+    const file = event.target.files?.[0]
+    event.target.value = ''
+    if (!file) return
+
+    setIsImportingCV(true)
+    setImportCVStatus('Lecture du CV...')
+    try {
+      const importedData = await importCVFile(file)
+      mergeImportedCV(importedData)
+      setImportCVStatus(`CV importé : ${file.name}. Vérifiez les champs reconnus et modifiez-les dans le formulaire.`)
+    } catch (error) {
+      setImportCVStatus(error.message || 'Impossible de lire ce CV. Essayez un fichier PDF, DOCX, TXT ou JSON douzCv.')
+    } finally {
+      setIsImportingCV(false)
+    }
   }
 
   const handleAddSkill = (e) => {
@@ -199,6 +223,26 @@ export default function Editor() {
 
           {/* Selects moved to Personnalisation Accordion */}
 
+          <input
+            ref={importCVInputRef}
+            type="file"
+            accept=".pdf,.docx,.txt,.json,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/json"
+            onChange={handleImportCV}
+            style={{ display: 'none' }}
+            aria-label="Sélectionner un CV à importer"
+          />
+
+          <button
+            type="button"
+            onClick={() => importCVInputRef.current?.click()}
+            disabled={isImportingCV}
+            className="btn-subheader-action"
+            style={{ padding: '6px 14px', fontSize: '13px', color: '#fff', background: '#E87524', borderRadius: '8px', fontWeight: 700 }}
+          >
+            {isImportingCV ? <Loader2 size={15} className="spin-animate" /> : <Upload size={15} />}
+            {isImportingCV ? 'Import...' : 'Importer un CV'}
+          </button>
+
           <button 
             onClick={() => navigate('/exporter')} 
             className="btn-subheader-action btn-primary" 
@@ -207,6 +251,11 @@ export default function Editor() {
             Exporter
           </button>
         </div>
+        {importCVStatus && (
+          <p role="status" aria-live="polite" style={{ flexBasis: '100%', margin: '0', color: importCVStatus.startsWith('Impossible') || importCVStatus.startsWith('Format') || importCVStatus.startsWith('Aucune') ? '#B42318' : 'var(--color-text-muted)', fontSize: '12px' }}>
+            {importCVStatus}
+          </p>
+        )}
       </div>
 
       {/* Mobile Tab Toggle */}

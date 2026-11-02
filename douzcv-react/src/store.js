@@ -94,6 +94,20 @@ export const useCVStore = create(
         lastSavedAt: new Date().toISOString()
       })),
 
+      mergeImportedCV: (data) => set((state) => {
+        const personalInfo = Object.fromEntries(
+          Object.entries(data.personalInfo || {}).filter(([, value]) => value !== '' && value != null)
+        )
+        return {
+          personalInfo: { ...state.personalInfo, ...personalInfo },
+          experiences: data.experiences?.length ? data.experiences : state.experiences,
+          education: data.education?.length ? data.education : state.education,
+          skills: data.skills?.length ? [...new Set(data.skills)] : state.skills,
+          languages: data.languages?.length ? data.languages : state.languages,
+          lastSavedAt: new Date().toISOString()
+        }
+      }),
+
       // Experiences CRUD
       addExperience: () => set((state) => ({
         experiences: [

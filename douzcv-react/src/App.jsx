@@ -37,11 +37,8 @@ const Navigation = () => {
       {/* 2. Modèles */}
       <Link 
         to="/modeles"
-        className="header-nav-link"
-        style={{ 
-          color: (isActive('/') || isActive('/modeles') || isActive('/templates')) ? 'var(--color-coral)' : 'var(--color-text-main)',
-          borderBottom: (isActive('/') || isActive('/modeles') || isActive('/templates')) ? '2px solid var(--color-coral)' : '2px solid transparent'
-        }}
+        className={`header-nav-link${(isActive('/') || isActive('/modeles') || isActive('/templates')) ? ' is-active' : ''}`}
+        aria-current={(isActive('/') || isActive('/modeles') || isActive('/templates')) ? 'page' : undefined}
       >
         Modèles
       </Link>
@@ -51,21 +48,15 @@ const Navigation = () => {
         <>
           <Link 
             to="/editeur" 
-            className="header-nav-link"
-            style={{ 
-              color: isActive('/editeur') ? 'var(--color-coral)' : 'var(--color-text-main)',
-              borderBottom: isActive('/editeur') ? '2px solid var(--color-coral)' : '2px solid transparent'
-            }}
+            className={`header-nav-link${isActive('/editeur') ? ' is-active' : ''}`}
+            aria-current={isActive('/editeur') ? 'page' : undefined}
           >
             Éditeur
           </Link>
           <Link 
             to="/lettre-motivation" 
-            className="header-nav-link"
-            style={{ 
-              color: isActive('/lettre-motivation') ? 'var(--color-coral)' : 'var(--color-text-main)',
-              borderBottom: isActive('/lettre-motivation') ? '2px solid var(--color-coral)' : '2px solid transparent'
-            }}
+            className={`header-nav-link${isActive('/lettre-motivation') ? ' is-active' : ''}`}
+            aria-current={isActive('/lettre-motivation') ? 'page' : undefined}
           >
             Lettre
           </Link>
@@ -112,7 +103,7 @@ const Header = () => {
       <div className="header-left">
         {/* Logo links back to HTML/CSS/JS Landing page */}
         <a href="/page_accueil/index.html" className="header-logo" title="Retourner à l'accueil">
-          <img src="/douzcv-logo.svg" alt="douzCv" />
+          <img src="/douzcv-logo.svg" alt="douzCv, accueil" />
         </a>
         <Navigation />
         <button

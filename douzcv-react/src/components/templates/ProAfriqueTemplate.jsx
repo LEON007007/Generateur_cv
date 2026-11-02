@@ -13,12 +13,8 @@ export default function ProAfriqueTemplate({ personalInfo, experiences, educatio
             </div>
           )}
           <div>
-            <h1 style={{ fontSize: '30px', fontWeight: '800', color: accentColor, margin: 0 }}>
-              {personalInfo.firstName} {personalInfo.lastName}
-            </h1>
-            <div style={{ fontSize: '16px', fontWeight: '600', color: '#2C4A63', marginTop: '2px' }}>
-              {personalInfo.title}
-            </div>
+            <div style={{ fontSize: '22px', fontWeight: '800', color: accentColor, lineHeight: 1.15 }}>{personalInfo.title || 'Titre professionnel'}</div>
+            <h1 style={{ fontSize: '15px', fontWeight: '700', color: '#2C4A63', margin: '4px 0 0' }}>{personalInfo.firstName} {personalInfo.lastName}</h1>
           </div>
         </div>
 

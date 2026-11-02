@@ -10,19 +10,8 @@ export default function MinimalistTemplate({ personalInfo, experiences, educatio
             <img src={personalInfo.avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
         )}
-        <h1 style={{ 
-          fontSize: '30px', 
-          fontWeight: '800', 
-          textTransform: 'uppercase',
-          letterSpacing: '0.05em',
-          marginBottom: '4px',
-          color: accentColor
-        }}>
-          {personalInfo.firstName || 'Prénom'} {personalInfo.lastName || 'Nom'}
-        </h1>
-        <div style={{ fontSize: '15px', fontWeight: '600', color: '#4B5563', marginBottom: '8px' }}>
-          {personalInfo.title || 'Titre professionnel'}
-        </div>
+        <div style={{ fontSize: '23px', fontWeight: '800', color: accentColor, lineHeight: 1.15, marginBottom: '4px' }}>{personalInfo.title || 'Titre professionnel'}</div>
+        <h1 style={{ fontSize: '14px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 8px', color: '#374151' }}>{personalInfo.firstName || 'Prénom'} {personalInfo.lastName || 'Nom'}</h1>
         <div className="flex justify-center flex-wrap gap-3" style={{ fontSize: '12.5px', color: '#4B5563' }}>
           {personalInfo.email && <span>{personalInfo.email}</span>}
           {personalInfo.phone && <span>• {personalInfo.phone}</span>}

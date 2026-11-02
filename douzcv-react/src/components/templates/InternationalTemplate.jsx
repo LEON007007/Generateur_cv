@@ -18,12 +18,8 @@ export default function InternationalTemplate({ personalInfo, experiences, educa
                 <Globe size={14} />
                 <span>PROFIL INTERNATIONAL & MOBILITÉ</span>
               </div>
-              <h1 style={{ fontSize: '30px', fontWeight: '800', color: '#0F172A', margin: 0 }}>
-                {personalInfo.firstName} {personalInfo.lastName}
-              </h1>
-              <div style={{ fontSize: '16px', fontWeight: '600', color: '#475569', marginTop: '2px' }}>
-                {personalInfo.title}
-              </div>
+              <div style={{ fontSize: '22px', fontWeight: '800', color: accentColor, lineHeight: 1.15 }}>{personalInfo.title || 'Titre professionnel'}</div>
+              <h1 style={{ fontSize: '15px', fontWeight: '700', color: '#334155', margin: '4px 0 0' }}>{personalInfo.firstName} {personalInfo.lastName}</h1>
             </div>
           </div>
 

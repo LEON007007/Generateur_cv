@@ -12,12 +12,8 @@ export default function CompactOnePageTemplate({ personalInfo, experiences, educ
             </div>
           )}
           <div>
-            <h1 style={{ fontSize: '24px', fontWeight: '800', color: accentColor, margin: 0 }}>
-              {personalInfo.firstName} {personalInfo.lastName}
-            </h1>
-            <div style={{ fontSize: '13px', fontWeight: '600', color: '#475569' }}>
-              {personalInfo.title}
-            </div>
+            <div style={{ fontSize: '17px', fontWeight: '800', color: accentColor, lineHeight: 1.15 }}>{personalInfo.title || 'Titre professionnel'}</div>
+            <h1 style={{ fontSize: '14px', fontWeight: '700', color: '#334155', margin: '3px 0 0' }}>{personalInfo.firstName} {personalInfo.lastName}</h1>
           </div>
         </div>
         <div style={{ fontSize: '11px', color: '#64748B', textAlign: 'right', lineHeight: '1.4' }}>

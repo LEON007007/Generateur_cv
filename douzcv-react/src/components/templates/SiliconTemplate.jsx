@@ -13,12 +13,8 @@ export default function SiliconTemplate({ personalInfo, experiences, education, 
             </div>
           )}
           <div>
-            <h1 style={{ fontSize: '32px', fontWeight: '800', letterSpacing: '-0.03em', color: '#0F172A', margin: 0 }}>
-              {personalInfo.firstName} <span style={{ color: accentColor }}>{personalInfo.lastName}</span>
-            </h1>
-            <div style={{ fontSize: '16px', fontWeight: '600', color: '#64748B', marginTop: '4px' }}>
-              {personalInfo.title}
-            </div>
+            <div style={{ fontSize: '24px', fontWeight: '800', letterSpacing: '-0.03em', color: accentColor, lineHeight: 1.1 }}>{personalInfo.title || 'Titre professionnel'}</div>
+            <h1 style={{ fontSize: '14px', fontWeight: '700', color: '#475569', margin: '4px 0 0' }}>{personalInfo.firstName} {personalInfo.lastName}</h1>
           </div>
         </div>
 

@@ -14,12 +14,8 @@ export default function PortfolioTemplate({ personalInfo, experiences, education
           )}
         </div>
         <div style={{ flex: 1 }}>
-          <h1 style={{ fontSize: '30px', fontWeight: '800', letterSpacing: '-0.02em', color: '#09090B', margin: 0 }}>
-            {personalInfo.firstName} <span style={{ color: accentColor }}>{personalInfo.lastName}</span>
-          </h1>
-          <div style={{ fontSize: '15px', fontWeight: '600', color: '#71717A', marginTop: '2px' }}>
-            {personalInfo.title}
-          </div>
+          <div style={{ fontSize: '24px', fontWeight: '800', letterSpacing: '-0.02em', color: accentColor, lineHeight: 1.1 }}>{personalInfo.title || 'Titre professionnel'}</div>
+          <h1 style={{ fontSize: '14px', fontWeight: '700', color: '#52525B', margin: '4px 0 0' }}>{personalInfo.firstName} {personalInfo.lastName}</h1>
           <div className="flex flex-wrap gap-4" style={{ fontSize: '12px', color: '#71717A', marginTop: '8px' }}>
             {personalInfo.email && <div className="flex items-center gap-1"><Mail size={12} color={accentColor} /><span>{personalInfo.email}</span></div>}
             {personalInfo.phone && <div className="flex items-center gap-1"><Phone size={12} color={accentColor} /><span>{personalInfo.phone}</span></div>}

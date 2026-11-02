@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const progressBar = document.getElementById('progress-bar');
   const stories = [
     { track: document.getElementById('hero-track'), image: document.getElementById('anim-img'), total: 236, path: '/images/ezgif-frame-' },
+    { track: document.getElementById('ats-track'), image: document.getElementById('ats-anim-img'), total: 240, path: '/images2/ezgif-frame-' },
     { track: document.getElementById('letter-track'), image: document.getElementById('letter-img'), total: 240, path: '/images2/ezgif-frame-' }
   ].filter((story) => story.track && story.image);
 
@@ -51,9 +52,12 @@ document.addEventListener('DOMContentLoaded', () => {
       line.replaceChildren();
       words.forEach((word) => {
         const wordElement = document.createElement('span');
-        wordElement.className = 'word';
+        const underlineWord = line.dataset.underlineWord?.toLocaleLowerCase('fr');
+        const normalizedWord = word.toLocaleLowerCase('fr').replace(/[.,!?;:]/g, '');
+        wordElement.className = normalizedWord === underlineWord ? 'word word-highlight' : 'word';
         wordElement.textContent = word;
         wordElement.style.transitionDelay = `${wordIndex * 65}ms`;
+        wordElement.style.setProperty('--word-delay', `${wordIndex * 65}ms`);
         line.append(wordElement, document.createTextNode(' '));
         wordIndex += 1;
       });
@@ -105,6 +109,36 @@ document.addEventListener('DOMContentLoaded', () => {
     revealItems.forEach((element) => revealObserver.observe(element));
   }
 
+  const atsCompatibility = document.getElementById('ats-compatibility');
+  const atsCompatibilityCount = atsCompatibility?.querySelector('[data-count-to]');
+  const animateAtsCompatibility = () => {
+    if (!atsCompatibilityCount || atsCompatibility.dataset.animated === 'true') return;
+    atsCompatibility.dataset.animated = 'true';
+    const target = Number(atsCompatibilityCount.dataset.countTo) || 98;
+    const duration = reduceMotion ? 0 : 1200;
+    const startedAt = performance.now();
+    const updateCount = (now) => {
+      const progress = duration === 0 ? 1 : Math.min(1, (now - startedAt) / duration);
+      const eased = 1 - ((1 - progress) ** 3);
+      atsCompatibilityCount.textContent = String(Math.round(target * eased));
+      atsCompatibility.style.setProperty('--ats-progress', `${eased * 100}%`);
+      if (progress < 1) window.requestAnimationFrame(updateCount);
+    };
+    window.requestAnimationFrame(updateCount);
+  };
+
+  if (atsCompatibility && 'IntersectionObserver' in window && !reduceMotion) {
+    const atsCompatibilityObserver = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        animateAtsCompatibility();
+        atsCompatibilityObserver.disconnect();
+      }
+    }, { threshold: 0.35 });
+    atsCompatibilityObserver.observe(atsCompatibility);
+  } else {
+    animateAtsCompatibility();
+  }
+
   let activeStories = new Set();
   if ('IntersectionObserver' in window) {
     const storyObserver = new IntersectionObserver((entries) => {
@@ -119,7 +153,39 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   let frameRequest = 0;
+  let storyFrameRequest = 0;
   const displayedFrames = new WeakMap();
+  const targetFrames = new WeakMap();
+  const currentFrames = new WeakMap();
+
+  const animateStoryFrames = () => {
+    storyFrameRequest = 0;
+    let hasPendingFrames = false;
+
+    activeStories.forEach((track) => {
+      const story = stories.find((item) => item.track === track);
+      if (!story) return;
+
+      const target = targetFrames.get(story.image);
+      if (!target) return;
+
+      let current = currentFrames.get(story.image) ?? target;
+      const remaining = target - current;
+      current = Math.abs(remaining) < 0.7 ? target : current + remaining * 0.24;
+      currentFrames.set(story.image, current);
+
+      const frame = Math.round(current);
+      if (displayedFrames.get(story.image) !== frame) {
+        displayedFrames.set(story.image, frame);
+        story.image.src = `${story.path}${String(frame).padStart(3, '0')}.jpg`;
+      }
+
+      if (frame !== target) hasPendingFrames = true;
+    });
+
+    if (hasPendingFrames) storyFrameRequest = window.requestAnimationFrame(animateStoryFrames);
+  };
+
   const updateOnScroll = () => {
     frameRequest = 0;
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
@@ -132,11 +198,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const distance = track.offsetHeight - window.innerHeight;
       if (distance <= 0) return;
       const scrolled = Math.min(distance, Math.max(0, -track.getBoundingClientRect().top));
-      const frame = Math.min(story.total, Math.max(1, Math.round(1 + (scrolled / distance) * (story.total - 1))));
-      if (displayedFrames.get(story.image) === frame) return;
-      displayedFrames.set(story.image, frame);
-      story.image.src = `${story.path}${String(frame).padStart(3, '0')}.jpg`;
+      const frame = Math.min(story.total, Math.max(1, 1 + (scrolled / distance) * (story.total - 1)));
+      targetFrames.set(story.image, frame);
+      if (!currentFrames.has(story.image)) currentFrames.set(story.image, frame);
     });
+
+    if (!reduceMotion && !storyFrameRequest) storyFrameRequest = window.requestAnimationFrame(animateStoryFrames);
   };
 
   const requestUpdate = () => {

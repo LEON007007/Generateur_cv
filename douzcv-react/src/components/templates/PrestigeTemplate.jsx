@@ -16,12 +16,8 @@ export default function PrestigeTemplate({ personalInfo, experiences, education,
               </div>
             </div>
           )}
-          <h1 style={{ fontSize: '32px', fontWeight: '800', letterSpacing: '0.04em', color: accentColor, textTransform: 'uppercase', marginBottom: '4px' }}>
-            {personalInfo.firstName} {personalInfo.lastName}
-          </h1>
-          <div style={{ fontSize: '15px', fontStyle: 'italic', color: '#52525B', fontFamily: "'Inter', sans-serif", letterSpacing: '0.02em', marginBottom: '12px' }}>
-            {personalInfo.title}
-          </div>
+          <div style={{ fontSize: '24px', fontWeight: '800', fontStyle: 'italic', color: accentColor, fontFamily: "'Playfair Display', serif", lineHeight: 1.15, marginBottom: '4px' }}>{personalInfo.title || 'Titre professionnel'}</div>
+          <h1 style={{ fontSize: '14px', fontWeight: '700', letterSpacing: '0.08em', color: '#52525B', textTransform: 'uppercase', fontFamily: "'Inter', sans-serif", margin: '0 0 12px' }}>{personalInfo.firstName} {personalInfo.lastName}</h1>
           <div className="flex justify-center flex-wrap gap-4" style={{ fontSize: '12px', color: '#71717A', fontFamily: "'Inter', sans-serif" }}>
             {personalInfo.email && <div className="flex items-center gap-1"><Mail size={12} color={accentColor} /><span>{personalInfo.email}</span></div>}
             {personalInfo.phone && <div className="flex items-center gap-1"><Phone size={12} color={accentColor} /><span>{personalInfo.phone}</span></div>}

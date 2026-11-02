@@ -10,12 +10,10 @@ export default function AcademicTemplate({ personalInfo, experiences, education,
             <img src={personalInfo.avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
         )}
-        <h1 style={{ fontSize: '26px', fontWeight: '700', color: accentColor, marginBottom: '4px' }}>
-          {personalInfo.firstName} {personalInfo.lastName}
-        </h1>
         <div style={{ fontStyle: 'italic', fontSize: '15px', color: '#4B5563', marginBottom: '8px' }}>
-          {personalInfo.title}
+          <strong style={{ display: 'block', fontSize: '19px', fontStyle: 'normal', color: accentColor }}>{personalInfo.title || 'Titre professionnel'}</strong>
         </div>
+        <h1 style={{ fontSize: '26px', fontWeight: '700', color: '#1F2937', marginBottom: '4px' }}>{personalInfo.firstName} {personalInfo.lastName}</h1>
         <div className="flex justify-center flex-wrap gap-3" style={{ fontSize: '12px', color: '#4B5563' }}>
           {personalInfo.email && <span>{personalInfo.email}</span>}
           {personalInfo.phone && <span>• {personalInfo.phone}</span>}

@@ -32,12 +32,8 @@ export default function CreativeTemplate({ personalInfo, experiences, education,
               initials
             )}
           </div>
-          <h2 style={{ fontSize: '18px', fontWeight: '700', color: '#FFFFFF', margin: 0 }}>
-            {personalInfo.firstName} {personalInfo.lastName}
-          </h2>
-          <p style={{ fontSize: '12px', opacity: 0.85, marginTop: '4px' }}>
-            {personalInfo.title}
-          </p>
+          <p style={{ fontSize: '15px', fontWeight: '800', color: '#FFFFFF', lineHeight: 1.25, margin: '0 0 5px' }}>{personalInfo.title || 'Titre professionnel'}</p>
+          <h2 style={{ fontSize: '12px', fontWeight: '600', color: 'rgba(255,255,255,.82)', margin: 0 }}>{personalInfo.firstName} {personalInfo.lastName}</h2>
         </div>
 
         {/* Contact info */}

@@ -12,23 +12,15 @@ export default function ExecutiveTemplate({ personalInfo, experiences, education
           </div>
         )}
         <div style={{ flex: 1 }}>
-          <h1 style={{ 
-            fontSize: '34px', 
-            fontWeight: '800', 
-            marginBottom: '6px', 
-            letterSpacing: '-0.02em',
-            color: accentColor
-          }}>
-            {personalInfo.firstName || 'Prénom'} {personalInfo.lastName || 'Nom'}
-          </h1>
         <h2 style={{ 
-          fontSize: '18px', 
-          fontWeight: '500', 
-          color: '#4B5563', 
+          fontSize: '25px',
+          fontWeight: '800',
+          color: accentColor,
           marginBottom: '16px' 
         }}>
           {personalInfo.title || 'Titre professionnel'}
         </h2>
+          <h1 style={{ fontSize: '16px', fontWeight: '700', margin: '0 0 12px', color: '#334155' }}>{personalInfo.firstName || 'Prénom'} {personalInfo.lastName || 'Nom'}</h1>
         
         <div className="flex flex-wrap items-center gap-4" style={{ fontSize: '13px', color: '#4B5563' }}>
           {personalInfo.email && (

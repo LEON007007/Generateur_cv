@@ -18,12 +18,10 @@ export default function TechLeadTemplate({ personalInfo, experiences, education,
                 <Terminal size={14} />
                 <span>~/developer-profile</span>
               </div>
-            <h1 style={{ fontSize: '30px', fontWeight: '800', color: '#FFFFFF', letterSpacing: '-0.02em', margin: 0 }}>
-              {personalInfo.firstName} {personalInfo.lastName}
-            </h1>
-            <h2 style={{ fontSize: '16px', fontWeight: '500', color: '#94A3B8', marginTop: '4px' }}>
-              {personalInfo.title}
+            <h2 style={{ fontSize: '22px', fontWeight: '800', color: '#FFFFFF', letterSpacing: '-0.02em', margin: 0, lineHeight: 1.15 }}>
+              {personalInfo.title || 'Titre professionnel'}
             </h2>
+            <h1 style={{ fontSize: '14px', fontWeight: '600', color: '#94A3B8', margin: '4px 0 0' }}>{personalInfo.firstName} {personalInfo.lastName}</h1>
           </div>
           </div>
 

@@ -13,12 +13,8 @@ export default function EngineerTemplate({ personalInfo, experiences, education,
             </div>
           )}
           <div>
-            <h1 style={{ fontSize: '28px', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '-0.01em', color: '#0F172A', margin: 0 }}>
-              {personalInfo.firstName} {personalInfo.lastName}
-            </h1>
-            <div style={{ fontSize: '15px', fontWeight: '700', color: accentColor, marginTop: '2px' }}>
-              {personalInfo.title}
-            </div>
+            <div style={{ fontSize: '21px', fontWeight: '800', color: accentColor, lineHeight: 1.12 }}>{personalInfo.title || 'Titre professionnel'}</div>
+            <h1 style={{ fontSize: '14px', fontWeight: '700', color: '#334155', margin: '4px 0 0' }}>{personalInfo.firstName} {personalInfo.lastName}</h1>
           </div>
         </div>
 

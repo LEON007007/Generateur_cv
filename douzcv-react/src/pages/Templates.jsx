@@ -330,9 +330,9 @@ export default function Templates() {
     <section className="templates-page" aria-labelledby="templates-heading">
       <header className="templates-heading">
         <div>
-          <p className="templates-eyebrow">Votre prochain CV</p>
-          <h1 id="templates-heading">Choisissez votre modèle</h1>
-          <p className="templates-intro">Comparez les mises en page et sélectionnez celle qui correspond à votre parcours.</p>
+          <p className="templates-eyebrow">MODÈLES DE CV</p>
+          <h1 id="templates-heading">Choisissez un <span>modèle</span></h1>
+          <p className="templates-intro">Sélectionnez une mise en page, puis personnalisez votre CV.</p>
         </div>
         <p className="templates-result-count" aria-live="polite">
           <strong>{filteredTemplates.length}</strong> modèles

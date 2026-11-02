@@ -31,7 +31,7 @@
 
     <div class="scroll-progress" aria-hidden="true"><span id="progress-bar"></span></div>
     <header class="site-header">
-      <a class="wordmark" href="/connexion" aria-label="Se connecter à douzCv"><span class="logo-panel"><img src="/douzcv-logo.svg" alt="douzCv"></span></a>
+      <a class="wordmark" href="/connexion" aria-label="Se connecter à douzCv"><span class="logo-panel"><img src="/favicon.svg" alt="" aria-hidden="true"><span class="wordmark-text">douz<span>Cv</span></span></span></a>
       <div class="header-actions">
         <a class="header-login" href="/connexion">Se connecter</a>
         <a class="header-cta" href="/connexion">
@@ -60,9 +60,9 @@
           <img class="story-frame" id="anim-img" src="/images/ezgif-frame-001.jpg" alt="Un candidat se prépare à un entretien professionnel" fetchpriority="high">
           <div class="hero-shade" aria-hidden="true"></div>
           <div class="hero-content">
-            <h1 id="hero-title" class="hero-title" data-reveal-words aria-label="Un CV à votre image. Une lettre pour le bon poste.">
-              <span data-word-line>Un CV à votre image.</span>
-              <em data-word-line>Une lettre pour le bon poste.</em>
+            <h1 id="hero-title" class="hero-title hero-title-reference" aria-label="Décroche plus d’entretiens avec moins de candidatures.">
+              <span class="hero-title-line"><span>Décroche</span> <span class="hero-title-accent">plus d’entretiens</span></span>
+              <span class="hero-title-line"><span>avec</span> <span class="hero-title-accent hero-title-underlined">moins</span> <span>de candidatures.</span></span>
             </h1>
             <p class="hero-intro">Créez votre CV, puis adaptez votre lettre à l’offre avec l’aide de l’IA.</p>
             <div class="hero-actions">
@@ -74,7 +74,7 @@
           <div class="hero-index" aria-hidden="true"><span>01</span><i></i><span>02</span></div>
           <div class="hero-metrics-bar" aria-label="Fonctions douzCv">
             <div class="metric-item"><span class="m-index">01</span><div class="m-text"><strong>12 MODÈLES</strong><span>Pour différents parcours</span></div></div>
-            <div class="metric-item"><span class="m-index">02</span><div class="m-text"><strong>IA GEMINI</strong><span>Des suggestions à relire</span></div></div>
+            <div class="metric-item"><span class="m-index">02</span><div class="m-text"><strong>AIDE À LA RÉDACTION</strong><span>Des suggestions à relire</span></div></div>
             <div class="metric-item"><span class="m-index">03</span><div class="m-text"><strong>CV &amp; LETTRE</strong><span>Deux documents, un parcours</span></div></div>
             <div class="metric-item"><span class="m-index">04</span><div class="m-text"><strong>EXPORT PDF</strong><span>Pour finaliser vos documents</span></div></div>
           </div>
@@ -85,8 +85,8 @@
         <span class="strip-label">DOUZCV / OUTILS DE CANDIDATURE</span>
         <div class="marquee-window">
           <div class="marquee-track">
-            <div class="marquee-group"><span>CV personnalisable</span><i></i><span>Assistant Gemini</span><i></i><span>Lettre adaptée au poste</span><i></i><span>12 modèles</span><i></i><span>Export PDF</span><i></i></div>
-            <div class="marquee-group" aria-hidden="true"><span>CV personnalisable</span><i></i><span>Assistant Gemini</span><i></i><span>Lettre adaptée au poste</span><i></i><span>12 modèles</span><i></i><span>Export PDF</span><i></i></div>
+            <div class="marquee-group"><span>CV personnalisable</span><i></i><span>Suggestions de rédaction</span><i></i><span>Lettre adaptée au poste</span><i></i><span>12 modèles</span><i></i><span>Export PDF</span><i></i></div>
+            <div class="marquee-group" aria-hidden="true"><span>CV personnalisable</span><i></i><span>Suggestions de rédaction</span><i></i><span>Lettre adaptée au poste</span><i></i><span>12 modèles</span><i></i><span>Export PDF</span><i></i></div>
           </div>
         </div>
       </section>
@@ -100,7 +100,7 @@
           </div>
           <div class="bento-grid">
             <article class="bento-card bento-wide reveal">
-              <div class="bento-card-header"><span class="bento-icon-box coral"><svg><use href="#icon-sparkles"/></svg></span><span class="bento-badge">ASSISTANT GEMINI</span></div>
+              <div class="bento-card-header"><span class="bento-icon-box coral"><svg><use href="#icon-sparkles"/></svg></span><span class="bento-badge">ASSISTANT DE RÉDACTION</span></div>
               <h3>Des mots plus justes, à partir de votre expérience</h3>
               <p>Clarifiez vos réalisations et adaptez votre lettre à l’offre. Relisez et modifiez chaque proposition avant de l’utiliser.</p>
               <div class="bento-note"><span class="note-key">VOTRE PARCOURS</span><svg><use href="#icon-arrow"/></svg><span class="note-result">Des formulations que vous pouvez valider</span></div>
@@ -158,9 +158,23 @@
             <p class="eyebrow eyebrow-light"><span></span> Une candidature, pas un modèle générique</p>
             <h2 id="letter-title">Votre histoire,<br><em>mise en mouvement.</em></h2>
             <p>Reliez votre expérience aux besoins du poste. L’assistant vous aide à formuler une lettre personnelle, claire et prête à être retravaillée.</p>
-            <a class="button button-paper" href="/connexion"><svg><use href="#icon-sparkles"/></svg> Préparer ma lettre <svg><use href="#icon-arrow"/></svg></a>
           </div>
           <div class="letter-caption"><span>DOUZCV / CANDIDATURE</span><span>Une étape après l’autre</span></div>
+        </div>
+      </section>
+
+      <section class="ats-compatibility-section" id="compatibilite-ats" aria-labelledby="ats-compatibility-title">
+        <div class="ats-compatibility-inner reveal" id="ats-compatibility">
+          <div class="ats-compatibility-copy">
+            <p class="eyebrow">Une structure faite pour être lue</p>
+            <h2 id="ats-compatibility-title">Vos modèles, prêts pour les <em>ATS.</em></h2>
+            <p>Les modèles douzCv privilégient une structure claire et des rubriques faciles à repérer par les logiciels de recrutement.</p>
+            <small>Indicateur de conception des modèles, pas un score calculé sur votre CV.</small>
+          </div>
+          <div class="ats-compatibility-score" role="img" aria-label="Indicateur de compatibilité de conception avec les ATS">
+            <div class="ats-score-ring"><span><strong data-count-to="98">0</strong><small>%</small></span></div>
+            <span class="ats-score-caption">STRUCTURE LISIBLE PAR LES ATS</span>
+          </div>
         </div>
       </section>
 
@@ -185,9 +199,13 @@
     </main>
 
     <footer class="site-footer">
-      <a class="wordmark" href="/connexion" aria-label="Se connecter à douzCv"><img src="/douzcv-logo.svg" alt="douzCv"></a>
+      <a class="wordmark" href="/connexion" aria-label="Se connecter à douzCv"><span class="logo-panel"><img src="/images/logo-icon.svg" alt="" aria-hidden="true"><span class="wordmark-text">douz<span>Cv</span></span></span></a>
       <p>Des outils pour raconter votre parcours avec clarté.</p>
-      <a href="/connexion">Se connecter <svg><use href="#icon-arrow"/></svg></a>
+      <div class="site-footer-contact">
+        <a href="https://wa.me/237688460338" target="_blank" rel="noopener noreferrer" aria-label="Contacter douzCv sur WhatsApp au +237 688 460 338">WhatsApp&nbsp;: +237 688 460 338</a>
+        <a href="mailto:olivieratangana3@gmail.com">olivieratangana3@gmail.com</a>
+      </div>
+      <a class="site-footer-login" href="/connexion">Se connecter <svg><use href="#icon-arrow"/></svg></a>
     </footer>
   </body>
 </html>
