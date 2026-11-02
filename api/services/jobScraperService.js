@@ -235,12 +235,25 @@ export async function searchJobOffers({ query = '', city = '', days = 30, source
     }
   }
 
+  // Fonction de normalisation pour comparaison sans accents
+  const stripAccents = (str = '') =>
+    str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim()
+
+  const normalizedCityClean = stripAccents(normalizedCity)
+
   // Filtrage par ville si demandée
-  if (normalizedCity && normalizedCity !== 'toutes' && normalizedCity !== 'tous') {
-    allJobs = allJobs.filter((job) =>
-      job.city.toLowerCase().includes(normalizedCity) ||
-      (normalizedCity === 'cameroun' && job.country === 'Cameroun')
-    )
+  if (normalizedCityClean && normalizedCityClean !== 'toutes' && normalizedCityClean !== 'tous' && normalizedCityClean !== 'all') {
+    allJobs = allJobs.filter((job) => {
+      const jobCityClean = stripAccents(job.city || '')
+      const jobDescClean = stripAccents(job.description || '')
+      return (
+        jobCityClean.includes(normalizedCityClean) ||
+        (normalizedCityClean === 'yaounde' && (jobCityClean.includes('yaound') || jobCityClean.includes('cameroun') || jobCityClean.includes('douala / yaounde'))) ||
+        (normalizedCityClean === 'douala' && (jobCityClean.includes('douala') || jobCityClean.includes('cameroun'))) ||
+        (normalizedCityClean === 'cameroun' && job.country === 'Cameroun') ||
+        jobDescClean.includes(normalizedCityClean)
+      )
+    })
   }
 
   // Tri par date de publication (plus récente d'abord)
