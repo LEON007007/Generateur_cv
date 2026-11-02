@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from 'react'
 import { useCVStore } from '../store'
 import { analyzeJobMatch, buildCandidateProfile } from '../services/applicationService'
-import { ArrowDownRight, ArrowUpRight, BriefcaseBusiness, ExternalLink, FilePlus2, MapPin, Plus, Search, Sparkles, X } from 'lucide-react'
+import { ArrowDownRight, ArrowUpRight, BriefcaseBusiness, ExternalLink, FilePlus2, MapPin, Plus, Search, Sparkles, X, LayoutGrid, FileSpreadsheet } from 'lucide-react'
+import JobSpreadsheet from '../components/JobSpreadsheet'
 
 const STATUSES = [
   { id: 'interested', label: 'À suivre', accent: '#34495c' },
@@ -68,6 +69,7 @@ function ApplicationCard({ application, onMove, onAnalyze, onReview, onRemove, a
 
 export default function Applications() {
   const { applications, addApplication, updateApplication, removeApplication, personalInfo, experiences, education, skills, languages, applyJobSuggestions } = useCVStore()
+  const [viewMode, setViewMode] = useState('spreadsheet') // 'spreadsheet' | 'kanban'
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [isSourcesOpen, setIsSourcesOpen] = useState(false)
   const [rangeDays, setRangeDays] = useState(30)
@@ -113,6 +115,26 @@ export default function Applications() {
     }
   }
 
+  const handleAnalyzeFromSpreadsheet = async (job) => {
+    let targetApp = applications.find((item) => (job.url && item.url === job.url) || (item.title && item.title.trim().toLowerCase() === job.title.trim().toLowerCase()))
+    if (!targetApp) {
+      const newAppId = `application_${Date.now()}`
+      targetApp = {
+        id: newAppId,
+        title: job.title,
+        company: job.company,
+        city: job.city,
+        url: job.url,
+        publishedAt: job.publishedAt || new Date().toISOString().slice(0, 10),
+        description: job.description || `Poste de ${job.title} chez ${job.company}.`,
+        status: 'interested'
+      }
+      addApplication(targetApp)
+    }
+    setReviewingApplicationId(targetApp.id)
+    await handleAnalyze(targetApp)
+  }
+
   const handleApplySuggestion = (application) => {
     if (!application.analysis) return
     applyJobSuggestions(application.analysis)
@@ -124,33 +146,55 @@ export default function Applications() {
     <main className="applications-page" aria-labelledby="applications-title">
       <header className="applications-header">
         <div>
-          <p className="applications-eyebrow"><BriefcaseBusiness size={15} />Candidatures · Cameroun</p>
+          <p className="applications-eyebrow"><BriefcaseBusiness size={15} />Candidatures · Cameroun & International</p>
           <h1 id="applications-title">Mes candidatures</h1>
-          <p className="applications-intro">Suivez vos démarches et préparez chaque candidature à partir de votre CV.</p>
+          <p className="applications-intro">Explorez les offres récentes du marché en mode tableur ou suivez vos démarches en mode Kanban.</p>
         </div>
-        <button type="button" className="applications-primary-button" onClick={() => setIsFormOpen((open) => !open)}><Plus size={17} />Ajouter une offre</button>
+
+        <div className="applications-header-actions">
+          {/* Commutateur de vue : Tableur (30j) vs Suivi Kanban */}
+          <div className="applications-view-switcher" role="tablist" aria-label="Modes d'affichage des candidatures">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={viewMode === 'spreadsheet'}
+              className={`applications-view-tab${viewMode === 'spreadsheet' ? ' is-active' : ''}`}
+              onClick={() => setViewMode('spreadsheet')}
+            >
+              <FileSpreadsheet size={16} />
+              <span>Tableur des offres (30j)</span>
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={viewMode === 'kanban'}
+              className={`applications-view-tab${viewMode === 'kanban' ? ' is-active' : ''}`}
+              onClick={() => setViewMode('kanban')}
+            >
+              <LayoutGrid size={16} />
+              <span>Suivi Kanban ({applications.length})</span>
+            </button>
+          </div>
+
+          <button type="button" className="applications-primary-button" onClick={() => setIsFormOpen((open) => !open)}>
+            <Plus size={17} />
+            <span>Ajouter une offre</span>
+          </button>
+        </div>
       </header>
 
-      <section className="applications-toolbar" aria-label="Recherche et filtres des candidatures">
-        <label className="application-search"><Search size={17} aria-hidden="true" /><span className="sr-only">Rechercher une candidature</span><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Entreprise, poste, ville" /></label>
-        <label className="application-range-label">Publiées dans les
-          <select value={rangeDays} onChange={(event) => setRangeDays(event.target.value === 'all' ? 'all' : Number(event.target.value))}>
-            <option value={7}>7 derniers jours</option><option value={14}>14 derniers jours</option><option value={30}>30 derniers jours</option><option value="all">Toutes les dates</option>
-          </select>
-        </label>
-        <button type="button" className="applications-sources-toggle" aria-expanded={isSourcesOpen} onClick={() => setIsSourcesOpen((open) => !open)}>Sources camerounaises</button>
-      </section>
-
-      {isSourcesOpen && (
-        <section className="application-sources" aria-label="Sites d’emploi à consulter au Cameroun">
-          <div><h2>Sources d’offres au Cameroun</h2><p>Ouvrez un site, choisissez une offre, puis ajoutez son lien et son texte ici.</p></div>
-          <div className="application-source-list">{CAMEROON_JOB_SOURCES.map((source) => <a key={source.name} href={source.url} target="_blank" rel="noreferrer">{source.name}<ExternalLink size={13} /></a>)}</div>
-        </section>
-      )}
-
+      {/* Formulaire manuel d'ajout d'offre */}
       {isFormOpen && (
         <form className="application-form" onSubmit={handleCreate}>
-          <div className="application-form-heading"><div><p className="applications-eyebrow">Nouvelle opportunité</p><h2>Ajouter une offre</h2></div><button type="button" className="application-close-button" aria-label="Fermer le formulaire" onClick={() => setIsFormOpen(false)}><X size={19} /></button></div>
+          <div className="application-form-heading">
+            <div>
+              <p className="applications-eyebrow">Nouvelle opportunité</p>
+              <h2>Ajouter une offre manuellement</h2>
+            </div>
+            <button type="button" className="application-close-button" aria-label="Fermer le formulaire" onClick={() => setIsFormOpen(false)}>
+              <X size={19} />
+            </button>
+          </div>
           <div className="application-form-grid">
             <label>Intitulé du poste<input required value={form.title} onChange={(event) => setForm({ ...form, title: event.target.value })} placeholder="Ex. Responsable commercial" /></label>
             <label>Entreprise<input value={form.company} onChange={(event) => setForm({ ...form, company: event.target.value })} placeholder="Nom de l’entreprise" /></label>
@@ -160,26 +204,61 @@ export default function Applications() {
             <label className="application-form-wide">Texte de l’offre<textarea required rows="6" value={form.description} onChange={(event) => setForm({ ...form, description: event.target.value })} placeholder="Collez ici les missions et les critères de l’annonce" /></label>
           </div>
           {error && <p role="alert" className="application-error">{error}</p>}
-          <div className="application-form-footer"><p>Les offres sont enregistrées dans ce navigateur.</p><button className="applications-primary-button" type="submit"><Plus size={16} />Enregistrer l’offre</button></div>
+          <div className="application-form-footer">
+            <p>Les offres sont enregistrées dans votre navigateur.</p>
+            <button className="applications-primary-button" type="submit">
+              <Plus size={16} /> Enregistrer l’offre
+            </button>
+          </div>
         </form>
       )}
 
-      {!isFormOpen && error && <p role="alert" className="application-error">{error}</p>}
+      {/* VUE 1 : Tableur interactif des offres d'emploi (30 derniers jours) */}
+      {viewMode === 'spreadsheet' && (
+        <JobSpreadsheet
+          onAddApplication={addApplication}
+          onAnalyzeOffer={handleAnalyzeFromSpreadsheet}
+          existingApplications={applications}
+          analyzingId={analyzingId}
+        />
+      )}
 
-      <section className="application-board" aria-label="Tableau de suivi des candidatures">
-        {STATUSES.map((status) => {
-          const items = filteredApplications.filter((application) => application.status === status.id)
-          return (
-            <section key={status.id} className="application-column" style={{ '--column-accent': status.accent }} aria-labelledby={`status-${status.id}`}>
-              <header className="application-column-header"><h2 id={`status-${status.id}`}>{status.label}</h2><span>{items.length}</span></header>
-              <div className="application-column-list">
-                {items.map((application) => <ApplicationCard key={application.id} application={application} onMove={(id, next) => updateApplication(id, { status: next })} onAnalyze={handleAnalyze} onReview={setReviewingApplicationId} onRemove={removeApplication} analyzing={analyzingId === application.id} />)}
-                {items.length === 0 && <p className="application-column-empty">Aucune candidature</p>}
-              </div>
+      {/* VUE 2 : Tableau Kanban de suivi des candidatures */}
+      {viewMode === 'kanban' && (
+        <>
+          <section className="applications-toolbar" aria-label="Recherche et filtres des candidatures">
+            <label className="application-search"><Search size={17} aria-hidden="true" /><span className="sr-only">Rechercher une candidature</span><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Entreprise, poste, ville" /></label>
+            <label className="application-range-label">Publiées dans les
+              <select value={rangeDays} onChange={(event) => setRangeDays(event.target.value === 'all' ? 'all' : Number(event.target.value))}>
+                <option value={7}>7 derniers jours</option><option value={14}>14 derniers jours</option><option value={30}>30 derniers jours</option><option value="all">Toutes les dates</option>
+              </select>
+            </label>
+            <button type="button" className="applications-sources-toggle" aria-expanded={isSourcesOpen} onClick={() => setIsSourcesOpen((open) => !open)}>Sources camerounaises</button>
+          </section>
+
+          {isSourcesOpen && (
+            <section className="application-sources" aria-label="Sites d’emploi à consulter au Cameroun">
+              <div><h2>Sources d’offres au Cameroun</h2><p>Ouvrez un site, choisissez une offre, puis ajoutez son lien et son texte ici.</p></div>
+              <div className="application-source-list">{CAMEROON_JOB_SOURCES.map((source) => <a key={source.name} href={source.url} target="_blank" rel="noreferrer">{source.name}<ExternalLink size={13} /></a>)}</div>
             </section>
-          )
-        })}
-      </section>
+          )}
+
+          <section className="application-board" aria-label="Tableau de suivi des candidatures">
+            {STATUSES.map((status) => {
+              const items = filteredApplications.filter((application) => application.status === status.id)
+              return (
+                <section key={status.id} className="application-column" style={{ '--column-accent': status.accent }} aria-labelledby={`status-${status.id}`}>
+                  <header className="application-column-header"><h2 id={`status-${status.id}`}>{status.label}</h2><span>{items.length}</span></header>
+                  <div className="application-column-list">
+                    {items.map((application) => <ApplicationCard key={application.id} application={application} onMove={(id, next) => updateApplication(id, { status: next })} onAnalyze={handleAnalyze} onReview={setReviewingApplicationId} onRemove={removeApplication} analyzing={analyzingId === application.id} />)}
+                    {items.length === 0 && <p className="application-column-empty">Aucune candidature</p>}
+                  </div>
+                </section>
+              )
+            })}
+          </section>
+        </>
+      )}
 
       {reviewingApplicationId && (() => {
         const application = applications.find((item) => item.id === reviewingApplicationId)

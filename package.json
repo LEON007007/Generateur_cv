@@ -2,6 +2,7 @@
   "name": "generateur-cv-root",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "cd douzcv-react && npm run build",
     "dev": "concurrently \"node server.js\" \"cd douzcv-react && npm run dev -- --host 0.0.0.0\"",

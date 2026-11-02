@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'node:path';
 import dotenv from 'dotenv';
+import { searchJobOffers } from './api/services/jobScraperService.js';
 
 dotenv.config();
 dotenv.config({ path: path.resolve(process.cwd(), 'douzcv-react', '.env') });
@@ -85,9 +86,43 @@ app.post('/api/gemini', async (req, res) => {
 });
 
 app.get('/api/health', (_req, res) => {
-  res.json({ ok: true, service: 'douzcv-gemini-proxy' });
+  res.json({ ok: true, service: 'douzcv-backend' });
 });
 
+async function handleJobsSearch(req, res) {
+  try {
+    const params = req.method === 'POST' ? (req.body || {}) : (req.query || {});
+    const { query = '', city = '', days = 30, source = 'all' } = params;
+    const maxDays = Number(days) > 0 ? Number(days) : 30;
+
+    const jobs = await searchJobOffers({
+      query: String(query || ''),
+      city: String(city || ''),
+      days: maxDays,
+      source: String(source || 'all')
+    });
+
+    return res.status(200).json({
+      success: true,
+      count: jobs.length,
+      query: String(query || ''),
+      city: String(city || ''),
+      days: maxDays,
+      jobs
+    });
+  } catch (error) {
+    console.error('[server.js] Erreur /api/jobs:', error);
+    return res.status(500).json({
+      success: false,
+      error: error.message || 'Impossible de récupérer les offres d’emploi.',
+      jobs: []
+    });
+  }
+}
+
+app.get('/api/jobs', handleJobsSearch);
+app.post('/api/jobs', handleJobsSearch);
+
 app.listen(port, () => {
-  console.log(`Gemini proxy listening on http://localhost:${port}`);
+  console.log(`Backend server listening on http://localhost:${port}`);
 });
