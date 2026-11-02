@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { PenTool } from 'lucide-react'
 
 const CANVAS_WIDTH = 560
 const CANVAS_HEIGHT = 180
@@ -112,7 +113,7 @@ export default function SignaturePad({ value = '', onChange }) {
   }
 
   return (
-    <div className="signature-pad cover-letter-no-print">
+    <div className={`signature-pad cover-letter-no-print${hasDrawing ? ' has-signature' : ''}`}>
       <div className="signature-pad-header">
         <span className="signature-pad-label">Dessinez votre signature</span>
         {hasDrawing && (
@@ -121,16 +122,24 @@ export default function SignaturePad({ value = '', onChange }) {
           </button>
         )}
       </div>
-      <canvas
-        ref={canvasRef}
-        className="signature-pad-canvas"
-        aria-label="Zone de dessin de la signature"
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={finishDrawing}
-        onPointerCancel={finishDrawing}
-        onPointerLeave={finishDrawing}
-      />
+      <div className="signature-pad-canvas-wrap">
+        <canvas
+          ref={canvasRef}
+          className="signature-pad-canvas"
+          aria-label="Zone de dessin de la signature"
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={finishDrawing}
+          onPointerCancel={finishDrawing}
+          onPointerLeave={finishDrawing}
+        />
+        {!hasDrawing && (
+          <span className="signature-pad-hover-hint" aria-hidden="true">
+            <PenTool className="signature-pad-pen-hint" size={27} strokeWidth={2.2} />
+            <span>Signer ici</span>
+          </span>
+        )}
+      </div>
       <p className="signature-pad-hint">Souris, doigt ou stylet</p>
     </div>
   )

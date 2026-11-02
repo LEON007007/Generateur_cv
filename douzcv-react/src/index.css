@@ -1188,16 +1188,73 @@ input, textarea, select {
   padding: 4px 0;
 }
 
+.signature-pad-canvas-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 280px;
+  border-radius: 8px;
+}
+
 .signature-pad-canvas {
   display: block;
   width: 100%;
-  max-width: 280px;
   height: 90px;
   border: 1px dashed rgba(100, 116, 139, 0.45);
   border-radius: 8px;
   background: #ffffff;
   cursor: crosshair;
   touch-action: none;
+  transition: border-color .18s ease, background-color .18s ease, box-shadow .18s ease;
+}
+
+.signature-pad-hover-hint {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  justify-items: center;
+  gap: 5px;
+  color: var(--color-coral-dark);
+  font-size: 11px;
+  font-weight: 800;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -46%) scale(.86);
+  transition: opacity .18s ease, transform .2s cubic-bezier(.2,.7,.2,1);
+}
+
+.signature-pad-canvas-wrap:hover .signature-pad-canvas,
+.signature-pad-canvas-wrap:focus-within .signature-pad-canvas {
+  border-color: var(--color-coral);
+  background-color: #fffaf8;
+  box-shadow: 0 0 0 3px rgba(255, 97, 84, .1);
+}
+
+.signature-pad-canvas-wrap:hover .signature-pad-pen-hint,
+.signature-pad-canvas-wrap:focus-within .signature-pad-pen-hint {
+  opacity: 1;
+}
+
+.signature-pad-canvas-wrap:hover .signature-pad-hover-hint,
+.signature-pad-canvas-wrap:focus-within .signature-pad-hover-hint {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.signature-pad-pen-hint {
+  box-sizing: content-box;
+  width: 28px;
+  height: 28px;
+  padding: 14px;
+  border: 1px solid rgba(255, 97, 84, .25);
+  border-radius: 50%;
+  color: var(--color-coral-dark);
+  background: #fff0ed;
+  box-shadow: 0 5px 16px rgba(27, 48, 65, .12);
+}
+
+.signature-pad.has-signature .signature-pad-hover-hint {
+  display: none;
 }
 
 .signature-pad-hint {
