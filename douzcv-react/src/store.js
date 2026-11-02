@@ -23,6 +23,7 @@ const defaultState = {
   education: [],
   skills: [],
   languages: [],
+  applications: [],
   
   // Customization settings
   selectedTemplate: "L'Exécutif",
@@ -107,6 +108,45 @@ export const useCVStore = create(
           lastSavedAt: new Date().toISOString()
         }
       }),
+
+      applyJobSuggestions: (suggestions) => set((state) => ({
+        personalInfo: {
+          ...state.personalInfo,
+          ...((suggestions.title || suggestions.suggestedTitle) ? { title: suggestions.title || suggestions.suggestedTitle } : {}),
+          ...((suggestions.summary || suggestions.suggestedSummary) ? { summary: suggestions.summary || suggestions.suggestedSummary } : {})
+        },
+        skills: (suggestions.skills || suggestions.suggestedSkills)?.length
+          ? [...new Set(suggestions.skills || suggestions.suggestedSkills)]
+          : state.skills,
+        experiences: state.experiences.map((experience, index) => {
+          const rewrite = suggestions.experienceRewrites?.find((item) => item.index === index)
+          return rewrite?.text ? { ...experience, description: rewrite.text } : experience
+        }),
+        lastSavedAt: new Date().toISOString()
+      })),
+
+      addApplication: (application) => set((state) => ({
+        applications: [{
+          id: `application_${Date.now()}`,
+          status: 'interested',
+          createdAt: new Date().toISOString(),
+          publishedAt: new Date().toISOString().slice(0, 10),
+          ...application
+        }, ...state.applications],
+        lastSavedAt: new Date().toISOString()
+      })),
+
+      updateApplication: (id, patch) => set((state) => ({
+        applications: state.applications.map((application) => application.id === id
+          ? { ...application, ...patch, updatedAt: new Date().toISOString() }
+          : application),
+        lastSavedAt: new Date().toISOString()
+      })),
+
+      removeApplication: (id) => set((state) => ({
+        applications: state.applications.filter((application) => application.id !== id),
+        lastSavedAt: new Date().toISOString()
+      })),
 
       // Experiences CRUD
       addExperience: () => set((state) => ({

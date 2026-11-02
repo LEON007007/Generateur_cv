@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom'
-import { HelpCircle, User, ArrowLeft, Menu, X, LayoutGrid, PencilLine, FileText } from 'lucide-react'
+import { HelpCircle, User, ArrowLeft, Menu, X, LayoutGrid, PencilLine, FileText, BriefcaseBusiness } from 'lucide-react'
 import { useCVStore } from './store'
 import './mobile-navigation.css'
 
@@ -9,6 +9,7 @@ import Editor from './pages/Editor'
 import Export from './pages/Export'
 import CoverLetter from './pages/CoverLetter'
 import Login from './pages/Login'
+import Applications from './pages/Applications'
 
 const Navigation = () => {
   const location = useLocation()
@@ -41,6 +42,13 @@ const Navigation = () => {
         aria-current={(isActive('/') || isActive('/modeles') || isActive('/templates')) ? 'page' : undefined}
       >
         Modèles
+      </Link>
+      <Link
+        to="/candidatures"
+        className={`header-nav-link${isActive('/candidatures') ? ' is-active' : ''}`}
+        aria-current={isActive('/candidatures') ? 'page' : undefined}
+      >
+        Mes candidatures
       </Link>
 
       {/* 3. Éditeur (appears when a template is selected) */}
@@ -123,6 +131,10 @@ const Header = () => {
           <Link to="/modeles" onClick={() => setIsMobileMenuOpen(false)} className={isActive('/modeles') || isActive('/templates') ? 'is-active' : ''}>
             <LayoutGrid size={18} aria-hidden="true" />
             <span>Modèles</span>
+          </Link>
+          <Link to="/candidatures" onClick={() => setIsMobileMenuOpen(false)} className={isActive('/candidatures') ? 'is-active' : ''}>
+            <BriefcaseBusiness size={18} aria-hidden="true" />
+            <span>Mes candidatures</span>
           </Link>
           <Link to="/editeur" onClick={() => setIsMobileMenuOpen(false)} className={isActive('/editeur') ? 'is-active' : ''}>
             <PencilLine size={18} aria-hidden="true" />
@@ -208,6 +220,8 @@ const AppContent = () => {
           <Route path="/" element={<HomeRedirect />} />
           <Route path="/accueil" element={<HomeRedirect />} />
           <Route path="/modeles" element={<Templates />} />
+          <Route path="/candidatures" element={<Applications />} />
+          <Route path="/candidatures" element={<Applications />} />
           <Route path="/templates" element={<Templates />} />
           <Route path="/editeur" element={<Editor />} />
           <Route path="/exporter" element={<Export />} />
